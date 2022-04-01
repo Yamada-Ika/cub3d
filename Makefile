@@ -22,15 +22,24 @@ OBJS	:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEPS	:= $(OBJS:.o=.d)
 LIBMAT_DIR := ./libmat
 LIBMAT := libmat.a
-MLX			:= libmlx.a
+
 MLX_DIR		:= ./minilibx-linux
-WITH_MLX	:= $(MLX_DIR)/$(MLX) -L $(MLX_DIR) -lmlx -lXext -lX11 -lm
+ifeq ($(shell uname), Linux)
+	MLX	:= libmlx_Linux.a
+	WITH_MLX	:= $(MLX_DIR)/$(MLX) -L $(MLX_DIR) -lmlx -lXext -lX11 -lm
+else ifeq ($(shell uname), Darwin)
+	MLX	:= libmlx_Darwin.a
+	WITH_MLX	:= $(MLX_DIR)/$(MLX) -L $(MLX_DIR) -L/usr/X11/include/../lib -lmlx -lXext -lX11 -lm
+endif
+
+# WITH_MLX	:= $(MLX_DIR)/$(MLX) -L $(MLX_DIR) -L/usr/X11/include/../lib -lmlx -lXext -lX11 -lm
 INCLUDE :=	-I ./includes -I $(LIBMAT_DIR) -I $(MLX_DIR)
 
 $(NAME): $(OBJ_DIR) $(OBJS)
 	make affine -C $(LIBMAT_DIR)
 	make -C $(MLX_DIR)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBMAT_DIR)/$(LIBMAT) $(WITH_MLX) -o $@ $(INCLUDE)
+	$(CC) $(CFLAGS) $(INCLUDE) $(WITH_MLX) $(OBJS) $(LIBMAT_DIR)/$(LIBMAT) -o $@
+	# $(CC) $(CFLAGS) $(OBJS) $(LIBMAT_DIR)/$(LIBMAT) $(WITH_MLX) -o $@ $(INCLUDE)
 
 $(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE)
