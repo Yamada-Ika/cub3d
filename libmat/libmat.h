@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:28:01 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 00:18:03 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 03:38:12 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,16 @@ double		mat_inner(t_matrix *a, t_matrix *b);
 
 /* affine */
 t_affine	*mat_affine_new(size_t dimension);
-t_matrix	*mat_rotation_2d_new(double theta);
+void		mat_affine_free(t_affine **affine);
+t_matrix	*mat_rotation_2d_new(double theta, t_affine *src);
 void		mat_rotation_2d(double theta, t_affine *dst);
 t_matrix	*mat_rotation_x(double alpha);
 t_matrix	*mat_rotation_y(double beta);
 t_matrix	*mat_rotation_z(double gamma);
 t_matrix	*mat_rotation_any(t_matrix *vec, double theta);
 t_matrix	*mat_translation_3d(double x, double y, double z);
+void		mat_translation_2d(double x, double y, t_affine *src);
+t_matrix	*mat_translation_2d_new(double x, double y, t_affine *src);
 t_matrix	*mat_zoom_3d(double x, double y, double z);
 t_matrix	*mat_zoom_2d_new(double x, double y);
 void		mat_zoom_2d(double x, double y, t_affine *dst);

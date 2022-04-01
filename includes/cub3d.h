@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 01:39:30 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 03:44:22 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <math.h>
 
-# define RAY_NUM 800
+# define RAY_NUM 1
 # define WIN_W 800
 # define WIN_H 600
 # define MINIMAP_SIZE 40
@@ -46,13 +46,14 @@ typedef struct s_map
 
 typedef struct s_player
 {
-	t_matrix	*pos;
-	t_matrix	*dir;
+	// t_matrix	*pos;
+	// t_matrix	*dir;
+	t_affine	*pos;
+	t_affine	*dir;
 }	t_player;
 
 typedef struct s_ray
 {
-	// t_matrix	*dir;
 	t_affine	*dir; // rotation matを含むやつ
 	size_t		index;
 	double		phi;
@@ -86,6 +87,12 @@ t_player	*spawn_player(double pos_x, double pos_y,
 
 /* hooks */
 void	clear_window(t_window *window);
+int		handle_movement(int keycode, t_game *game);
+int		handle_perspective(int keycode, t_game *game);
+void	move_straight(t_player *player);
+void	move_left(t_player *player);
+void	move_back(t_player *player);
+void	move_right(t_player *player);
 
 /* utils */
 void	exit_with_error(const char *str, int status);

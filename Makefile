@@ -6,18 +6,20 @@ VPATH	:=	srcs:\
 			srcs/utils:\
 			srcs/parse:\
 			srcs/minimap:\
-			srcs/render
+			srcs/render:\
+			srcs/hooks/
 SRCS	:=	main.c \
 			parse_map.c \
 			cub_test_2.c \
 			hooks.c \
-			for_hook.c \
 			handle_window.c \
 			handle_color.c \
 			render_minimap.c \
 			spawn.c \
 			clear_window.c \
-			exit_with_error.c
+			exit_with_error.c \
+			handle_perspective.c \
+			handle_movement.c
 OBJS	:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEPS	:= $(OBJS:.o=.d)
 LIBMAT_DIR := ./libmat

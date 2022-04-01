@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:17:21 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 01:27:23 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 02:19:54 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,26 @@ static int	handle_key_hook(int keycode, void *params)
 	game = (t_game *)params;
 	if (keycode == ESC)
 		ft_exit(NULL);
-	if (keycode == A_KEY)
+	if (handle_movement(keycode, game)
+		|| handle_perspective(keycode, game))
 	{
-		move_left(game->player);
 		clear_window(game->window);
 		render(game);
+	}
+
+}
+
+static int	check_keycode(int keycode, t_game *game)
+{
+	int	fg_re_render;
+
+	fg_re_render = 0;
+	if (keycode == ESC)
+		ft_exit(NULL);
+	else if (keycode == A_KEY)
+	{
+		move_left(game->player);
+		fg_re_render = 1;
 	}
 }
 

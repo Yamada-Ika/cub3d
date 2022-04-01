@@ -33,24 +33,6 @@ static void	draw_line_v(t_window *window, t_matrix *center,
 static int	idx_is_out_of_range(int idx, size_t limit);
 static double	get_rotation_phi(double theta);
 
-/*
-int main()
-{
-	t_window	*window;
-	t_game		game;
-
-	window = init_window(WIN_W, WIN_H, WIN_TITLE);
-	raycast_test(window);
-	mlx_put_image_to_window(window->mlx,
-							window->mlx_win,
-							window->img,
-							0, 0);
-	set_hooks(window);
-	mlx_loop(window->mlx);
-	return (0);
-}
-*/
-
 static t_ray	*new_ray(void)
 {
 	t_ray	*new;
@@ -64,7 +46,8 @@ static void	set_ray(t_ray *this, size_t index, t_matrix *from, t_matrix *dir)
 {
 	const double	delta_theta = FOV / RAY_NUM;
 
-	this->phi = get_rotation_phi(delta_theta * (double)index); // set_phi, set_angle, set_cast_angle, set_radiate_angle
+	//this->phi = get_rotation_phi(delta_theta * (double)index); // set_phi, set_angle, set_cast_angle, set_radiate_angle
+	this->phi = get_rotation_phi(FOV / 2.0);
 	this->dir->vector = mat_dup(dir);
 	mat_rotation_2d(this->phi, this->dir);
 	this->from = mat_dup(from);// set_cast_pos, set_radiate_pos, set_start_point
@@ -96,12 +79,16 @@ void	get_3d_image(t_game *game)
 	// world_map = game->map->map;
 	player = game->player;
 
-	printf("ply pos:(%f, %f)\n", player->pos->values[0][0], player->pos->values[1][0]);
+	// printf("ply pos:(%f, %f)\n",
+	// 		player->pos->vector->values[0][0],
+	// 		player->pos->vector->values[1][0]);
 	ray = new_ray(); // 光線用の変数を作成
 	ray_index = 0;
 	while (ray_index < RAY_NUM) // 光線の数だけループ回す
 	{
-		set_ray(ray, ray_index, game->player->pos, game->player->dir); // 光線の向きとかセット
+		set_ray(ray, ray_index,
+				game->player->pos->vector,
+				game->player->dir->vector); // 光線の向きとかセット
 		cast_ray(ray, game->map); // 光線を伸ばして衝突判定
 		render_3d(game->window, ray); // windowに描画
 		ray_index++;
@@ -109,90 +96,12 @@ void	get_3d_image(t_game *game)
 	render_minimap_tmp(game->window, game->map->map, player); // ミニマップを作成
 }
 
-static t_matrix	*gen_world_map(void)
-{
-	const size_t usr_map_row = 6;
-	const size_t usr_map_col = 5;
-	char	usr_map[6][5] = {{1, 1, 1, 1, 1},
-							{1, 0, 0, 0, 1},
-							{1, 0, 0, 0, 1},
-							{2, 0, 0, 0, 2},
-							{1, 0, 0, 0, 1},
-							{1, 1, 1, 1, 1}};
-	t_matrix	*world_map;
-	size_t	i;
-	size_t	j;
-
-	world_map = mat_new(usr_map_row, usr_map_col);
-	i = 0;
-	while (i < usr_map_row)
-	{
-		j = 0;
-		while (j < usr_map_col)
-		{
-			world_map->values[i][j] = usr_map[i][j];
-			++j;
-		}
-		++i;
-	}
-	return (world_map);
-}
-
-// //return the array of the instances.
-// // インスタンス作成ならnew_raysの方が一般的かも
-// static t_ray	*gen_rays(t_player *player)
-// {
-// 	const double	delta_theta = FOV / RAY_NUM;
-// 	double			theta;
-// 	int				i;
-// 	t_matrix		*rot_mat;
-// 	t_ray			*rays;
-
-// 	rays = (t_ray *)ft_calloc(RAY_NUM, sizeof(t_ray)); // create_rays?
-// 	i = 0;
-// 	theta = 0;
-// 	while (i < RAY_NUM)
-// 	{
-// 		(rays[i]).phi = get_rotation_phi(delta_theta * (double)i); // set_phi, set_angle, set_cast_angle, set_radiate_angle
-// 		rot_mat = mat_rotation_2d((rays[i]).phi);
-// 		//printf("ply dir:(%f, %f)\n", player->dir->values[0][0], player->dir->values[1][0]);
-// 		(rays[i]).dir = mat_mul(rot_mat, player->dir); // set_direction
-// 		//printf("ray dir:(%f, %f)\n", (rays[i].dir)->values[0][0], (rays[i].dir)->values[1][0]);
-// 		(rays[i]).player = player; // set_cast_pos, set_radiate_pos, set_start_point
-// 		mat_free(rot_mat);
-// 		++i;
-// 	}
-// 	return (rays);
-// }
-
 static double	get_rotation_phi(double theta)
 {
 	// return (atan((2 * tan(FOV / 2) * ((WIN_W / 2) - (int)i)) / WIN_W));
 	// return (atan((2 * tan(FOV / 2) * ((IMG_PLANE_LEN / 2) - (int)i)) / IMG_PLANE_LEN));
 	return ((FOV / 2.0) - theta);
 }
-
-// static void	ft_raycast(t_ray *rays, t_matrix *world_map)
-// {
-// 	size_t	ray_i;
-// 	int		collide_status;
-// 	double	t;
-
-// 	ray_i = 0;
-// 	while (ray_i < RAY_NUM)
-// 	{
-// 		t = DELTA_T;
-// 		while (42)
-// 		{
-// 			//should use vertical l2 norm
-// 			collide_status = get_collision(&rays[ray_i], t, world_map);
-// 			if (collide_status != 0)
-// 				break ;
-// 			t += DELTA_T;
-// 		}
-// 		++ray_i;
-// 	}
-// }
 
 static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 {
@@ -218,6 +127,7 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 		mat_add(collide, ray->from);
 		ray->v_distance = abs_double((mat_distance_2d(collide) * cos(ray->phi))
 							- (IMG_PLANE_LEN / (2 * tan(FOV / 2.0))));
+		//fprintf(stderr, "distance : %f\n", ray->v_distance);
 		// ray->v_distance = abs_double((mat_distance_2d(tmp) * cos(ray->phi)) 
 		// 					- (IMG_PLANE_LEN / (2 * tan(FOV / 2.0))));
 		if (world_map->values[(int)collide_y][(int)collide_x] == 1)

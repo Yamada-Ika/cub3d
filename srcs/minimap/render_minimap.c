@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:34:48 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 00:41:55 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 03:15:40 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static void	draw_player(t_window *window, t_player *player)
 {
 	t_matrix	*win_pos;
 
-	win_pos = translate_cordinate_to_window(player->pos);
+	win_pos = translate_cordinate_to_window(player->pos->vector);
 	draw_circle(window, win_pos, 10, GREEN);
 	mat_free(win_pos);
 }
