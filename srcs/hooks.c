@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:17:21 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/03/31 22:22:33 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 01:27:23 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,13 @@ static int	handle_key_hook(int keycode, void *params)
 {
 	t_game	*game;
 
-	fprintf(stderr, "keycode : %d\n", keycode);
+	//fprintf(stderr, "keycode : %d\n", keycode);
 	game = (t_game *)params;
 	if (keycode == ESC)
 		ft_exit(NULL);
 	if (keycode == A_KEY)
 	{
 		move_left(game->player);
-		clear_window(game->window);
-		render(game);
-	}
-	else if (keycode == L_ARROW);
-	{
-		//turn_left(game->player);
 		clear_window(game->window);
 		render(game);
 	}

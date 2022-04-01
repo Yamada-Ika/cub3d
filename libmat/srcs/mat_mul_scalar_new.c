@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mat_zoom_2d.c                                      :+:      :+:    :+:   */
+/*   mat_mul_scalar_new.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/31 22:50:19 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/01 22:17:55 by kkaneko          ###   ########.fr       */
+/*   Created: 2022/04/01 21:54:14 by kkaneko           #+#    #+#             */
+/*   Updated: 2022/04/01 21:54:41 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libmat.h"
+#include <stdio.h>
 
-void	mat_zoom_2d(double x, double y, t_affine *dst)
+t_matrix	*mat_mul_scalar_new(double k, t_matrix *a)
 {
-	t_matrix	*zoom_mat;
-	t_matrix	*vec;
+	size_t		i;
+	size_t		j;
+	t_matrix	*res;
 
-	zoom_mat = dst->transform_mat;
-	vec = dst->vector;
-	zoom_mat->values[0][0] = x;
-	zoom_mat->values[1][1] = y;
-	mat_mul(vec, zoom_mat);
+	res = mat_new(a->row, a->col);
+	i = 0;
+	while (i < a->row)
+	{
+		j = 0;
+		while (j < a->col)
+		{
+			res->values[i][j] = k * a->values[i][j];
+			++j;
+		}
+		++i;
+	}
+	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 19:06:29 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/03/31 23:08:15 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 00:26:41 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,21 @@ static void	ft_bzero(void *s, size_t n);
 //	return (ac != 2);
 // }
 
-// bool hax_ext(const char *path, const char *ext)
-// {
-// if (ft_strlen(path) < ft_strlen(ext))
-//  return (false);
-// 
-// }
+/*
+bool hax_ext(const char *path, const char *ext)
+{
+	char	*dot_at;
+	size_t	dot_index;
+
+	if (ft_strlen(path) < ft_strlen(ext))
+		return (false);
+	dot_at = ft_strchr(path, '.');
+	if (dot_at == NULL) // does not find
+		return (false);
+	dot_index = dot_at - path;
+	
+}
+*/
 
 // static int parse_path(const char *path)
 // {

@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/03/31 22:41:09 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 01:39:30 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 # include <stdio.h>
 # include <math.h>
 
-# define RAY_NUM 1366
-# define WIN_W 1366
-# define WIN_H 768
+# define RAY_NUM 800
+# define WIN_W 800
+# define WIN_H 600
 # define MINIMAP_SIZE 40
 # define WIN_TITLE "cub3d"
 # define FOV M_PI_2
@@ -30,6 +30,8 @@
 # define DELTA_T 0.03
 # define LEN_RAY 100
 # define IMG_PLANE_LEN 2
+# define MINIMAP_DELTA_R 0.01
+# define MINIMAP_DELTA_THETA 0.01
 
 typedef struct s_map
 {
@@ -50,11 +52,13 @@ typedef struct s_player
 
 typedef struct s_ray
 {
-	t_matrix	*dir;
+	// t_matrix	*dir;
+	t_affine	*dir; // rotation matを含むやつ
+	size_t		index;
 	double		phi;
 	double		v_distance;
 	int			color;
-	t_player	*player;
+	t_matrix	*from;
 }	t_ray;
 
 typedef struct s_game
@@ -69,8 +73,9 @@ t_map	*parse_map(const char *map_file);
 void	set_hooks(t_game *game);
 void	render_minimap(t_window *window, t_matrix *world_map,
 						t_player *player, t_ray *rays);
+void	render_minimap_tmp(t_window *window, t_matrix *world_map,
+						t_player *player); // tmp
 void	render(t_game *game);
-t_img	*init_img(t_window *window);
 
 /* get_3d_image */
 void	get_3d_image(t_game *game);

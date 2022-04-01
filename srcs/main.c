@@ -43,23 +43,17 @@ static void	create_game(t_game *game, char **av)
 {
 	game->map = parse_map(av[1]);
 	game->window = init_window(WIN_W, WIN_H, WIN_TITLE);
-	game->player = spawn_player(2, 2, 1, 0);
+	game->player = spawn_player(2, 4, 1, 0);
 }
 
 void	render(t_game *game)
 {
-	struct timeval val;
 	double			before;
 	double			after;
 
-	gettimeofday(&val, NULL);
-	before = val.tv_usec;
 	get_3d_image(game);
 	mlx_put_image_to_window(game->window->mlx,
 							game->window->mlx_win,
 							game->window->img->img,
 							0, 0);
-	gettimeofday(&val, NULL);
-	after = val.tv_usec;
-	printf("time:%f\n", after - before);
 }

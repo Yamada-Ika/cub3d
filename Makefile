@@ -1,6 +1,6 @@
 NAME	:=	cub3d
 CC		:=	gcc
-CFLAGS	:=	-MMD -MP -fsanitize=address -g
+CFLAGS	:=	-MMD -MP -fsanitize=address -pg
 OBJ_DIR	:= ./objs
 VPATH	:=	srcs:\
 			srcs/utils:\
@@ -9,7 +9,7 @@ VPATH	:=	srcs:\
 			srcs/render
 SRCS	:=	main.c \
 			parse_map.c \
-			cub_test.c \
+			cub_test_2.c \
 			hooks.c \
 			for_hook.c \
 			handle_window.c \
@@ -38,8 +38,7 @@ INCLUDE :=	-I ./includes -I $(LIBMAT_DIR) -I $(MLX_DIR)
 $(NAME): $(OBJ_DIR) $(OBJS)
 	make affine -C $(LIBMAT_DIR)
 	make -C $(MLX_DIR)
-	$(CC) $(CFLAGS) $(INCLUDE) $(WITH_MLX) $(OBJS) $(LIBMAT_DIR)/$(LIBMAT) -o $@
-	# $(CC) $(CFLAGS) $(OBJS) $(LIBMAT_DIR)/$(LIBMAT) $(WITH_MLX) -o $@ $(INCLUDE)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBMAT_DIR)/$(LIBMAT) $(WITH_MLX) -o $@ $(INCLUDE)
 
 $(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE)

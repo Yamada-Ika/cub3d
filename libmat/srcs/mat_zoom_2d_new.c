@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mat_zoom_2d.c                                      :+:      :+:    :+:   */
+/*   mat_zoom_2d_new.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/31 22:50:19 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/01 22:17:55 by kkaneko          ###   ########.fr       */
+/*   Created: 2022/04/01 22:07:37 by kkaneko           #+#    #+#             */
+/*   Updated: 2022/04/01 22:08:20 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libmat.h"
 
-void	mat_zoom_2d(double x, double y, t_affine *dst)
+t_matrix	*mat_zoom_2d_new(double x, double y)
 {
-	t_matrix	*zoom_mat;
-	t_matrix	*vec;
+	t_matrix	*res;
 
-	zoom_mat = dst->transform_mat;
-	vec = dst->vector;
-	zoom_mat->values[0][0] = x;
-	zoom_mat->values[1][1] = y;
-	mat_mul(vec, zoom_mat);
+	res = mat_identity(3, 3);
+	res->values[0][0] = x;
+	res->values[1][1] = y;
+	return (res);
 }
