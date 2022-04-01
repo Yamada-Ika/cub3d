@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 03:44:22 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 03:58:51 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define WIN_TITLE "cub3d"
 # define FOV M_PI_2
 # define MOVE_STEP 0.1
+# define PERSPECT_ROT_RATE 0.1
 # define BLOCK_SIZE 256
 # define DELTA_T 0.03
 # define LEN_RAY 100
@@ -93,6 +94,8 @@ void	move_straight(t_player *player);
 void	move_left(t_player *player);
 void	move_back(t_player *player);
 void	move_right(t_player *player);
+void	turn_right(t_player *player);
+void	turn_left(t_player *player);
 
 /* utils */
 void	exit_with_error(const char *str, int status);
