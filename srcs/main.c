@@ -16,22 +16,24 @@
 
 static void	create_game(t_game *game, char **av);
 
+t_map	*parse(int ac, char **av);
+int		validate_map(t_map *map);
+
 int main(int ac, char **av)
 {
 	t_game		game;
 
-	// if (parse(ac, av) == FAIL)
-	// {
-	//  perror("Failed to parse argument");
-	// 	return (1);
-	// }
-	// game.map = parse_map(av[1]);
-	// if (game.map == NULL)
-	// {
-	//  perror("Failed to parse map data");
-	// 	return (1);
-	// }
-	//validate_args(ac, av);
+	game.map = parse(ac, av);
+	if (game.map == NULL)
+	{
+		printf("Failed to parse argument");
+		return (1);
+	}
+	if (validate_map(game.map) == FAIL)
+	{
+		printf("Invalid map format");
+		return (1);
+	}
 	create_game(&game, av);
 	render(&game);
 	set_hooks(&game);
@@ -41,7 +43,7 @@ int main(int ac, char **av)
 
 static void	create_game(t_game *game, char **av)
 {
-	game->map = parse_map(av[1]);
+	// game->map = parse_map(av[1]);
 	game->window = init_window(WIN_W, WIN_H, WIN_TITLE);
 	game->player = spawn_player(2, 4, 1, 0);
 }
