@@ -26,12 +26,12 @@ int main(int ac, char **av)
 	game.map = parse(ac, av);
 	if (game.map == NULL)
 	{
-		printf("Failed to parse argument");
+		printf("Failed to parse argument\n");
 		return (1);
 	}
 	if (validate_map(game.map) == FAIL)
 	{
-		printf("Invalid map format");
+		printf("Invalid map format\t");
 		return (1);
 	}
 	create_game(&game, av);
@@ -53,6 +53,11 @@ void	render(t_game *game)
 	double			before;
 	double			after;
 
+	printf("==== player ====\n");
+	printf("pos:(%f, %f)\n", game->player->pos->vector->values[0][0],
+								game->player->pos->vector->values[1][0]);
+	printf("dir:(%f, %f)\n", game->player->dir->vector->values[0][0],
+								game->player->dir->vector->values[1][0]);
 	get_3d_image(game);
 	mlx_put_image_to_window(game->window->mlx,
 							game->window->mlx_win,

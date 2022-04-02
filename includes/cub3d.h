@@ -6,13 +6,14 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 17:58:32 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 21:37:26 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include "libft.h"
 # include "libmat.h"
 # include "mlx.h"
 # include "mlx_window.h"
@@ -24,6 +25,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <float.h>
 
 # define RAY_NUM 800
 # define WIN_W 800
@@ -37,6 +39,7 @@
 # define DELTA_T 0.03
 # define LEN_RAY 100
 # define IMG_PLANE_LEN 2
+# define MINIMAP_DELTA_T 0.01
 # define MINIMAP_DELTA_R 0.01
 # define MINIMAP_DELTA_THETA 0.01
 
@@ -61,12 +64,12 @@ typedef struct s_player
 
 typedef struct s_ray
 {
-	t_affine	*dir; // rotation matを含むやつ
 	size_t		index;
+	t_affine	*dir; // rotation matを含むやつ
+	t_matrix	*from;
 	double		angle;
 	double		v_distance;
 	int			color;
-	t_matrix	*from;
 }	t_ray;
 
 typedef struct s_game

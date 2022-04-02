@@ -24,6 +24,8 @@ OBJS	:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEPS	:= $(OBJS:.o=.d)
 LIBMAT_DIR := ./libmat
 LIBMAT := libmat.a
+LIBFT_DIR := ./libft
+LIBFT := libft.a
 
 MLX_DIR		:= ./minilibx-linux
 ifeq ($(shell uname), Linux)
@@ -35,12 +37,13 @@ else ifeq ($(shell uname), Darwin)
 endif
 
 # WITH_MLX	:= $(MLX_DIR)/$(MLX) -L $(MLX_DIR) -L/usr/X11/include/../lib -lmlx -lXext -lX11 -lm
-INCLUDE :=	-I ./includes -I $(LIBMAT_DIR) -I $(MLX_DIR)
+INCLUDE :=	-I ./includes -I $(LIBMAT_DIR) -I $(MLX_DIR) -I $(LIBFT_DIR)
 
 $(NAME): $(OBJ_DIR) $(OBJS)
 	make affine -C $(LIBMAT_DIR)
+	make -C $(LIBFT_DIR)
 	make -C $(MLX_DIR)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBMAT_DIR)/$(LIBMAT) $(WITH_MLX) -o $@ $(INCLUDE)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBMAT_DIR)/$(LIBMAT) $(LIBFT_DIR)/$(LIBFT) $(WITH_MLX) -o $@ $(INCLUDE)
 
 $(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE)
@@ -53,12 +56,14 @@ all: $(NAME)
 clean:
 	make clean -C $(LIBMAT_DIR)
 	make clean -C $(MLX_DIR)
+	make clean -C $(LIBFT_DIR)
 	rm -rf $(OBJ_DIR)
 
 fclean:		clean
 	rm -f $(NAME)
 	rm -f $(LIBMAT_DIR)/$(LIBMAT)
 	rm -f $(MLX_DIR)/$(MLX)
+	rm -f $(LIBFT_DIR)/$(LIBFT)
 
 re:			fclean all
 

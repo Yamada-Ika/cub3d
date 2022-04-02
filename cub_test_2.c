@@ -16,8 +16,6 @@
 #include <stdlib.h>
 
 static void	**allocate_double_pointer(size_t row_byte, size_t col_byte);
-static void	ft_bzero(void *s, size_t n);
-static void	*ft_calloc(size_t nmemb, size_t size);
 static double	abs_double(double a);
 static void	place_block(t_matrix *world_map, size_t place_i, size_t place_j);
 static t_matrix	*gen_world_map();
@@ -42,6 +40,12 @@ static t_ray	*new_ray(void)
 	return (new);
 }
 
+/* 関数分けても良いかも
+set_ray_index
+set_ray_angle
+set_ray_dir
+set_ray_start_pos
+*/
 static void	set_ray(t_ray *this, size_t index, t_matrix *from, t_matrix *dir)
 {
 	const double	delta_theta = FOV / RAY_NUM;
@@ -53,6 +57,9 @@ static void	set_ray(t_ray *this, size_t index, t_matrix *from, t_matrix *dir)
 	this->index = index;
 }
 
+/*
+has_collideの粒度がデカすぎるかも
+*/
 static void	cast_ray(t_ray *this, t_map *map)
 {
 	double	t;
@@ -108,8 +115,8 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 	double	collide_x;
 	double	collide_y;
 
-	mat_mul_scalar(t, ray->dir->vector);
-	collide = mat_add_new(ray->from, ray->dir->vector);
+	tmp = mat_mul_scalar_new(t, ray->dir->vector);
+	collide = mat_add_new(ray->from, tmp);
 	collide_x = collide->values[0][0];
 	collide_y = collide->values[1][0];
 	//printf("collide_x:%f, y:%f\n", collide_x, collide_y);
@@ -118,15 +125,14 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 		res = -1;
 	else if (world_map->values[(int)collide_y][(int)collide_x] > 0)
 	{
-		// mat_free(tmp);
-		// tmp = mat_add(collide, mat_mul_scalar(-1, ray->from));
+
 		mat_mul_scalar(-1, ray->from);
-		mat_add(collide, ray->from);
+		collide->values[0][0] += ray->from->values[0][0]; // vectorをたす
+		collide->values[1][0] += ray->from->values[1][0];
+
 		ray->v_distance = abs_double((mat_distance_2d(collide) * cos(ray->angle))
 							- (IMG_PLANE_LEN / (2 * tan(FOV / 2.0))));
-		//fprintf(stderr, "distance : %f\n", ray->v_distance);
-		// ray->v_distance = abs_double((mat_distance_2d(tmp) * cos(ray->angle)) 
-		// 					- (IMG_PLANE_LEN / (2 * tan(FOV / 2.0))));
+
 		if (world_map->values[(int)collide_y][(int)collide_x] == 1)
 			ray->color = RED;
 		if (world_map->values[(int)collide_y][(int)collide_x] == 2)
@@ -146,7 +152,7 @@ static void	render_3d(t_window *window, t_ray *ray)
 	t_matrix	*center_of_line;
 
 	center_of_line = mat_vector_col_2d(RAY_NUM - ray->index - 1, WIN_H / 2);
-	line_length = (size_t)(1000 / (1.0 + ray->v_distance));
+	line_length = (size_t)(100 / (1.0 + ray->v_distance));
 	line_color = ray->color;
 	//printf("center:(%d, %d) length:%zu\n", (int)center_of_line->values[0][0], (int)center_of_line->values[0][1], line_length);
 	draw_line_v(window, center_of_line, line_length, line_color);
@@ -200,30 +206,4 @@ static int	idx_is_out_of_range(int idx, size_t limit)
 		return (1);
 	else
 		return (0);
-}
-
-/* libft */
-static void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*res;
-
-	res = malloc(size * nmemb);
-	if (res == NULL)
-		exit_with_error(MALLOC_ERR, 1);
-	ft_bzero(res, size * nmemb);
-	return (res);
-}
-
-static void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*uc_s;
-	size_t			i;
-
-	uc_s = (unsigned char *)s;
-	i = 0;
-	while (i < n)
-	{
-		uc_s[i] = 0;
-		++i;
-	}
 }

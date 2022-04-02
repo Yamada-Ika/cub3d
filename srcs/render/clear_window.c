@@ -6,15 +6,13 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 22:02:02 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 01:53:50 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 18:20:19 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "mlx_color.h"
 
-static void	ft_bzero(void *s, size_t n);
-static void	*ft_calloc(size_t nmemb, size_t size);
 static void	create_black_image(t_img *img);
 
 void	clear_window(t_window *window)

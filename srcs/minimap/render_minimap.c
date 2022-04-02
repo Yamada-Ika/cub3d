@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:34:48 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 03:15:40 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 19:33:21 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static void	draw_square(t_window *window,
 static void	draw_player(t_window *window, t_player *player);
 static t_matrix	*translate_cordinate_to_window(t_matrix *map_pos);
 static void	draw_dir_arrow(t_window *window, t_matrix *pos, t_matrix *dir);
-static void	draw_line(t_window *window, t_matrix *pos, int color);
-//static void	draw_circle(t_window *window, double x, double y, double r, int color);
+static void	draw_line(t_window *window, t_matrix *start, t_matrix *end, int color);
 static void	draw_circle(t_window *window, t_matrix *center, double r_max, int color);
+static void	draw_player_dir(t_window *window, t_player *player);
 
 static void	draw_rays(t_window *window, t_ray *rays);
 static void	draw_one_ray(t_window *window, t_ray *ray);
@@ -103,8 +103,8 @@ static t_matrix	*translate_cordinate_to_window(t_matrix *map_pos)
 {
 	t_matrix	*window_pos;
 	
-	window_pos = mat_vector_col_2d(map_pos->values[0][0] * MINIMAP_SIZE + MINIMAP_SIZE/2,
-									map_pos->values[1][0] * MINIMAP_SIZE + MINIMAP_SIZE/2);
+	window_pos = mat_vector_col_2d(map_pos->values[0][0] * MINIMAP_SIZE,
+									map_pos->values[1][0] * MINIMAP_SIZE);
 	return (window_pos);
 }
 
@@ -114,37 +114,50 @@ static void	draw_player(t_window *window, t_player *player)
 
 	win_pos = translate_cordinate_to_window(player->pos->vector);
 	draw_circle(window, win_pos, 10, GREEN);
+	draw_player_dir(window, player);
 	mat_free(win_pos);
+}
+
+static void	draw_player_dir(t_window *window, t_player *player)
+{
+	const double	arrow_len = 5;
+	t_matrix		*line_start;
+	t_matrix		*line_end;
+	t_matrix		*tmp;
+
+	line_start = translate_cordinate_to_window(player->pos->vector);
+	line_end = mat_translation_2d_new(player->dir->vector->values[0][0],
+										player->dir->vector->values[1][0],
+										player->pos);
+	tmp = line_end;
+	line_end = translate_cordinate_to_window(line_end);
+	mat_free(tmp);
+	draw_line(window, line_start, line_end, GREEN);
 }
 
 static void	draw_dir_arrow(t_window *window, t_matrix *pos, t_matrix *dir)
 {
-	draw_line(window, pos, RED);
+	//draw_line(window, pos, RED);
 	draw_circle(window, pos, 3.0, RED);
 }
 
 # define TMP_DELTA_T 0.01
-static void	draw_line(t_window *window, t_matrix *pos, int color)
+static void	draw_line(t_window *window, t_matrix *start,
+						t_matrix *end, int color)
 {
-	t_matrix	*tmp;
-	double		tmp_x;
-	double		tmp_y;
+	double	t;
+	double	plot_x;
+	double	plot_y;
 
-	double t = TMP_DELTA_T;
-	while (42)
+	t = 0;
+	while (t < 1)
 	{
-		tmp = mat_mul_scalar_new(t, pos);
-		tmp_x = tmp->values[0][0];
-		tmp_y = tmp->values[1][0];
-		if (
-			t > 0.10
-		)
-		{
-			return ;
-		}
-		my_mlx_pixel_put(window->img, tmp_x, tmp_y, color);
-		mat_free(tmp);
-		t += TMP_DELTA_T;
+		plot_x = (t * end->values[0][0]) + ((1 - t) * start->values[0][0]);
+		plot_y = (t * end->values[1][0]) + ((1 - t) * start->values[1][0]);
+		if (!idx_is_out_of_range(plot_x, WIN_W)
+			&& !idx_is_out_of_range(plot_y, WIN_H))
+			my_mlx_pixel_put(window->img, plot_x, plot_y, color);
+		t += MINIMAP_DELTA_T;
 	}
 }
 
