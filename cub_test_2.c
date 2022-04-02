@@ -46,8 +46,7 @@ static void	set_ray(t_ray *this, size_t index, t_matrix *from, t_matrix *dir)
 {
 	const double	delta_theta = FOV / RAY_NUM;
 
-	//this->phi = get_rotation_phi(delta_theta * (double)index); // set_phi, set_angle, set_cast_angle, set_radiate_angle
-	this->phi = get_rotation_phi(FOV / 2.0);
+	this->phi = get_rotation_phi(delta_theta * (double)index);
 	this->dir->vector = mat_dup(dir);
 	mat_rotation_2d(this->phi, this->dir);
 	this->from = mat_dup(from);// set_cast_pos, set_radiate_pos, set_start_point

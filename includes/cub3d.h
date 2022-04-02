@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 03:58:51 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 13:24:45 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include <stdio.h>
 # include <math.h>
 
-# define RAY_NUM 1
-# define WIN_W 800
+# define RAY_NUM 1000
+# define WIN_W 1000
 # define WIN_H 600
 # define MINIMAP_SIZE 40
 # define WIN_TITLE "cub3d"
