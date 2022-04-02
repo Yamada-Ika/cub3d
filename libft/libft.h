@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 01:05:00 by iyamada           #+#    #+#             */
-/*   Updated: 2022/01/21 18:28:51 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/02 18:09:05 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <limits.h>
 # include <unistd.h>
 # include <stdbool.h>
+
+# include "get_next_line.h"
 
 typedef struct s_list
 {
