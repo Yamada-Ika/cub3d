@@ -18,7 +18,8 @@ ft_itoa_base.c    ft_memset.c       ft_strjoin.c      ft_uitoa.c		\
 ft_lltoa.c        ft_putchar.c      ft_strlcat.c      ft_uitoa_base.c	\
 ft_lltoa_base.c   ft_putchar_fd.c   ft_strlcpy.c      ft_ultoa.c		\
 ft_lstadd_back.c  ft_putendl_fd.c   ft_strlen.c       ft_ultoa_base.c	\
-ft_lstadd_front.c ft_putnbr.c       ft_strlen_s.c
+ft_lstadd_front.c ft_putnbr.c       ft_strlen_s.c     get_next_line.c	\
+get_next_line_utils.c
 OBJS := $(SRCS:.c=.o)
 
 all: $(NAME)
