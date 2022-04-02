@@ -1,6 +1,6 @@
 NAME	:=	cub3d
 CC		:=	gcc
-CFLAGS	:=	-MMD -MP -fsanitize=address -pg
+CFLAGS	:=	-MMD -MP -fsanitize=address #-pg
 OBJ_DIR	:= ./objs
 VPATH	:=	srcs:\
 			srcs/utils:\
@@ -61,6 +61,9 @@ fclean:		clean
 	rm -f $(MLX_DIR)/$(MLX)
 
 re:			fclean all
+
+test:
+	./cub3d ./map/sample.cub
 
 -include $(DEPS)
 
