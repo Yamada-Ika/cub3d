@@ -31,7 +31,7 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map);
 static void	draw_line_v(t_window *window, t_matrix *center,
 						size_t length, int color);
 static int	idx_is_out_of_range(int idx, size_t limit);
-static double	get_rotation_phi(double theta);
+static double	get_rotation_angle(double theta);
 
 static t_ray	*new_ray(void)
 {
@@ -46,9 +46,9 @@ static void	set_ray(t_ray *this, size_t index, t_matrix *from, t_matrix *dir)
 {
 	const double	delta_theta = FOV / RAY_NUM;
 
-	this->phi = get_rotation_phi(delta_theta * (double)index);
+	this->angle = get_rotation_angle(delta_theta * (double)index);
 	this->dir->vector = mat_dup(dir);
-	mat_rotation_2d(this->phi, this->dir);
+	mat_rotation_2d(this->angle, this->dir);
 	this->from = mat_dup(from);// set_cast_pos, set_radiate_pos, set_start_point
 	this->index = index;
 }
@@ -95,10 +95,8 @@ void	get_3d_image(t_game *game)
 	render_minimap_tmp(game->window, game->map->map, player); // ミニマップを作成
 }
 
-static double	get_rotation_phi(double theta)
+static double	get_rotation_angle(double theta)
 {
-	// return (atan((2 * tan(FOV / 2) * ((WIN_W / 2) - (int)i)) / WIN_W));
-	// return (atan((2 * tan(FOV / 2) * ((IMG_PLANE_LEN / 2) - (int)i)) / IMG_PLANE_LEN));
 	return ((FOV / 2.0) - theta);
 }
 
@@ -124,10 +122,10 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 		// tmp = mat_add(collide, mat_mul_scalar(-1, ray->from));
 		mat_mul_scalar(-1, ray->from);
 		mat_add(collide, ray->from);
-		ray->v_distance = abs_double((mat_distance_2d(collide) * cos(ray->phi))
+		ray->v_distance = abs_double((mat_distance_2d(collide) * cos(ray->angle))
 							- (IMG_PLANE_LEN / (2 * tan(FOV / 2.0))));
 		//fprintf(stderr, "distance : %f\n", ray->v_distance);
-		// ray->v_distance = abs_double((mat_distance_2d(tmp) * cos(ray->phi)) 
+		// ray->v_distance = abs_double((mat_distance_2d(tmp) * cos(ray->angle)) 
 		// 					- (IMG_PLANE_LEN / (2 * tan(FOV / 2.0))));
 		if (world_map->values[(int)collide_y][(int)collide_x] == 1)
 			ray->color = RED;

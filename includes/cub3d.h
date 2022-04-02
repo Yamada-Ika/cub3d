@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 14:10:39 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 17:58:32 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # include <fcntl.h>
 # include <limits.h>
 
-# define RAY_NUM 1000
-# define WIN_W 1000
+# define RAY_NUM 800
+# define WIN_W 800
 # define WIN_H 600
 # define MINIMAP_SIZE 40
 # define WIN_TITLE "cub3d"
@@ -63,7 +63,7 @@ typedef struct s_ray
 {
 	t_affine	*dir; // rotation matを含むやつ
 	size_t		index;
-	double		phi;
+	double		angle;
 	double		v_distance;
 	int			color;
 	t_matrix	*from;
