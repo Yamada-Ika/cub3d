@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 03:58:51 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/02 08:58:20 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 # include "mlx_window.h"
 # include <stdio.h>
 # include <math.h>
+# include <stdbool.h>
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <limits.h>
 
 # define RAY_NUM 1
 # define WIN_W 800
@@ -70,6 +76,11 @@ typedef struct s_game
 	t_player	*player;
 }	t_game;
 
+typedef enum e_state
+{
+	FAIL,
+	SUCCESS,
+}	t_state;
 
 t_map	*parse_map(const char *map_file);
 void	set_hooks(t_game *game);
