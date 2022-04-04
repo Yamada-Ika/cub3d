@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_minimap.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:34:48 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/03 20:46:37 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/04 17:40:17 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ static void	draw_circle(t_window *window, t_matrix *center, double r_max, int co
 
 void	draw_ray_on_minimap(t_window *window, t_ray *ray)
 {
-	const double	len_ray = 3;
+	const double	len_ray = 5;
 	const double	delta_t = 0.01;
 	double			plot_x;
 	double			plot_y;
@@ -199,7 +199,12 @@ void	draw_ray_on_minimap(t_window *window, t_ray *ray)
 		plot_y = (mat_get_y(ray->from) + (t * mat_get_y(ray->dir->vector))) * MINIMAP_SIZE;
 		if (!idx_is_out_of_range(plot_x, WIN_W)
 			&& !idx_is_out_of_range(plot_y, WIN_H))
-			my_mlx_pixel_put(window->img_back, plot_x, plot_y, YELLOW);
+		{
+			if (ray->side == X_SIDE)
+				my_mlx_pixel_put(window->img_back, plot_x, plot_y, YELLOW/2);
+			else
+				my_mlx_pixel_put(window->img_back, plot_x, plot_y, YELLOW);
+		}
 		t += delta_t;
 	}
 }
