@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 22:02:02 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 18:20:19 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/03 17:18:25 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@ static void	create_black_image(t_img *img);
 
 void	clear_window(t_window *window)
 {
-	create_black_image(window->img);
-	mlx_put_image_to_window(window->mlx,
-						window->mlx_win,
-						window->img->img,
-						0, 0);
+	create_black_image(window->img_back);
 }
 
 static void	create_black_image(t_img *img)

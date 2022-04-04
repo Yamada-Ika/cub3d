@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 21:37:26 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/04 17:39:14 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <float.h>
 
 # define RAY_NUM 800
+# define H 500
 # define WIN_W 800
 # define WIN_H 600
 # define MINIMAP_SIZE 40
@@ -56,8 +57,6 @@ typedef struct s_map
 
 typedef struct s_player
 {
-	// t_matrix	*pos;
-	// t_matrix	*dir;
 	t_affine	*pos;
 	t_affine	*dir;
 }	t_player;
@@ -65,11 +64,13 @@ typedef struct s_player
 typedef struct s_ray
 {
 	size_t		index;
-	t_affine	*dir; // rotation matを含むやつ
-	t_matrix	*from;
+	t_affine	*dir;
+	t_vector	*from;
 	double		angle;
 	double		v_distance;
 	int			color;
+	t_vector	*collision;
+	int	side;
 }	t_ray;
 
 typedef struct s_game
@@ -83,6 +84,8 @@ typedef enum e_state
 {
 	FAIL,
 	SUCCESS,
+	X_SIDE,
+	Y_SIDE,
 }	t_state;
 
 t_map	*parse_map(const char *map_file);
@@ -110,6 +113,9 @@ void	move_back(t_player *player);
 void	move_right(t_player *player);
 void	turn_right(t_player *player);
 void	turn_left(t_player *player);
+
+/* minimap */
+void	draw_ray_on_minimap(t_window *window, t_ray *ray);
 
 /* utils */
 void	exit_with_error(const char *str, int status);

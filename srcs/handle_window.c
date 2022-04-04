@@ -29,7 +29,8 @@ t_window	*init_window(int width, int height, char *title)
 	res->height = height;
 	res->mlx = mlx_init();
 	res->mlx_win = mlx_new_window(res->mlx, width, height, title);
-	res->img = init_img(res);
+	res->img_back = init_img(res);
+	res->img_front = init_img(res);
 	return (res);
 }
 
@@ -44,7 +45,6 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 }
 
 //libft
-
 static void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*res;

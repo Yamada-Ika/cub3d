@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 18:04:24 by iyamada           #+#    #+#             */
-/*   Updated: 2022/04/02 18:21:26 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/04 17:11:59 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_free_s(void **ptr)
-{
-	free(*ptr);
-	*ptr = NULL;
-}
+// void	ft_free_s(void **ptr)
+// {
+// 	free(*ptr);
+// 	*ptr = NULL;
+// }
 
 size_t	ft_strclen(const char *s, int c)
 {
