@@ -6,7 +6,7 @@
 #    By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/14 21:29:02 by kkaneko           #+#    #+#              #
-#    Updated: 2022/04/02 03:36:47 by kkaneko          ###   ########.fr        #
+#    Updated: 2022/04/03 16:01:01 by kkaneko          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,10 @@ SRCS_NORMAL	:=	mat_puterror.c \
 				mat_mul_new.c \
 				mat_mul.c \
 				mat_identity.c \
-				mat_dup.c #\
+				mat_dup.c \
+				mat_get_x.c \
+				mat_get_y.c \
+				mat_get_z.c #\
 				mat_transpose.c \
 				mat_submat.c \
 				mat_det.c \

@@ -45,13 +45,14 @@ static void	create_game(t_game *game, char **av)
 {
 	// game->map = parse_map(av[1]);
 	game->window = init_window(WIN_W, WIN_H, WIN_TITLE);
-	game->player = spawn_player(2, 4, 1, 0);
+	game->player = spawn_player(2, 2, 1, 0);
 }
 
 void	render(t_game *game)
 {
 	double			before;
 	double			after;
+	t_img			*tmp;
 
 	printf("==== player ====\n");
 	printf("pos:(%f, %f)\n", game->player->pos->vector->values[0][0],
@@ -59,8 +60,11 @@ void	render(t_game *game)
 	printf("dir:(%f, %f)\n", game->player->dir->vector->values[0][0],
 								game->player->dir->vector->values[1][0]);
 	get_3d_image(game);
+	tmp = game->window->img_front;
+	game->window->img_front = game->window->img_back;
+	game->window->img_back = tmp;
 	mlx_put_image_to_window(game->window->mlx,
 							game->window->mlx_win,
-							game->window->img->img,
+							game->window->img_front->img,
 							0, 0);
 }

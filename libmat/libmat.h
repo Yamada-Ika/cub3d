@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:28:01 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 21:37:26 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/03 21:39:32 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ typedef struct s_matrix
 	size_t	row;
 	size_t	col;
 }			t_matrix;
+
+typedef t_matrix t_vector;
 
 typedef struct s_affine
 {
@@ -48,6 +50,9 @@ t_matrix	*mat_submat(t_matrix *src, size_t rm_row, size_t rm_col);
 double		mat_det(t_matrix *mat);
 t_matrix	*mat_inv(t_matrix *src);
 double		mat_inner(t_matrix *a, t_matrix *b);
+double		mat_get_x(t_vector *vector);
+double		mat_get_y(t_vector *vector);
+double		mat_get_z(t_vector *vector);
 
 /* affine */
 t_affine	*mat_affine_new(size_t dimension);
@@ -62,7 +67,7 @@ t_matrix	*mat_translation_3d(double x, double y, double z);
 void		mat_translation_2d(double x, double y, t_affine *src);
 t_matrix	*mat_translation_2d_new(double x, double y, t_affine *src);
 t_matrix	*mat_zoom_3d(double x, double y, double z);
-t_matrix	*mat_zoom_2d_new(double x, double y);
+t_matrix	*mat_zoom_2d_new(double x, double y, t_affine *src);
 void		mat_zoom_2d(double x, double y, t_affine *dst);
 t_matrix	*mat_vector_col_2d(double x, double y);
 t_matrix	*mat_vector_row_2d(double x, double y);

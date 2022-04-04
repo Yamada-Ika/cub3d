@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 01:54:51 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/03 17:17:21 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ typedef struct s_window
 	int		height;
 	void	*mlx;
 	void	*mlx_win;
-	t_img	*img;
+	t_img	*img_front;
+	t_img	*img_back;
 }	t_window;
 
 void		my_mlx_pixel_put(t_img *img, int x, int y, int color);

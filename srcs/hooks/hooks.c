@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:17:21 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/02 13:21:55 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/03 00:04:44 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static int	handle_key_hook(int keycode, void *params)
 		clear_window(game->window);
 		render(game);
 	}
-
 }
 
 static int	handle_mouse_hook(int button, int x, int y, void *param)

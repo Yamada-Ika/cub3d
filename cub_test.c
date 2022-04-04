@@ -74,7 +74,7 @@ static t_matrix	*gen_world_map(void)
 	char	usr_map[6][5] = {{1, 1, 1, 1, 1},
 							{1, 0, 0, 0, 1},
 							{1, 0, 0, 0, 1},
-							{2, 0, 0, 0, 2},
+							{1, 0, 2, 0, 1},
 							{1, 0, 0, 0, 1},
 							{1, 1, 1, 1, 1}};
 	t_matrix	*world_map;

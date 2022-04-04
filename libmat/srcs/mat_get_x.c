@@ -1,36 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_color.h                                        :+:      :+:    :+:   */
+/*   mat_get_vector_x.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/14 02:09:05 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/03 18:34:28 by kkaneko          ###   ########.fr       */
+/*   Created: 2022/04/03 16:01:18 by kkaneko           #+#    #+#             */
+/*   Updated: 2022/04/03 16:01:19 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MLX_COLOR_H
-# define MLX_COLOR_H
-# define RED 0x00ff0000
-# define BLUE 0x000000ff
-# define GREEN 0x000ff000
-# define YELLOW 0x00ffff00
-# define BLACK 0x0
-# define WHITE 0x00ffffff
+#include "libmat.h"
 
-typedef struct s_trgb
+double	mat_get_x(t_vector *vector)
 {
-	double	t;
-	double	r;
-	double	g;
-	double	b;
-}		t_trgb;
-
-int	create_trgb(int t, int r, int g, int b);
-int	get_t(int trgb);
-int	get_r(int trgb);
-int	get_g(int trgb);
-int	get_b(int trgb);
-
-#endif
+	return (vector->values[0][0]);
+}
