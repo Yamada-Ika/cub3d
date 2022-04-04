@@ -1,0 +1,6 @@
+.vscode
+*.a
+*.o
+*.out
+*.d
+cub3d
