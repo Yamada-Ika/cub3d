@@ -89,6 +89,7 @@ void	get_3d_image(t_game *game)
 	// 		player->pos->vector->values[1][0]);
 	ray = new_ray(); // 光線用の変数を作成
 	ray_index = 0;
+	render_minimap_tmp(game->window, game->map->map, player); // ミニマップを作成
 	while (ray_index < RAY_NUM) // 光線の数だけループ回す
 	{
 		set_ray(ray, ray_index,
@@ -99,7 +100,7 @@ void	get_3d_image(t_game *game)
 		draw_ray_on_minimap(game->window, ray); //minimapに描画
 		ray_index++;
 	}
-	//render_minimap_tmp(game->window, game->map->map, player); // ミニマップを作成
+	// render_minimap_tmp(game->window, game->map->map, player); // ミニマップを作成
 }
 
 static double	get_rotation_angle(double theta)
@@ -125,11 +126,11 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 	double dist_next_x_side;
 	double dist_next_y_side;
 	if (mat_get_x(ray->dir->vector) > 0) // 光が+xの方向に進んでいる
-		dist_next_x_side = collide_x - ((int)collide_x - 1);
+		dist_next_x_side = collide_x - ((int)collide_x);
 	else // 光が-xの方向に進んでいる
 		dist_next_x_side = ((int)collide_x + 1) - collide_x;
 	if (mat_get_y(ray->dir->vector) > 0) // 光が+yの方向に進んでいる
-		dist_next_y_side = collide_y - ((int)collide_y - 1);
+		dist_next_y_side = collide_y - ((int)collide_y);
 	else // 光が-yの方向に進んでいる
   		dist_next_y_side = ((int)collide_y + 1) - collide_y;
 
@@ -148,9 +149,9 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 		//printf("collide_x        %f collide_y %f\n", collide_x, collide_y);
 		//printf("dist_next_x_side %f dist_next_y_side %f\n", dist_next_x_side, dist_next_y_side);
 
-		mat_mul_scalar(-1, ray->from);
-		collide->values[0][0] += ray->from->values[0][0]; // vectorをたす
-		collide->values[1][0] += ray->from->values[1][0];
+		// mat_mul_scalar(-1, ray->from);
+		collide->values[0][0] -= ray->from->values[0][0]; // vectorをたす
+		collide->values[1][0] -= ray->from->values[1][0];
 
 		ray->v_distance = abs_double((mat_distance_2d(collide) * cos(ray->angle))
 							- (IMG_PLANE_LEN / (2 * tan(FOV / 2.0))));
@@ -167,7 +168,10 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 									get_g(ray->color) / 2,
 									get_b(ray->color) / 2);
 			//printf("side color %x\n", ray->color);
+			ray->side = X_SIDE;
 		}
+		else
+			ray->side = Y_SIDE;
 		res = 1;
 	}
 	else
@@ -184,7 +188,7 @@ static void	render_3d(t_window *window, t_ray *ray)
 	t_matrix	*center_of_line;
 
 	center_of_line = mat_vector_col_2d(RAY_NUM - ray->index - 1, WIN_H / 2);
-	line_length = (size_t)(1000 / (1.0 + ray->v_distance));
+	line_length = (size_t)(H / (1.0 + ray->v_distance));
 	line_color = ray->color;
 	//printf("center:(%d, %d) length:%zu\n", (int)center_of_line->values[0][0], (int)center_of_line->values[0][1], line_length);
 	draw_line_v(window, center_of_line, line_length, line_color);
