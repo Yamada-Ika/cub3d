@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/03 20:34:32 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/04 17:39:14 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <float.h>
 
 # define RAY_NUM 800
+# define H 500
 # define WIN_W 800
 # define WIN_H 600
 # define MINIMAP_SIZE 40
@@ -69,6 +70,7 @@ typedef struct s_ray
 	double		v_distance;
 	int			color;
 	t_vector	*collision;
+	int	side;
 }	t_ray;
 
 typedef struct s_game
