@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   mat_free.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/18 18:04:24 by iyamada           #+#    #+#             */
-/*   Updated: 2022/04/04 17:11:59 by iyamada          ###   ########.fr       */
+/*   Created: 2022/03/14 21:37:19 by kkaneko           #+#    #+#             */
+/*   Updated: 2022/03/14 21:39:42 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libmat.h"
 
-// void	ft_free_s(void **ptr)
-// {
-// 	free(*ptr);
-// 	*ptr = NULL;
-// }
-
-size_t	ft_strclen(const char *s, int c)
+void	mat_free(t_matrix *mat)
 {
-	size_t	count;
 	size_t	i;
 
-	count = 0;
 	i = 0;
-	while (s[i] != '\0' && s[i] != c)
+	while (i < mat->row)
 	{
-		count++;
-		i++;
+		free(mat->values[i]);
+		mat->values[i] = NULL;
+		++i;
 	}
-	return (count);
+	free(mat->values);
+	free(mat);
 }
