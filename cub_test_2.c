@@ -26,8 +26,7 @@ static void	render_3d(t_window *window, t_ray *rays);
 static void	raycast_test(t_window *window);
 static t_ray	*gen_rays(t_player *player);
 static int	has_collide(t_ray *ray, double t, t_matrix *world_map);
-static void	draw_line_v(t_window *window, t_matrix *center,
-						size_t length, int color);
+static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, size_t length);
 static int	idx_is_out_of_range(int idx, size_t limit);
 static double	get_rotation_angle(double theta);
 
@@ -73,6 +72,8 @@ static void	cast_ray(t_ray *this, t_map *map)
 	}
 }
 
+t_map *mp;
+
 // draw_3d_imageとか？
 void	get_3d_image(t_game *game)
 {
@@ -96,6 +97,7 @@ void	get_3d_image(t_game *game)
 				game->player->pos->vector,
 				game->player->dir->vector); // 光線の向きとかセット
 		cast_ray(ray, game->map); // 光線を伸ばして衝突判定
+		mp = game->map;
 		render_3d(game->window, ray); // windowに描画
 		draw_ray_on_minimap(game->window, ray); //minimapに描画
 		ray_index++;
@@ -191,26 +193,75 @@ static void	render_3d(t_window *window, t_ray *ray)
 
 	center_of_line = mat_vector_col_2d(RAY_NUM - ray->index - 1, WIN_H / 2);
 	line_length = (size_t)(H / (ray->v_distance));
-	line_color = ray->color;
+	// line_color = ray->color;
 	//printf("center:(%d, %d) length:%zu\n", (int)center_of_line->values[0][0], (int)center_of_line->values[0][1], line_length);
-	draw_line_v(window, center_of_line, line_length, line_color);
+	draw_line_v(window, ray, center_of_line, line_length);
 	mat_free(center_of_line);
 }
 
-static void	draw_line_v(t_window *window, t_matrix *center,
-						size_t length, int color)
+// ----------------- texture ---------------------
+// imgからrgbを取得
+int	get_rgb_from_image_at(const t_img *img, const int x, const int y)
+{
+	return (*(int *)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8))));
+}
+
+double	get_fract(double f)
+{
+	return (f - (int)f);
+}
+
+int	get_color(const t_map *map, t_ray *ray, double y_on_line, double line_len)
+{
+	double	tex_x;
+	double	tex_y;
+
+	if (ray->side == X_SIDE)
+	{
+		tex_x = get_fract(ray->collide_at_y) * map->no->width;
+		tex_y = y_on_line / line_len * map->no->height;
+	}
+	if (ray->side == Y_SIDE)
+	{
+		tex_x = get_fract(ray->collide_at_x) * map->no->width;
+		tex_y = y_on_line / line_len * map->no->height;
+	}
+	return (get_rgb_from_image_at(map->no->img, tex_x, tex_y));
+}
+// ----------------- texture ---------------------
+
+static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, size_t length)
 {
 	const int	start_x = center->values[0][0];
 	const int	start_y = center->values[1][0];
 	size_t		i;
 
 	i = 0;
-	while (i < length / 2)
+	while (true)
 	{
 		if (!idx_is_out_of_range(start_y + i, WIN_H))
-			my_mlx_pixel_put(window->img_back, start_x, start_y + (int)i, color);
+		{
+			if (i < length / 2)
+				my_mlx_pixel_put(window->img_back, start_x, start_y + (int)i, get_color(mp, ray, length/2 + (int)i, length));
+			else // 天井をかけたら書く
+				my_mlx_pixel_put(window->img_back, start_x, start_y + (int)i, mp->ceilling_color);
+		}
+		else
+			break ;
+		++i;
+	}
+	i = 0;
+	while (true)
+	{
 		if (!idx_is_out_of_range(start_y - i, WIN_H))
-			my_mlx_pixel_put(window->img_back, start_x, start_y - (int)i, color);
+		{
+			if (i < length / 2)
+				my_mlx_pixel_put(window->img_back, start_x, start_y - (int)i, get_color(mp, ray, length/2 - (int)i, length));
+			else // 床をかけたら書く
+				my_mlx_pixel_put(window->img_back, start_x, start_y - (int)i, mp->floor_color);
+		}
+		else
+			break ;
 		++i;
 	}
 }
