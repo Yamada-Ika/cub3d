@@ -122,7 +122,6 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 	collide_x = collide->values[0][0]; //光の先端の座標
 	collide_y = collide->values[1][0];
 	//printf("collide_x:%f, y:%f\n", collide_x, collide_y);
-
 	double dist_next_x_side;
 	double dist_next_y_side;
 	if (mat_get_x(ray->dir->vector) > 0) // 光が+xの方向に進んでいる
@@ -149,19 +148,22 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 		//printf("collide_x        %f collide_y %f\n", collide_x, collide_y);
 		//printf("dist_next_x_side %f dist_next_y_side %f\n", dist_next_x_side, dist_next_y_side);
 
+		ray->collide_at_x = collide_x;
+		ray->collide_at_y = collide_y;
+
 		// mat_mul_scalar(-1, ray->from);
 		collide->values[0][0] -= ray->from->values[0][0]; // vectorをたす
 		collide->values[1][0] -= ray->from->values[1][0];
 
-		ray->v_distance = abs_double((mat_distance_2d(collide) * cos(ray->angle))
-							- (IMG_PLANE_LEN / (2 * tan(FOV / 2.0))));
+		ray->v_distance = abs_double(mat_distance_2d(collide) * cos(ray->angle));
+
 		if (world_map->values[(int)collide_y][(int)collide_x] == 2)
 			ray->color = BLUE;
 		else
 			ray->color = RED;
 
 		// xサイドを暗くする
-		if (side == X_SIDE) 
+		if (side == X_SIDE)
 		{
 			ray->color = create_trgb(get_t(ray->color),
 									get_r(ray->color) / 2,
@@ -188,7 +190,7 @@ static void	render_3d(t_window *window, t_ray *ray)
 	t_matrix	*center_of_line;
 
 	center_of_line = mat_vector_col_2d(RAY_NUM - ray->index - 1, WIN_H / 2);
-	line_length = (size_t)(H / (1.0 + ray->v_distance));
+	line_length = (size_t)(H / (ray->v_distance));
 	line_color = ray->color;
 	//printf("center:(%d, %d) length:%zu\n", (int)center_of_line->values[0][0], (int)center_of_line->values[0][1], line_length);
 	draw_line_v(window, center_of_line, line_length, line_color);

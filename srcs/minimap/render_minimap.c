@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:34:48 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/04 17:40:17 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/05 20:08:53 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ static void	draw_circle(t_window *window, t_matrix *center, double r_max, int co
 
 void	draw_ray_on_minimap(t_window *window, t_ray *ray)
 {
-	const double	len_ray = 5;
+	const double	len_ray = ray->v_distance * 1;
 	const double	delta_t = 0.01;
 	double			plot_x;
 	double			plot_y;
@@ -206,6 +206,15 @@ void	draw_ray_on_minimap(t_window *window, t_ray *ray)
 				my_mlx_pixel_put(window->img_back, plot_x, plot_y, YELLOW);
 		}
 		t += delta_t;
+	}
+	// 衝突した座標をプロット
+	plot_x = ray->collide_at_x * MINIMAP_SIZE;
+	plot_y = ray->collide_at_y * MINIMAP_SIZE;
+	if (!idx_is_out_of_range(plot_x, WIN_W)
+		&& !idx_is_out_of_range(plot_y, WIN_H))
+	{
+		// printf("plot_x %f plot_y %f\n", plot_x, plot_y);
+		my_mlx_pixel_put(window->img_back, plot_x, plot_y, GREEN);
 	}
 }
 

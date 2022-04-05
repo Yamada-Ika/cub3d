@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/05 11:48:03 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/06 00:08:37 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ typedef struct s_ray
 	double		v_distance;
 	int			color;
 	t_vector	*collision;
+	double		collide_at_x;
+	double		collide_at_y;
 	int	side;
 }	t_ray;
 
