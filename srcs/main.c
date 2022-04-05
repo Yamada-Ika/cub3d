@@ -14,38 +14,69 @@
 #include "mlx_window.h"
 #include <sys/time.h>
 
-static void	create_game(t_game *game, char **av);
+int parse(t_config *cf, int ac, char **av);
+int	init_game(t_game *game, t_config *cf);
+void	debug_config(t_config *this);
 
-t_map	*parse(int ac, char **av);
-int		validate_map(t_map *map);
+static void	start_cub3d(t_game *game)
+{
+	render(game);
+	set_hooks(game);
+	mlx_loop(game->window->mlx);
+}
+
+void hoge(t_config *cf)
+{
+	debug_config(cf);
+}
+
+void	error(t_error err)
+{
+	char	*msg;
+
+	if (err == INVALID_ARG_NUM)
+		msg = ft_strdup("error: Invalid number of argument\n");
+	if (err == INVALID_CUB_FILE)
+		msg = ft_strdup("error: Invalid cub file extension\n");
+	if (err == CUB_FILE_ERR)
+		msg = ft_strdup("error: Can not open cub file\n");
+	if (err == MEM_ERR)
+		msg = ft_strdup("error: Failed to memory allocate\n");
+	if (err == TEX_FILE_ERR)
+		msg = ft_strdup("error: Invalid texture file extension\n");
+	if (err == INVALID_RGB)
+		msg = ft_strdup("error: Invalid color value in texture file\n");
+	if (err == NON_CLOSED_MAP)
+		msg = ft_strdup("error: Map is not closed\n");
+	if (err == NON_PLAYER)
+		msg = ft_strdup("error: Player does not exist in map\n");
+	ft_putstr_fd(msg, STDERR_FILENO);
+	free(msg);
+}
 
 int main(int ac, char **av)
 {
 	t_game		game;
+	t_config	cf;
+	t_error		err;
 
-	game.map = parse(ac, av);
-	if (game.map == NULL)
+	err = parse(&cf, ac, av);
+	if (err != NO_ERR) // 粒度大きすぎて微妙だけど、main関数は綺麗
 	{
-		printf("Failed to parse argument\n");
+		error(err);
 		return (1);
 	}
-	if (validate_map(game.map) == FAIL)
+	err = init_game(&game, &cf);
+	if (err != NO_ERR)
 	{
-		printf("Invalid map format\t");
+		error(err);
 		return (1);
 	}
-	create_game(&game, av);
-	render(&game);
-	set_hooks(&game);
-	mlx_loop(game.window->mlx);
+
+	// debug_config(&cf);
+
+	start_cub3d(&game); // ゲームスタート的な
 	return (0);
-}
-
-static void	create_game(t_game *game, char **av)
-{
-	// game->map = parse_map(av[1]);
-	game->window = init_window(WIN_W, WIN_H, WIN_TITLE);
-	game->player = spawn_player(2, 2, 1, 0);
 }
 
 void	render(t_game *game)
@@ -54,11 +85,11 @@ void	render(t_game *game)
 	double			after;
 	t_img			*tmp;
 
-	printf("==== player ====\n");
-	printf("pos:(%f, %f)\n", game->player->pos->vector->values[0][0],
-								game->player->pos->vector->values[1][0]);
-	printf("dir:(%f, %f)\n", game->player->dir->vector->values[0][0],
-								game->player->dir->vector->values[1][0]);
+	// printf("==== player ====\n");
+	// printf("pos:(%f, %f)\n", game->player->pos->vector->values[0][0],
+	// 							game->player->pos->vector->values[1][0]);
+	// printf("dir:(%f, %f)\n", game->player->dir->vector->values[0][0],
+	// 							game->player->dir->vector->values[1][0]);
 	get_3d_image(game);
 	tmp = game->window->img_front;
 	game->window->img_front = game->window->img_back;
