@@ -1,7 +1,7 @@
-NO ./map/test.xpm
-SO ./map/test.xpm
-WE ./map/test.xpm
-EA ./map/test.xpm
+NO ./map/north.xpm
+SO ./map/south.xpm
+WE ./map/west.xpm
+EA ./map/east.xpm
 
 F 220,100,0
 C 225,30,0
