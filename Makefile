@@ -1,6 +1,11 @@
 NAME	:=	cub3d
 CC		:=	gcc
-CFLAGS	:=	-MMD -MP -fsanitize=address #-pg
+CFLAGS	:=	-MMD -MP
+
+ifdef WITH_DEBUG
+	CFLAGS += -fno-optimize-sibling-calls -fsanitize=address -g -fsanitize-address-use-after-return=runtime
+endif
+
 OBJ_DIR	:= ./objs
 VPATH	:=	srcs:\
 			srcs/utils:\
@@ -9,7 +14,6 @@ VPATH	:=	srcs:\
 			srcs/render:\
 			srcs/hooks/
 SRCS	:=	main.c \
-			parse_map.c \
 			cub_test_2.c \
 			hooks.c \
 			handle_window.c \
@@ -20,6 +24,9 @@ SRCS	:=	main.c \
 			exit_with_error.c \
 			handle_perspective.c \
 			handle_movement.c
+# parser
+SRCS	+= destroy_config.c parse.c          parse_arg2.c     texture.c\
+init_game.c      parse_arg.c      parse_config.c   utils.c
 OBJS	:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEPS	:= $(OBJS:.o=.d)
 LIBMAT_DIR := ./libmat
@@ -69,6 +76,10 @@ re:			fclean all
 
 test:
 	./cub3d ./map/sample.cub
+
+debug:	fclean
+	make WITH_DEBUG=1
+	make test
 
 -include $(DEPS)
 
