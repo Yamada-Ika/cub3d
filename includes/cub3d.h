@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/07 00:30:49 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/07 01:54:50 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # include <limits.h>
 # include <float.h>
 
-# define RAY_NUM 800
-# define H 500
+# define RAY_NUM 1200
+# define H 700
 # define WIN_TITLE "cub3d"
 # define FOV M_PI_2
 # define MOVE_STEP 0.1
@@ -44,6 +44,8 @@
 # define MINIMAP_DELTA_T 0.01
 # define MINIMAP_DELTA_R 0.05
 # define MINIMAP_DELTA_THETA 0.01
+# define MOUSE_SENSITIVITY 0.2
+# define MOUSE_ROT_INTERVAL 20
 
 # define DBG() fprintf(stderr, "%s %d\n", __func__, __LINE__)
 
@@ -161,8 +163,8 @@ int		handle_perspective(int keycode, t_game *game);
 // void	move_left(t_player *player);
 // void	move_back(t_player *player);
 // void	move_right(t_player *player);
-void	turn_right(t_player *player);
-void	turn_left(t_player *player);
+void	turn_right(t_player *player, double rot_rate);
+void	turn_left(t_player *player, double rot_rate);
 
 /* minimap */
 void	draw_ray_on_minimap(t_window *window, t_ray *ray);
