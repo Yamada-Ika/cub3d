@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:34:48 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/06 18:28:32 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/07 00:30:05 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "mlx_color.h"
 #include <stdio.h>
 
+static void	draw_map_area(t_window *window);
 static void	draw_map_frame(t_window *window, t_matrix *world_map);
 static void	draw_map_body(t_window *window, t_player *player, t_matrix *world_map);
 static void	draw_square(t_window *window,
@@ -43,49 +44,69 @@ void	render_minimap_tmp(t_window *window, t_matrix *world_map,
 void	render_minimap(t_window *window, t_matrix *world_map,
 						t_player *player)
 {
+	draw_map_area(window);
 	draw_map_body(window, player, world_map);
 	draw_map_frame(window, world_map);
 	draw_player(window, player);
 }
 
+static void	draw_map_area(t_window *window)
+{
+	t_matrix	*center;
+
+	center = mat_vector_col_2d(MINIMAP_POS_X, MINIMAP_POS_Y);
+	draw_circle(window, center, MINIMAP_SIZE / 2, BLACK);
+	mat_free(center);
+}
+
 static void	draw_map_body(t_window *window, t_player *player, t_matrix *world_map)
 {
+	const int	colors[3] = {WHITE, RED, BLUE};
 	const int	player_x = mat_get_x(player->pos->vector);
 	const int	player_y = mat_get_y(player->pos->vector);
-	double		r;
+	int			world_x;
+	int			world_y;
 	int			gx;
 	int			gy;
-	double		theta;
 
-	r = 0;
-	while (r < (int)(1 / MINIMAP_ZOOM))
+	world_y = player_y - (1 / MINIMAP_ZOOM);
+	while (world_y < player_y + (1 / MINIMAP_ZOOM))
 	{
-		theta = 0;
-		while (theta < M_PI * 2)
+		world_x = player_x - (1 / MINIMAP_ZOOM);
+		while (world_x < player_x + (1 / MINIMAP_ZOOM))
 		{
-			gx = MINIMAP_POS_X + (r * cos(theta));
-			gy = MINIMAP_POS_Y + (r * sin(theta));
-			draw_square(window, gx, gy, WHITE);
-			theta += MINIMAP_DELTA_THETA / MINIMAP_ZOOM;
+			if (!idx_is_out_of_range(world_x, world_map->col)
+				&& !idx_is_out_of_range(world_y, world_map->row))
+			{
+				gx = world_x - player_x + ((world_x - player_x) * 20) + MINIMAP_POS_X;
+				gy = world_y - player_y + ((world_y - player_y) * 20) + MINIMAP_POS_Y;
+				draw_square(window,
+							gx, gy,
+							colors[
+							(int)world_map->values[world_y][world_x]
+							]);
+			}
+			++world_x;
 		}
-		r += MINIMAP_DELTA_R / MINIMAP_ZOOM;
+		++world_y;
 	}
 }
 
 static void	draw_square(t_window *window,
 						int center_gx, int center_gy, int color)
 {
-	const int	square_size = MINIMAP_ZOOM * MINIMAP_SIZE / 10;
+	const int	square_size = 20;
 	int			gx;
 	int			gy;
 
 	gx = center_gx - (square_size / 2);
-	while (gx < center_gy + (square_size / 2))
+	while (gx < center_gx + (square_size / 2))
 	{
 		gy = center_gy - (square_size / 2);
 		while (gy < center_gy + (square_size / 2))
 		{
-			if (pow(gx, 2) + pow(gy, 2) <= pow(MINIMAP_SIZE / 2, 2))
+			//printf("(%d, %d)\n", gx, gy);
+			if (pow(gx - MINIMAP_POS_X, 2) + pow(gy - MINIMAP_POS_Y, 2) <= pow(MINIMAP_SIZE / 2, 2))
 				my_mlx_pixel_put(window->img_back, gx, gy, color);
 			++gy;
 		}
@@ -95,21 +116,18 @@ static void	draw_square(t_window *window,
 
 static void	draw_map_frame(t_window *window, t_matrix *world_map)
 {
-	int	x;
-	int	y;
+	const double	r = MINIMAP_SIZE / 2;
+	double			theta;
+	int				gx;
+	int				gy;
 
-	y = 0;
-	while (y < MINIMAP_SIZE)
+	theta = 0;
+	while (theta < M_PI * 2)
 	{
-		x = 0;
-		while (x < MINIMAP_SIZE)
-		{
-			if (y == 0 || y == MINIMAP_SIZE - 1
-				|| x == 0 || x == MINIMAP_SIZE - 1)
-				my_mlx_pixel_put(window->img_back, x, y, GRAY);
-			++x;
-		}
-		++y;
+		gx = (int)(MINIMAP_POS_X + (r * cos(theta)));
+		gy = (int)(MINIMAP_POS_Y + (r * sin(theta)));
+		my_mlx_pixel_put(window->img_back, gx, gy, GRAY);
+		theta += MINIMAP_DELTA_THETA;
 	}
 }
 
@@ -121,19 +139,18 @@ static t_matrix	*translate_cordinate_to_window(t_matrix *map_pos)
 {
 	t_matrix	*window_pos;
 	
-	window_pos = mat_vector_col_2d(map_pos->values[0][0] * MINIMAP_SIZE,
-									map_pos->values[1][0] * MINIMAP_SIZE);
+	window_pos = mat_vector_col_2d(mat_get_x(map_pos) * MINIMAP_SIZE,
+									mat_get_y(map_pos) * MINIMAP_SIZE);
 	return (window_pos);
 }
 
 static void	draw_player(t_window *window, t_player *player)
 {
-	t_matrix	*win_pos;
+	t_matrix	*center;
 
-	win_pos = translate_cordinate_to_window(player->pos->vector);
-	draw_circle(window, win_pos, 10, GREEN);
-	draw_player_dir(window, player);
-	mat_free(win_pos);
+	center = mat_vector_col_2d(MINIMAP_POS_X, MINIMAP_POS_Y);
+	draw_circle(window, center, 10, GREEN);
+	mat_free(center);
 }
 
 static void	draw_player_dir(t_window *window, t_player *player)
@@ -190,8 +207,8 @@ static void	draw_circle(t_window *window, t_matrix *center, double r_max, int co
 		theta = 0;
 		while (theta < M_PI * 2)
 		{
-			plot_x = center->values[0][0] + (r * cos(theta));
-			plot_y = center->values[1][0] + (r * sin(theta));
+			plot_x = mat_get_x(center) + (r * cos(theta));
+			plot_y = mat_get_y(center) + (r * sin(theta));
 			my_mlx_pixel_put(window->img_back, plot_x, plot_y, color);
 			theta += MINIMAP_DELTA_THETA;
 		}
@@ -226,7 +243,7 @@ void	draw_ray_on_minimap(t_window *window, t_ray *ray)
 
 static int	idx_is_out_of_range(int idx, size_t limit)
 {
-	if (idx < 0 || idx > limit)
+	if (idx < 0 || idx >= (int)limit)
 		return (1);
 	else
 		return (0);

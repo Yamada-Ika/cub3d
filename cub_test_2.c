@@ -89,7 +89,6 @@ void	get_3d_image(t_game *game)
 	ray = new_ray(); // 光線用の変数を作成
 	ray_index = 0;
 	//render_minimap_tmp(game->window, game->map->map, player); // ミニマップを作成
-	printf("in!!\n");
 	while (ray_index < RAY_NUM) // 光線の数だけループ回す
 	{
 		set_ray(ray, ray_index,
@@ -100,7 +99,6 @@ void	get_3d_image(t_game *game)
 		//draw_ray_on_minimap(game->window, ray); //minimapに描画
 		ray_index++;
 	}
-	printf("in!!\n");
 	render_minimap(game->window, game->map->map, player);
 }
 

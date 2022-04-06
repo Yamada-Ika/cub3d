@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/06 18:32:10 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/07 00:30:49 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@
 # define LEN_RAY 100
 # define IMG_PLANE_LEN 2
 # define MINIMAP_SIZE 150
-# define MINIMAP_POS_X 160
-# define MINIMAP_POS_Y 160
+# define MINIMAP_POS_X 80
+# define MINIMAP_POS_Y 80
 # define MINIMAP_ZOOM 0.1
 # define MINIMAP_DELTA_T 0.01
-# define MINIMAP_DELTA_R 0.01
+# define MINIMAP_DELTA_R 0.05
 # define MINIMAP_DELTA_THETA 0.01
 
 # define DBG() fprintf(stderr, "%s %d\n", __func__, __LINE__)
