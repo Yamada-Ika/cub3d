@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/06 13:27:00 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/07 00:30:49 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@
 
 # define RAY_NUM 800
 # define H 500
-# define WIN_W 800
-# define WIN_H 600
-# define MINIMAP_SIZE 40
 # define WIN_TITLE "cub3d"
 # define FOV M_PI_2
 # define MOVE_STEP 0.1
@@ -40,8 +37,12 @@
 # define DELTA_T 0.03
 # define LEN_RAY 100
 # define IMG_PLANE_LEN 2
+# define MINIMAP_SIZE 150
+# define MINIMAP_POS_X 80
+# define MINIMAP_POS_Y 80
+# define MINIMAP_ZOOM 0.1
 # define MINIMAP_DELTA_T 0.01
-# define MINIMAP_DELTA_R 0.01
+# define MINIMAP_DELTA_R 0.05
 # define MINIMAP_DELTA_THETA 0.01
 
 # define DBG() fprintf(stderr, "%s %d\n", __func__, __LINE__)
@@ -140,7 +141,7 @@ typedef struct s_game
 // t_map	*parse_map(const char *map_file);
 void	set_hooks(t_game *game);
 void	render_minimap(t_window *window, t_matrix *world_map,
-						t_player *player, t_ray *rays);
+						t_player *player);
 void	render_minimap_tmp(t_window *window, t_matrix *world_map,
 						t_player *player); // tmp
 void	render(t_game *game);

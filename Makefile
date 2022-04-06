@@ -3,7 +3,7 @@ CC		:=	gcc
 CFLAGS	:=	-MMD -MP
 
 ifdef WITH_DEBUG
-	CFLAGS += -fno-optimize-sibling-calls -fsanitize=address -g -fsanitize-address-use-after-return=runtime
+	CFLAGS += -fsanitize=address -g
 endif
 
 OBJ_DIR	:= ./objs
@@ -77,6 +77,7 @@ fclean:		clean
 re:			fclean all
 
 test:
+	make
 	./cub3d ./map/sample.cub
 
 debug:	fclean
