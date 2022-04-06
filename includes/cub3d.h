@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/04 21:30:32 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/06 16:27:28 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,70 @@
 # define MINIMAP_DELTA_R 0.01
 # define MINIMAP_DELTA_THETA 0.01
 
-typedef struct s_map
+# define DBG() fprintf(stderr, "%s %d\n", __func__, __LINE__)
+
+typedef enum e_error
 {
-	char	*no_texture;
-	char	*so_texture;
-	char	*we_texture;
-	char	*ea_texture;
+	NO_ERR,
+	INVALID_ARG_NUM,
+	INVALID_CUB_FILE,
+	CUB_FILE_ERR,
+	MEM_ERR,
+	TEX_FILE_ERR,
+	INVALID_RGB,
+	NON_CLOSED_MAP,
+	NON_PLAYER,
+}	t_error;
+
+typedef enum e_state
+{
+	FAIL,
+	SUCCESS,
+	X_SIDE,
+	Y_SIDE,
+}	t_state;
+
+typedef enum e_side
+{
+	NORTH,
+	SOUTH,
+	WEST,
+	EAST,
+}	t_side;
+
+typedef struct s_config
+{
+	char	*no_tex_path;
+	char	*so_tex_path;
+	char	*we_tex_path;
+	char	*ea_tex_path;
 	int		floor_color;
 	int		ceilling_color;
-	t_matrix	*map;
+	char	**map;
+	size_t	map_col_size;
+	size_t	map_row_size;
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+}	t_config;
+
+typedef struct s_texture
+{
+	int	width;
+	int	height;
+	t_img	*img;
+}	t_texture;
+
+typedef struct s_map
+{
+	t_texture		*no;
+	t_texture		*so;
+	t_texture		*we;
+	t_texture		*ea;
+	unsigned int	floor_color;
+	unsigned int	ceilling_color;
+	t_matrix		*map;
 }	t_map;
 
 typedef struct s_player
@@ -69,6 +124,8 @@ typedef struct s_ray
 	double		v_distance;
 	int			color;
 	t_vector	*collision;
+	double		collide_at_x;
+	double		collide_at_y;
 	int	side;
 }	t_ray;
 
@@ -79,15 +136,7 @@ typedef struct s_game
 	t_player	*player;
 }	t_game;
 
-typedef enum e_state
-{
-	FAIL,
-	SUCCESS,
-	X_SIDE,
-	Y_SIDE,
-}	t_state;
-
-t_map	*parse_map(const char *map_file);
+// t_map	*parse_map(const char *map_file);
 void	set_hooks(t_game *game);
 void	render_minimap(t_window *window, t_matrix *world_map,
 						t_player *player, t_ray *rays);
