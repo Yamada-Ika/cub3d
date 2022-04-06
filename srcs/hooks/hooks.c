@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:17:21 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/07 02:41:36 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/07 02:55:52 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static int	test(int x, int y, void *params)
 	}
 	if (y % MOUSE_ROT_INTERVAL == 0)
 	{
-		if (prev_y - y > 0)
+		if (prev_y - y > 0 && game->player->offset + MOUSE_SENSITIVITY * 100 < WIN_H / 2)
 			game->player->offset += MOUSE_SENSITIVITY * 100;
-		else if (prev_y - y < 0)
+		else if (prev_y - y < 0 && game->player->offset - MOUSE_SENSITIVITY * 100 > -WIN_H / 2)
 			game->player->offset -= MOUSE_SENSITIVITY * 100;
 		fg_re_render = 1;
 	}
