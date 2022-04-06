@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/06 16:27:28 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/06 18:24:00 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@
 # define LEN_RAY 100
 # define IMG_PLANE_LEN 2
 # define MINIMAP_SIZE 150
-# define MINIMAP_ZOOM 1
+# define MINIMAP_POS_X 160
+# define MINIMAP_POS_Y 160
+# define MINIMAP_ZOOM 0.1
 # define MINIMAP_DELTA_T 0.01
 # define MINIMAP_DELTA_R 0.01
 # define MINIMAP_DELTA_THETA 0.01
@@ -139,7 +141,7 @@ typedef struct s_game
 // t_map	*parse_map(const char *map_file);
 void	set_hooks(t_game *game);
 void	render_minimap(t_window *window, t_matrix *world_map,
-						t_player *player, t_ray *rays);
+						t_player *player);
 void	render_minimap_tmp(t_window *window, t_matrix *world_map,
 						t_player *player); // tmp
 void	render(t_game *game);
