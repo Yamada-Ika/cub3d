@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/06 18:24:00 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/06 18:32:10 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,10 +157,10 @@ t_player	*spawn_player(double pos_x, double pos_y,
 void	clear_window(t_window *window);
 int		handle_movement(int keycode, t_game *game);
 int		handle_perspective(int keycode, t_game *game);
-void	move_straight(t_player *player);
-void	move_left(t_player *player);
-void	move_back(t_player *player);
-void	move_right(t_player *player);
+// void	move_straight(t_player *player);
+// void	move_left(t_player *player);
+// void	move_back(t_player *player);
+// void	move_right(t_player *player);
 void	turn_right(t_player *player);
 void	turn_left(t_player *player);
 
