@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/05 11:48:03 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/06 13:27:00 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ typedef struct s_ray
 	double		v_distance;
 	int			color;
 	t_vector	*collision;
+	double		collide_at_x;
+	double		collide_at_y;
 	int	side;
 }	t_ray;
 
@@ -154,10 +156,10 @@ t_player	*spawn_player(double pos_x, double pos_y,
 void	clear_window(t_window *window);
 int		handle_movement(int keycode, t_game *game);
 int		handle_perspective(int keycode, t_game *game);
-void	move_straight(t_player *player);
-void	move_left(t_player *player);
-void	move_back(t_player *player);
-void	move_right(t_player *player);
+// void	move_straight(t_player *player);
+// void	move_left(t_player *player);
+// void	move_back(t_player *player);
+// void	move_right(t_player *player);
 void	turn_right(t_player *player);
 void	turn_left(t_player *player);
 
