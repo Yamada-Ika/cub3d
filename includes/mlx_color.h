@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:09:05 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/03 18:34:28 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/04 19:14:05 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define YELLOW 0x00ffff00
 # define BLACK 0x0
 # define WHITE 0x00ffffff
+# define GRAY 0x00808080
 
 typedef struct s_trgb
 {

@@ -88,7 +88,7 @@ void	get_3d_image(t_game *game)
 	// 		player->pos->vector->values[1][0]);
 	ray = new_ray(); // 光線用の変数を作成
 	ray_index = 0;
-	render_minimap_tmp(game->window, game->map->map, player); // ミニマップを作成
+	//render_minimap_tmp(game->window, game->map->map, player); // ミニマップを作成
 	while (ray_index < RAY_NUM) // 光線の数だけループ回す
 	{
 		set_ray(ray, ray_index,
@@ -96,10 +96,10 @@ void	get_3d_image(t_game *game)
 				game->player->dir->vector); // 光線の向きとかセット
 		cast_ray(ray, game->map); // 光線を伸ばして衝突判定
 		render_3d(game->window, ray, game->map); // windowに描画
-		draw_ray_on_minimap(game->window, ray); //minimapに描画
+		//draw_ray_on_minimap(game->window, ray); //minimapに描画
 		ray_index++;
 	}
-	// render_minimap_tmp(game->window, game->map->map, player); // ミニマップを作成
+	render_minimap(game->window, game->map->map, player);
 }
 
 static double	get_rotation_angle(double theta)
