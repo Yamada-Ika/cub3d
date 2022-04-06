@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_minimap.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:34:48 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/04 17:40:17 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/05 00:43:35 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include "mlx_color.h"
 #include <stdio.h>
 
-static void	draw_map_body(t_window *window, t_matrix *world_map);
+static void	draw_map_frame(t_window *window, t_matrix *world_map);
+static void	draw_map_body(t_window *window, t_player *player, t_matrix *world_map);
 static void	draw_square(t_window *window,
 						size_t world_x, size_t world_y, int color);
 
@@ -34,60 +35,81 @@ static int	idx_is_out_of_range(int idx, size_t limit);
 void	render_minimap_tmp(t_window *window, t_matrix *world_map,
 						t_player *player)
 {
-	draw_map_body(window, world_map);
+	draw_map_body(window, player, world_map);
+	draw_map_frame(window, world_map);
 	draw_player(window, player);
 }
 
 void	render_minimap(t_window *window, t_matrix *world_map,
 						t_player *player, t_ray *ray)
 {
-	draw_map_body(window, world_map);
+	draw_map_body(window, player, world_map);
+	draw_map_frame(window, world_map);
 	draw_player(window, player);
 }
 
-static void	draw_map_body(t_window *window, t_matrix *world_map)
+static void	draw_map_frame(t_window *window, t_matrix *world_map)
 {
-	const size_t	row = world_map->row;
-	const size_t	col = world_map->col;
-	const int		colors[3] = {WHITE, RED, BLUE};
-	size_t	i;
-	size_t	j;
+	int	x;
+	int	y;
 
-	i = 0;
-	while (i < row)
+	y = 0;
+	while (y < MINIMAP_SIZE)
 	{
-		j = 0;
-		while (j < col)
+		x = 0;
+		while (x < MINIMAP_SIZE)
 		{
-			draw_square(window, j, i, colors[(int)(world_map->values[i][j])]);
-			++j;
+			if (y == 0 || y == MINIMAP_SIZE - 1
+				|| x == 0 || x == MINIMAP_SIZE - 1)
+				my_mlx_pixel_put(window->img_back, x, y, GRAY);
+			++x;
 		}
-		++i;
+		++y;
+	}
+}
+
+static void	draw_map_body(t_window *window, t_player *player, t_matrix *world_map)
+{
+	const int	colors[3] = {WHITE, RED, BLUE};
+	int 		minimap_x;
+	int			minimap_y;
+	int			plot_x;
+	int			plot_y;
+
+	minimap_y = 0;
+	while (minimap_y < MINIMAP_SIZE)
+	{
+		minimap_x = 0;
+		while (minimap_x < MINIMAP_SIZE)
+		{
+			plot_x = (mat_get_x(player->pos->vector) * WIN_W) - (MINIMAP_SIZE / 2) + minimap_x;
+			plot_y = (mat_get_y(player->pos->vector) * WIN_H) - (MINIMAP_SIZE / 2) + minimap_y;
+			draw_square(window,
+						plot_x, plot_y,
+						colors[(int)(world_map->values[plot_y][plot_x])]);
+			++minimap_x;
+		}
+		++minimap_y;
 	}
 }
 
 static void	draw_square(t_window *window,
 						size_t world_x, size_t world_y, int color)
 {
+	const int	square_size = MINIMAP_ZOOM * MINIMAP_SIZE / 10;
 	const int	start_x = (int)world_x * MINIMAP_SIZE;
 	const int	start_y = (int)world_y * MINIMAP_SIZE;
 	size_t		i;
 	size_t		j;
 
 	i = 0;
-	while (i < MINIMAP_SIZE)
+	while (i < square_size)
 	{
 		j = 0;
-		while (j < MINIMAP_SIZE)
+		while (j < square_size);
 		{
-			if (!idx_is_out_of_range(start_x + i, WIN_W)
-				&& !idx_is_out_of_range(start_y + j, WIN_H))
-			{
-				if (i == 0 || i == MINIMAP_SIZE - 1 || j == 0 || j == MINIMAP_SIZE - 1)
-					my_mlx_pixel_put(window->img_back, (int)(start_x + i), (int)(start_y + j), BLACK);
-				else
-					my_mlx_pixel_put(window->img_back, (int)(start_x + i), (int)(start_y + j), color);
-			}
+			my_mlx_pixel_put(window->img_back,
+							(int)(start_x + i), (int)(start_y + j), color);
 			++j;
 		}
 		++i;
@@ -153,9 +175,7 @@ static void	draw_line(t_window *window, t_matrix *start,
 	{
 		plot_x = ((t * end->values[0][0]) + ((1 - t) * start->values[0][0]));
 		plot_y = ((t * end->values[1][0]) + ((1 - t) * start->values[1][0]));
-		if (!idx_is_out_of_range(plot_x, WIN_W)
-			&& !idx_is_out_of_range(plot_y, WIN_H))
-			my_mlx_pixel_put(window->img_back, plot_x, plot_y, color);
+		my_mlx_pixel_put(window->img_back, plot_x, plot_y, color);
 		t += MINIMAP_DELTA_T;
 	}
 }
@@ -175,9 +195,7 @@ static void	draw_circle(t_window *window, t_matrix *center, double r_max, int co
 		{
 			plot_x = center->values[0][0] + (r * cos(theta));
 			plot_y = center->values[1][0] + (r * sin(theta));
-			if (!idx_is_out_of_range(plot_x, WIN_W)
-				&& !idx_is_out_of_range(plot_y, WIN_H))
-				my_mlx_pixel_put(window->img_back, plot_x, plot_y, color);
+			my_mlx_pixel_put(window->img_back, plot_x, plot_y, color);
 			theta += MINIMAP_DELTA_THETA;
 		}
 		r += MINIMAP_DELTA_R;
