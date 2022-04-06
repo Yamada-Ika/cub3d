@@ -22,11 +22,11 @@ static t_matrix	*gen_world_map();
 static t_player	*gen_player(double pos_x, double pos_y,
 							double dir_x, double dir_y);
 static void	ft_raycast(t_ray *rays, t_matrix *world_map);
-static void	render_3d(t_window *window, t_ray *ray, t_map *map);
+static void	render_3d(t_window *window, t_ray *ray, t_map *map, t_player *player);
 static void	raycast_test(t_window *window);
 static t_ray	*gen_rays(t_player *player);
 static int	has_collide(t_ray *ray, double t, t_matrix *world_map);
-static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, size_t length, t_map *map);
+static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, size_t length, t_map *map, t_player *player);
 static int	idx_is_out_of_range(int idx, size_t limit);
 static double	get_rotation_angle(double theta);
 
@@ -95,7 +95,7 @@ void	get_3d_image(t_game *game)
 				game->player->pos->vector,
 				game->player->dir->vector); // 光線の向きとかセット
 		cast_ray(ray, game->map); // 光線を伸ばして衝突判定
-		render_3d(game->window, ray, game->map); // windowに描画
+		render_3d(game->window, ray, game->map, game->player); // windowに描画
 		//draw_ray_on_minimap(game->window, ray); //minimapに描画
 		ray_index++;
 	}
@@ -207,7 +207,7 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 	return (res);
 }
 
-static void	render_3d(t_window *window, t_ray *ray, t_map *map)
+static void	render_3d(t_window *window, t_ray *ray, t_map *map, t_player *player)
 {
 	size_t		line_length;
 	int			line_color;
@@ -217,7 +217,7 @@ static void	render_3d(t_window *window, t_ray *ray, t_map *map)
 	line_length = (size_t)(H / (ray->v_distance));
 	// line_color = ray->color;
 	//printf("center:(%d, %d) length:%zu\n", (int)center_of_line->values[0][0], (int)center_of_line->values[0][1], line_length);
-	draw_line_v(window, ray, center_of_line, line_length, map);
+	draw_line_v(window, ray, center_of_line, line_length, map, player);
 	mat_free(center_of_line);
 }
 
@@ -268,10 +268,10 @@ int	get_color(const t_map *map, t_ray *ray, double y_on_line, double line_len)
 }
 // ----------------- texture ---------------------
 
-static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, size_t length, t_map *map)
+static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, size_t length, t_map *map, t_player *player)
 {
 	const int	start_x = center->values[0][0];
-	const int	start_y = center->values[1][0];
+	const int	start_y = center->values[1][0] + player->offset;
 	size_t		i;
 
 	i = 0;

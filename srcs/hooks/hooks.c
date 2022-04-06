@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:17:21 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/07 01:56:43 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/07 02:41:36 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,32 @@ static int	test(int x, int y, void *params)
 	static int	prev_x = 0;
 	static int	prev_y = 0;
 	t_game		*game;
+	int			fg_re_render;
 
+	fg_re_render = 0;
 	game = (t_game *)params;
-	if (prev_x - x < 0 && x % MOUSE_ROT_INTERVAL == 0)
+	if (x % MOUSE_ROT_INTERVAL == 0)
 	{
-		turn_right(game->player, MOUSE_SENSITIVITY);
-		re_render(game);
+		if (prev_x - x < 0)
+			turn_right(game->player, MOUSE_SENSITIVITY);
+		else if (prev_x - x > 0)
+			turn_left(game->player, MOUSE_SENSITIVITY);
+		fg_re_render = 1;
 	}
-	else if (prev_x - x > 0 && x % MOUSE_ROT_INTERVAL == 0)
+	if (y % MOUSE_ROT_INTERVAL == 0)
 	{
-		turn_left(game->player, MOUSE_SENSITIVITY);
-		re_render(game);
+		if (prev_y - y > 0)
+			game->player->offset += MOUSE_SENSITIVITY * 100;
+		else if (prev_y - y < 0)
+			game->player->offset -= MOUSE_SENSITIVITY * 100;
+		fg_re_render = 1;
 	}
+	if (fg_re_render)
+		re_render(game);
 	prev_x = x;
 	prev_y = y;
 	//printf("(%d, %d)\n", x, y);
+	return (0);
 }
 
 static int	handle_key_hook(int keycode, void *params)
