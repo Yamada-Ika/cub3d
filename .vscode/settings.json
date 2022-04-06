@@ -4,6 +4,7 @@
 		"mlx_window.h": "c",
 		"libmat.h": "c",
 		"*.tcc": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"x.h": "c"
 	}
 }
