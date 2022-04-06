@@ -173,6 +173,31 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 		}
 		else
 			ray->side = Y_SIDE;
+		
+		// 東西南北の判定
+		if (side == X_SIDE)
+		{
+			if (ray->dir->vector->values[0][0] > 0 && ray->dir->vector->values[1][0] > 0)
+				ray->side = WEST;
+			if (ray->dir->vector->values[0][0] > 0 && ray->dir->vector->values[1][0] < 0)
+				ray->side = WEST;
+			if (ray->dir->vector->values[0][0] < 0 && ray->dir->vector->values[1][0] < 0)
+				ray->side = EAST;
+			if (ray->dir->vector->values[0][0] < 0 && ray->dir->vector->values[1][0] > 0)
+				ray->side = EAST;
+		}
+		else
+		{
+			if (ray->dir->vector->values[0][0] > 0 && ray->dir->vector->values[1][0] > 0)
+				ray->side = NORTH;
+			if (ray->dir->vector->values[0][0] > 0 && ray->dir->vector->values[1][0] < 0)
+				ray->side = SOUTH;
+			if (ray->dir->vector->values[0][0] < 0 && ray->dir->vector->values[1][0] < 0)
+				ray->side = SOUTH;
+			if (ray->dir->vector->values[0][0] < 0 && ray->dir->vector->values[1][0] > 0)
+				ray->side = NORTH;
+		}
+
 		res = 1;
 	}
 	else
@@ -212,18 +237,34 @@ int	get_color(const t_map *map, t_ray *ray, double y_on_line, double line_len)
 {
 	double	tex_x;
 	double	tex_y;
+	t_texture	*tex;
 
-	if (ray->side == X_SIDE)
+	if (ray->side == WEST)
 	{
-		tex_x = get_fract(ray->collide_at_y) * map->no->width;
-		tex_y = y_on_line / line_len * map->no->height;
+		tex_x = get_fract(ray->collide_at_y) * map->we->width;
+		tex_y = y_on_line / line_len * map->we->height;
+		tex = map->we;
 	}
-	if (ray->side == Y_SIDE)
+	if (ray->side == EAST)
 	{
-		tex_x = get_fract(ray->collide_at_x) * map->no->width;
-		tex_y = y_on_line / line_len * map->no->height;
+		tex_x = (1 - get_fract(ray->collide_at_y)) * map->ea->width;
+		tex_y = y_on_line / line_len * map->ea->height;
+		tex = map->ea;
 	}
-	return (get_rgb_from_image_at(map->no->img, tex_x, tex_y));
+	if (ray->side == NORTH)
+	{
+		tex_x = (1 - get_fract(ray->collide_at_x)) * map->no->width;
+		tex_y = y_on_line / line_len * map->no->height;
+		tex = map->no;
+	}
+	if (ray->side == SOUTH)
+	{
+		tex_x = get_fract(ray->collide_at_x) * map->so->width;
+		tex_y = y_on_line / line_len * map->so->height;
+		tex = map->so;
+	}
+
+	return (get_rgb_from_image_at(tex->img, tex_x, tex_y));
 }
 // ----------------- texture ---------------------
 
