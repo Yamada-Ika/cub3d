@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/07 02:25:55 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/09 01:26:54 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@
 # define H 700
 # define WIN_TITLE "cub3d"
 # define FOV M_PI_2
-# define MOVE_STEP 0.1
+# define MOVE_STEP 0.05
 # define PERSPECT_ROT_RATE 0.1
 # define BLOCK_SIZE 256
-# define DELTA_T 0.03
+// # define DELTA_T 0.03
+# define DELTA_T 0.1
 # define LEN_RAY 100
 # define IMG_PLANE_LEN 2
 # define MINIMAP_SIZE 150

@@ -26,7 +26,7 @@ static void	render_3d(t_window *window, t_ray *ray, t_map *map, t_player *player
 static void	raycast_test(t_window *window);
 static t_ray	*gen_rays(t_player *player);
 static int	has_collide(t_ray *ray, double t, t_matrix *world_map);
-static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, size_t length, t_map *map, t_player *player);
+static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, double length, t_map *map, t_player *player);
 static int	idx_is_out_of_range(int idx, size_t limit);
 static double	get_rotation_angle(double theta);
 
@@ -59,17 +59,99 @@ static void	set_ray(t_ray *this, size_t index, t_matrix *from, t_matrix *dir)
 /*
 has_collideの粒度がデカすぎるかも
 */
-static void	cast_ray(t_ray *this, t_map *map)
-{
-	double	t;
+// static void	cast_ray(t_ray *this, t_map *map)
+// {
+// 	bool	is_hit = false;
 
-	t = DELTA_T;
-	while (42)
+// 	t = delta_t;
+// 	while (is_hit)
+// 	{
+// 		if (has_collide(this, t, map->map) != 0)
+// 			break ;
+// 		t += delta_t;
+// 	}
+// }
+
+static void	cast_ray(t_ray *ray, t_map *map)
+{
+	const int	sgn_dir_x = 1 - (2 * (mat_get_x(ray->dir->vector) > 0));
+	const int	sgn_dir_y = 1 - (2 * (mat_get_y(ray->dir->vector) > 0));
+	int			step_i;
+	int			step_j;
+	int			map_i = (int)mat_get_x(ray->from);
+	int			map_j = (int)mat_get_y(ray->from);
+	int			side;
+	double dist_side_x;
+	double dist_side_y;
+	double dist_delta_x = abs_double(1 / mat_get_x(ray->dir->vector));
+	double dist_delta_y = abs_double(1 / mat_get_y(ray->dir->vector));
+	// init_... mapXとかstep, sideDistXとかを初期化
+	// map_i, map_j
+	if (mat_get_x(ray->dir->vector) < 0)
 	{
-		if (has_collide(this, t, map->map) != 0)
-			break ;
-		t += DELTA_T;
+		step_j = -1;
+		dist_side_x = (mat_get_x(ray->from) - map_j) * dist_delta_x;
 	}
+	else
+	{
+		step_j = 1;
+		dist_side_x = (map_j + 1.0 - mat_get_x(ray->from)) * dist_delta_x;
+	}
+	if (mat_get_y(ray->dir->vector) < 0)
+	{
+		step_i = -1;
+		dist_side_y = (mat_get_y(ray->from) - map_i) * dist_delta_y;
+	}
+	else
+	{
+		step_i = 1;
+		dist_side_y = (map_i + 1.0 - mat_get_y(ray->from)) * dist_delta_y;
+	}
+	// step_j = sgn_dir_x;
+	// step_i = sgn_dir_y;
+	// dist_side_x = abs_double(map_j + (sgn_dir_x >= 0) - mat_get_x(ray->from))
+	// 				* dist_delta_x;
+	// dist_side_y = abs_double(map_i + (sgn_dir_y >= 0) - mat_get_y(ray->from))
+	// 				* dist_delta_y;
+	while (true)
+	{
+		if (dist_side_x < dist_side_y)
+		{
+			dist_side_x += dist_delta_x;
+			map_j += step_j;
+			side = X_SIDE;
+		}
+		else
+		{
+			dist_side_y += dist_delta_y;
+			map_i += step_i;
+			side = Y_SIDE;
+		}
+		if (map->map->values[map_i][map_j] > 0)
+			break ;
+	}
+	// get or calc_perp_wall_dist 垂線を計算
+	if (side == X_SIDE)
+		ray->v_distance = (dist_side_x - dist_delta_x);
+	else
+		ray->v_distance = (dist_side_y - dist_delta_y);
+
+	// if (ray->index == RAY_NUM / 2)
+	// 	printf("v_distance %f\n", ray->v_distance);
+
+	// set_... 光が衝突した時の座標をrayにセット
+	double ray_len = ray->v_distance / cos(ray->angle);
+	double ray_dir_len = mat_distance_2d(ray->dir->vector);
+	double collision_x = mat_get_x(ray->dir->vector) * ray_len / ray_dir_len;
+	double collision_y = mat_get_y(ray->dir->vector) * ray_len / ray_dir_len;
+	ray->collide_at_x = collision_x;
+	ray->collide_at_y = collision_y;
+
+	// とりあえずrayにsideの値をセット
+	if (side == X_SIDE)
+		ray->side = EAST;
+	else
+		ray->side = NORTH;
 }
 
 // draw_3d_imageとか？
@@ -99,7 +181,7 @@ void	get_3d_image(t_game *game)
 		//draw_ray_on_minimap(game->window, ray); //minimapに描画
 		ray_index++;
 	}
-	render_minimap(game->window, game->map->map, player);
+	// render_minimap(game->window, game->map->map, player);
 }
 
 static double	get_rotation_angle(double theta)
@@ -209,12 +291,12 @@ static int	has_collide(t_ray *ray, double t, t_matrix *world_map)
 
 static void	render_3d(t_window *window, t_ray *ray, t_map *map, t_player *player)
 {
-	size_t		line_length;
+	double		line_length;
 	int			line_color;
 	t_matrix	*center_of_line;
 
 	center_of_line = mat_vector_col_2d(RAY_NUM - ray->index - 1, WIN_H / 2);
-	line_length = (size_t)(H / (ray->v_distance));
+	line_length = (H / (ray->v_distance));
 	// line_color = ray->color;
 	//printf("center:(%d, %d) length:%zu\n", (int)center_of_line->values[0][0], (int)center_of_line->values[0][1], line_length);
 	draw_line_v(window, ray, center_of_line, line_length, map, player);
@@ -268,7 +350,7 @@ int	get_color(const t_map *map, t_ray *ray, double y_on_line, double line_len)
 }
 // ----------------- texture ---------------------
 
-static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, size_t length, t_map *map, t_player *player)
+static void	draw_line_v(t_window *window, t_ray *ray, t_matrix *center, double length, t_map *map, t_player *player)
 {
 	const int	start_x = center->values[0][0];
 	const int	start_y = center->values[1][0] + player->offset;

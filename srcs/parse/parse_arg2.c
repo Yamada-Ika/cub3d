@@ -2,10 +2,28 @@
 
 bool	has_ext(const char *path, const char *ext);
 
+/*
+bool	can_open(const char *path)
+{
+	int	fd;
+
+	fd = open(path);
+	if (fd == -1)
+		return (false);
+	close(fd);
+	return (true);
+}
+*/
+
 int	parse_file_path(const char *path)
 {
 	if (!has_ext(path, "cub"))
 		return (INVALID_CUB_FILE);
+	// openできるかチェックするやつ付ける
+	/*
+	if (!can_open(path))
+		reuturn (CANNOT_OPEN);
+	*/
 	return (NO_ERR);
 }
 
