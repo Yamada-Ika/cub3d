@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:17:21 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/09 01:33:39 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/09 01:57:10 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	set_hooks(t_game *game)
 			NULL);
 	mlx_hook(game->window->mlx_win,
 			MotionNotify, (1 << MotionNotify), test, game);
-	mlx_hook(game->window->mlx_win,
-			KeyPress, KeyPressMask, handle_key_hook, game);
+	// mlx_hook(game->window->mlx_win,
+	// 		KeyPress, KeyPressMask, handle_key_hook, game);
 }
 
 static int	test(int x, int y, void *params)
@@ -78,10 +78,7 @@ static int	handle_key_hook(int keycode, void *params)
 	//fprintf(stderr, "keycode : %d\n", keycode);
 	game = (t_game *)params;
 	if (keycode == ESC)
-	{
-		printf("keycode:%d\n", keycode);
 		ft_exit(NULL);
-	}
 	if (handle_movement(keycode, game)
 		|| handle_perspective(keycode, game))
 	{

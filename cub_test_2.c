@@ -142,10 +142,14 @@ static void	cast_ray(t_ray *ray, t_map *map)
 	// set_... 光が衝突した時の座標をrayにセット
 	double ray_len = ray->v_distance / cos(ray->angle);
 	double ray_dir_len = mat_distance_2d(ray->dir->vector);
-	double collision_x = mat_get_x(ray->dir->vector) * ray_len / ray_dir_len;
-	double collision_y = mat_get_y(ray->dir->vector) * ray_len / ray_dir_len;
+	double collision_x = abs_double(mat_get_x(ray->dir->vector) * ray_len / ray_dir_len);
+	double collision_y = abs_double(mat_get_y(ray->dir->vector) * ray_len / ray_dir_len);
 	ray->collide_at_x = collision_x;
 	ray->collide_at_y = collision_y;
+	if (ray->index == RAY_NUM / 2)
+	{
+		printf(" collison at x %f  collison at x %f\n", ray->collide_at_x, ray->collide_at_y);
+	}
 
 	// とりあえずrayにsideの値をセット
 	if (side == X_SIDE)
@@ -181,7 +185,7 @@ void	get_3d_image(t_game *game)
 		//draw_ray_on_minimap(game->window, ray); //minimapに描画
 		ray_index++;
 	}
-	// render_minimap(game->window, game->map->map, player);
+	render_minimap(game->window, game->map->map, player);
 }
 
 static double	get_rotation_angle(double theta)
