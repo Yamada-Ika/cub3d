@@ -6,12 +6,14 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/03 17:17:21 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/07 01:54:47 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MLX_WINDOW_H
 # define MLX_WINDOW_H
+# define WIN_W 1200
+# define WIN_H 800
 # define ESC 65307
 # define L_ARROW 65361
 # define U_ARROW 65362

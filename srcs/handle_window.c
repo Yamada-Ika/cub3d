@@ -1,10 +1,10 @@
 #include "mlx.h"
 #include "mlx_window.h"
+#include "libft.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-static void	ft_bzero(void *s, size_t n);
-static void	*ft_calloc(size_t nmemb, size_t size);
+static int	idx_is_out_of_range(int idx, size_t limit);
 
 t_img	*init_img(t_window *win)
 {
@@ -38,34 +38,19 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = img->addr +
-			(y * img->line_length +
-			x * (img->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
-
-//libft
-static void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*res;
-
-	res = malloc(size * nmemb);
-	if (res == NULL)
-		exit(1);
-	ft_bzero(res, size * nmemb);
-	return (res);
-}
-
-static void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*uc_s;
-	size_t			i;
-
-	uc_s = (unsigned char *)s;
-	i = 0;
-	while (i < n)
+	if (!idx_is_out_of_range(x, WIN_W) && !idx_is_out_of_range(y, WIN_H))
 	{
-		uc_s[i] = 0;
-		++i;
+		dst = img->addr +
+				(y * img->line_length +
+				x * (img->bits_per_pixel / 8));
+		*(unsigned int *)dst = color;
 	}
+}
+
+static int	idx_is_out_of_range(int idx, size_t limit)
+{
+	if (idx < 0 || (size_t)idx >= limit)
+		return (1);
+	else
+		return (0);
 }

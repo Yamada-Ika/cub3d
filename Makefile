@@ -1,6 +1,11 @@
 NAME	:=	cub3d
 CC		:=	gcc
-CFLAGS	:=	-MMD -MP -fsanitize=address #-pg
+CFLAGS	:=	-MMD -MP
+
+ifdef WITH_DEBUG
+	CFLAGS += -fsanitize=address -g
+endif
+
 OBJ_DIR	:= ./objs
 VPATH	:=	srcs:\
 			srcs/utils:\
@@ -9,7 +14,6 @@ VPATH	:=	srcs:\
 			srcs/render:\
 			srcs/hooks/
 SRCS	:=	main.c \
-			parse_map.c \
 			cub_test_2.c \
 			hooks.c \
 			handle_window.c \
@@ -20,6 +24,11 @@ SRCS	:=	main.c \
 			exit_with_error.c \
 			handle_perspective.c \
 			handle_movement.c
+# parser
+SRCS	+= destroy_config.c parse_arg2.c\
+init_game.c      parse_config.c\
+parse.c          utils.c\
+parse_arg.c
 OBJS	:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEPS	:= $(OBJS:.o=.d)
 LIBMAT_DIR := ./libmat
@@ -31,13 +40,12 @@ MLX_DIR		:= ./minilibx-linux
 ifeq ($(shell uname), Linux)
 	MLX	:= libmlx_Linux.a
 	WITH_MLX	:= $(MLX_DIR)/$(MLX) -L $(MLX_DIR) -lmlx -lXext -lX11 -lm
+	INCLUDE :=	-I ./includes -I $(LIBMAT_DIR) -I $(MLX_DIR) -I $(LIBFT_DIR)
 else ifeq ($(shell uname), Darwin)
 	MLX	:= libmlx_Darwin.a
 	WITH_MLX	:= $(MLX_DIR)/$(MLX) -L $(MLX_DIR) -L/usr/X11/include/../lib -lmlx -lXext -lX11 -lm
+	INCLUDE :=	-I ./includes -I $(LIBMAT_DIR) -I $(MLX_DIR) -I $(LIBFT_DIR) -I/opt/X11/include
 endif
-
-# WITH_MLX	:= $(MLX_DIR)/$(MLX) -L $(MLX_DIR) -L/usr/X11/include/../lib -lmlx -lXext -lX11 -lm
-INCLUDE :=	-I ./includes -I $(LIBMAT_DIR) -I $(MLX_DIR) -I $(LIBFT_DIR)
 
 $(NAME): $(OBJ_DIR) $(OBJS)
 	make affine -C $(LIBMAT_DIR)
@@ -68,7 +76,12 @@ fclean:		clean
 re:			fclean all
 
 test:
+	make
 	./cub3d ./map/sample.cub
+
+debug:	fclean
+	make WITH_DEBUG=1
+	make test
 
 -include $(DEPS)
 
