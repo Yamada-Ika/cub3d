@@ -78,15 +78,14 @@ static void	cast_ray(t_ray *ray, t_map *map)
 	const int	sgn_dir_y = 1 - (2 * (mat_get_y(ray->dir->vector) > 0));
 	int			step_i;
 	int			step_j;
-	int			map_i = (int)mat_get_x(ray->from);
-	int			map_j = (int)mat_get_y(ray->from);
+	int			map_i = (int)mat_get_y(ray->from);
+	int			map_j = (int)mat_get_x(ray->from);
 	int			side;
 	double dist_side_x;
 	double dist_side_y;
 	double dist_delta_x = abs_double(1 / mat_get_x(ray->dir->vector));
 	double dist_delta_y = abs_double(1 / mat_get_y(ray->dir->vector));
-	// init_... mapXとかstep, sideDistXとかを初期化
-	// map_i, map_j
+
 	if (mat_get_x(ray->dir->vector) < 0)
 	{
 		step_j = -1;
@@ -107,12 +106,6 @@ static void	cast_ray(t_ray *ray, t_map *map)
 		step_i = 1;
 		dist_side_y = (map_i + 1.0 - mat_get_y(ray->from)) * dist_delta_y;
 	}
-	// step_j = sgn_dir_x;
-	// step_i = sgn_dir_y;
-	// dist_side_x = abs_double(map_j + (sgn_dir_x >= 0) - mat_get_x(ray->from))
-	// 				* dist_delta_x;
-	// dist_side_y = abs_double(map_i + (sgn_dir_y >= 0) - mat_get_y(ray->from))
-	// 				* dist_delta_y;
 	while (true)
 	{
 		if (dist_side_x < dist_side_y)
@@ -130,32 +123,40 @@ static void	cast_ray(t_ray *ray, t_map *map)
 		if (map->map->values[map_i][map_j] > 0)
 			break ;
 	}
-	// get or calc_perp_wall_dist 垂線を計算
+
+	double ray_len;
 	if (side == X_SIDE)
-		ray->v_distance = (dist_side_x - dist_delta_x);
+		ray_len = (dist_side_x - dist_delta_x);
 	else
-		ray->v_distance = (dist_side_y - dist_delta_y);
-
-	// if (ray->index == RAY_NUM / 2)
-	// 	printf("v_distance %f\n", ray->v_distance);
-
-	// set_... 光が衝突した時の座標をrayにセット
-	double ray_len = ray->v_distance / cos(ray->angle);
-	double ray_dir_len = mat_distance_2d(ray->dir->vector);
-	double collision_x = abs_double(mat_get_x(ray->dir->vector) * ray_len / ray_dir_len);
-	double collision_y = abs_double(mat_get_y(ray->dir->vector) * ray_len / ray_dir_len);
-	ray->collide_at_x = collision_x;
-	ray->collide_at_y = collision_y;
-	if (ray->index == RAY_NUM / 2)
-	{
-		printf(" collison at x %f  collison at x %f\n", ray->collide_at_x, ray->collide_at_y);
-	}
+		ray_len = (dist_side_y - dist_delta_y);
+	ray->v_distance = ray_len * cos(ray->angle);
+	ray->collide_at_x = mat_get_x(ray->from) + ray_len * mat_get_x(ray->dir->vector);
+	ray->collide_at_y = mat_get_y(ray->from) + ray_len * mat_get_y(ray->dir->vector);
 
 	// とりあえずrayにsideの値をセット
+	// 東西南北の判定
 	if (side == X_SIDE)
-		ray->side = EAST;
+	{
+		if (ray->dir->vector->values[0][0] > 0 && ray->dir->vector->values[1][0] > 0)
+			ray->side = WEST;
+		if (ray->dir->vector->values[0][0] > 0 && ray->dir->vector->values[1][0] < 0)
+			ray->side = WEST;
+		if (ray->dir->vector->values[0][0] < 0 && ray->dir->vector->values[1][0] < 0)
+			ray->side = EAST;
+		if (ray->dir->vector->values[0][0] < 0 && ray->dir->vector->values[1][0] > 0)
+			ray->side = EAST;
+	}
 	else
-		ray->side = NORTH;
+	{
+		if (ray->dir->vector->values[0][0] > 0 && ray->dir->vector->values[1][0] > 0)
+			ray->side = NORTH;
+		if (ray->dir->vector->values[0][0] > 0 && ray->dir->vector->values[1][0] < 0)
+			ray->side = SOUTH;
+		if (ray->dir->vector->values[0][0] < 0 && ray->dir->vector->values[1][0] < 0)
+			ray->side = SOUTH;
+		if (ray->dir->vector->values[0][0] < 0 && ray->dir->vector->values[1][0] > 0)
+			ray->side = NORTH;
+	}
 }
 
 // draw_3d_imageとか？
