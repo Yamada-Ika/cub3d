@@ -159,6 +159,133 @@ static void	cast_ray(t_ray *ray, t_map *map)
 	}
 }
 
+/*
+typedef struct s_sprite
+{
+	double x;
+	double y;
+	t_vector *pos;
+}	t_sprite
+*/
+
+/*
+double	calc_dist_sprite(t_player *player, t_sprite *sprite)
+{
+	t_vector	*rpos_sprite;
+	double		x;
+	double		y;
+
+	x = sprite.x - mat_get_x(player->pos->vector);
+	y = sprite.y - mat_get_y(player->pos->vector);
+
+	rpos_sprite = 
+}
+*/
+
+// index 0 : 一番遠い
+/*void	sort_sprite(t_sprite *sprites)
+{
+	double	*store;
+
+	store = malloc(sprite_num);
+	for (i = 0; i < sprite_num; i++)
+	{
+		// rpos_sprite = mat_sub(player->pos, sprites[i].pos);
+		rpos_sprite = mat_add_new(ray->from, tmp);
+		dist_sprite = mat_get_dist(rpos_sprite);
+		store[i] = calc_dist_sprite(player, &sprites[i]);
+	}
+	while (true)
+	{
+		has_swap = false
+		for (i = 0; i < sprite_num - 1; i++)
+		{
+			if (store[i] < store[i+1])
+			{
+				swap(&store[i], &store[i+1])
+				has_swap = true
+			}
+		}
+		if (!has_swap)
+			break
+	}
+	free(store);
+}
+*/
+
+int	calc_start_x(double center, double width)
+{
+	return (center - width / 2);
+}
+
+int	calc_end_x(double center, double width)
+{
+	return (center + width / 2);
+}
+
+int	trans_x(int x)
+{
+	return (x);
+}
+
+int	trans_y(int y)
+{
+	return (y);
+}
+//*
+
+static int	get_sprite_x_on_window(t_sprite *sprite)
+{
+	
+}
+
+void	draw_sprite(double buf_v_dist[RAY_NUM], t_sprite *sprites)
+{
+	// 距離でソート。遠いやつがインデックス的に小さい
+	// sprites[0] <- 一番遠い	// 距離でソート。遠いやつがインデック
+	sort_sprites(sprites);
+
+	for (i = 0; i < sprite_num; i++)
+	{
+		perp_dist_sprite = get_perp_dist(sprites[i]) // 垂線を求める
+		x_on_window = get_sprite_x_on_window(&sprites[i]) // ウィンドウx軸上の位置
+		
+		line_length = H / perp_dist_sprite;
+		sprite_width = 100; // 適当
+
+		start_x = calc_start_x(x_on_window, sprite_width);
+		end_x = calc_end_x(x_on_window, sprite_width);
+		start_y = calc_start_y();
+		end_y = calc_end_y();
+
+		for (x = start_x; x < end_x; x++) // ウィンドウの座標
+		{
+			if (is_index_out_of_range())
+				break ;
+			for (y = start_y; x < end_y; y++)
+			{
+				if (is_index_out_of_range())
+					break ;
+				sprite_x = trans_x_to_sprite()
+				sprite_y = trans_y_to_sprite()
+				my_mlx_pixel_put(window->img_back, trans_x(start_x + x), trans_y(start_y + y), get_color_sprite(sprite_x, sprite_y));
+			}
+		}
+	}
+}
+*/
+
+static double	get_player_sprite_angle(t_vector *dir, t_vector *sprite)
+{
+	const double	dir_x = mat_get_x(dir);
+	const double	dir_y = mat_get_y(dir);
+	const double	sprite_x = mat_get_x(sprite);
+	const double	sprite_y = mat_get_y(sprite);
+	const double	inner_dir_sprite = (dir_x * sprite_x) + (dir_y * sprite_y);
+
+	return (acos(inner_dir_sprite / (mat_distance_2d(dir) * mat_distance_2d(sprite))));
+}
+
 // draw_3d_imageとか？
 void	get_3d_image(t_game *game)
 {
@@ -166,6 +293,8 @@ void	get_3d_image(t_game *game)
 	t_player	*player;
 	t_ray		*ray;
 	size_t		ray_index;
+	double		buf_v_dist[RAY_NUM];
+	// buf v_distanceを格納
 
 	// world_map = game->map->map;
 	player = game->player;
@@ -182,10 +311,14 @@ void	get_3d_image(t_game *game)
 				game->player->pos->vector,
 				game->player->dir->vector); // 光線の向きとかセット
 		cast_ray(ray, game->map); // 光線を伸ばして衝突判定
+		buf_v_dist[ray_index] = ray->v_distance;
 		render_3d(game->window, ray, game->map, game->player); // windowに描画
 		//draw_ray_on_minimap(game->window, ray); //minimapに描画
 		ray_index++;
 	}
+
+	draw_sprite(buf_v_dist);
+
 	render_minimap(game->window, game->map->map, player);
 }
 
