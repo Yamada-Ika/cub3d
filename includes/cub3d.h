@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/07 01:54:50 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/09 22:57:17 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,19 @@
 # define H 700
 # define WIN_TITLE "cub3d"
 # define FOV M_PI_2
-# define MOVE_STEP 0.1
-# define PERSPECT_ROT_RATE 0.1
+# define MOVE_STEP 0.05
+# define PERSPECT_ROT_RATE 0.05
 # define BLOCK_SIZE 256
-# define DELTA_T 0.03
+// # define DELTA_T 0.03
+# define DELTA_T 0.1
 # define LEN_RAY 100
 # define IMG_PLANE_LEN 2
 # define MINIMAP_SIZE 150
 # define MINIMAP_POS_X 80
 # define MINIMAP_POS_Y 80
 # define MINIMAP_ZOOM 0.1
-# define MINIMAP_DELTA_T 0.01
-# define MINIMAP_DELTA_R 0.05
+# define MINIMAP_DELTA_T 0.07
+# define MINIMAP_DELTA_R 0.1
 # define MINIMAP_DELTA_THETA 0.01
 # define MOUSE_SENSITIVITY 0.2
 # define MOUSE_ROT_INTERVAL 20
@@ -117,6 +118,7 @@ typedef struct s_player
 {
 	t_affine	*pos;
 	t_affine	*dir;
+	int			offset;
 }	t_player;
 
 typedef struct s_ray

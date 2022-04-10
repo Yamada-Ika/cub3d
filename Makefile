@@ -3,7 +3,7 @@ CC		:=	gcc
 CFLAGS	:=	-MMD -MP
 
 ifdef WITH_DEBUG
-	CFLAGS += -fsanitize=address -g
+	CFLAGS += -fsanitize=address -pg
 endif
 
 OBJ_DIR	:= ./objs

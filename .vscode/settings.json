@@ -5,6 +5,8 @@
 		"libmat.h": "c",
 		"*.tcc": "c",
 		"stdio.h": "c",
-		"x.h": "c"
+		"x.h": "c",
+		"float.h": "c",
+		"stat.h": "c"
 	}
 }
