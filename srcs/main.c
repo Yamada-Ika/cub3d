@@ -11,12 +11,11 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "parse.h"
 #include "mlx_window.h"
 #include <sys/time.h>
 
-int parse(t_config *cf, int ac, char **av);
 int	init_game(t_game *game, t_config *cf);
-void	debug_config(t_config *this);
 
 static void	start_cub3d(t_game *game)
 {
@@ -61,7 +60,7 @@ int main(int ac, char **av)
 	t_error		err;
 
 	err = parse(&cf, ac, av);
-	if (err != NO_ERR) // 粒度大きすぎて微妙だけど、main関数は綺麗
+	if (err != NO_ERR)
 	{
 		error(err);
 		return (1);
@@ -73,9 +72,10 @@ int main(int ac, char **av)
 		return (1);
 	}
 
-	// debug_config(&cf);
+	debug_config(&cf);
+	debug_game(&game);
 
-	start_cub3d(&game); // ゲームスタート的な
+	start_cub3d(&game);
 	return (0);
 }
 

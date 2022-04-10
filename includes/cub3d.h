@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:29:56 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/04/09 22:57:17 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/04/10 23:57:25 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,38 +63,15 @@ typedef enum e_error
 	NON_PLAYER,
 }	t_error;
 
-typedef enum e_state
-{
-	FAIL,
-	SUCCESS,
-	X_SIDE,
-	Y_SIDE,
-}	t_state;
-
 typedef enum e_side
 {
+	X_SIDE,
+	Y_SIDE,
 	NORTH,
 	SOUTH,
 	WEST,
 	EAST,
 }	t_side;
-
-typedef struct s_config
-{
-	char	*no_tex_path;
-	char	*so_tex_path;
-	char	*we_tex_path;
-	char	*ea_tex_path;
-	int		floor_color;
-	int		ceilling_color;
-	char	**map;
-	size_t	map_col_size;
-	size_t	map_row_size;
-	double	pos_x;
-	double	pos_y;
-	double	dir_x;
-	double	dir_y;
-}	t_config;
 
 typedef struct s_texture
 {
@@ -102,6 +79,13 @@ typedef struct s_texture
 	int	height;
 	t_img	*img;
 }	t_texture;
+
+typedef struct s_sprite
+{
+	double		x;
+	double		y;
+	t_texture	*tex;
+}	t_sprite;
 
 typedef struct s_map
 {
@@ -112,6 +96,8 @@ typedef struct s_map
 	unsigned int	floor_color;
 	unsigned int	ceilling_color;
 	t_matrix		*map;
+	t_sprite		*sprites;
+	size_t			sprite_num;
 }	t_map;
 
 typedef struct s_player

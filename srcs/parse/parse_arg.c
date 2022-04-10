@@ -1,111 +1,81 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_arg.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/10 17:57:26 by iyamada           #+#    #+#             */
+/*   Updated: 2022/04/10 18:21:05 by iyamada          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "cub3d.h"
+#include "parse.h"
 
-bool	has_ext(const char *path, const char *ext);
-int		parse_file_path(const char *path);
-int 	str_to_rgb(const char *s);
-char	*append(char *dst, char *src);
-void	set_color(t_config *this, const char *line);
-size_t	count_row(char **strs);
-size_t	count_col(char **strs);
-
-bool	validate_arg_num(int ac)
+int	read_map(t_config *this, const int fd, char *line)
 {
-	return (ac != 2);
-}
-
-char	*remove_char(const char *s, const char c)
-{
-	char	**strs;
-	char	*rs;
-	size_t	i;
-
-	strs = ft_split(s, c);
-	if (strs == NULL)
-		return (NULL);
-	i = 0;
-	rs = ft_strdup("");
-	while (strs[i] != NULL)
-	{
-		rs = append(rs, strs[i]);
-		i++;
-	}
-	return (rs);
-}
-
-void	set_texture_path(t_config *this, const char *line)
-{
-	if (line[0] == 'N' && line[1] == 'O')
-	{
-		if (line[2] != '\0')
-			this->no_tex_path = remove_char(&line[3], '\n');
-	}
-	if (line[0] == 'S' && line[1] == 'O')
-	{
-		if (line[2] != '\0')
-			this->so_tex_path = remove_char(&line[3], '\n');
-	}
-	if (line[0] == 'W' && line[1] == 'E')
-	{
-		if (line[2] != '\0')
-			this->we_tex_path = remove_char(&line[3], '\n');
-	}
-	if (line[0] == 'E' && line[1] == 'A')
-	{
-		if (line[2] != '\0')
-			this->ea_tex_path = remove_char(&line[3], '\n');
-	}
-}
-
-int	init_config(t_config *this, const char *file)
-{
-	size_t	read_cnt;
-	char	*line;
 	char	*one_line;
-	char	**char_map;
-	int		fd;
 
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (CUB_FILE_ERR);
 	one_line = ft_strdup("");
 	if (one_line == NULL)
-	{
-		close(fd);
 		return (MEM_ERR);
-	}
-	read_cnt = 0;
+	one_line = append(one_line, line);
 	while (true)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		if (line[0] != '\n')
-			read_cnt++;
-		if (read_cnt <= 4)
+		one_line = append(one_line, line);
+		if (one_line == NULL)
+			return (MEM_ERR);
+	}
+	set_map(this, one_line);
+	if (this->map == NULL)
+		return (MEM_ERR);
+	return (NO_ERR);
+}
+
+int	read_cub_and_set(t_config *this, int fd)
+{
+	char	*line;
+	t_error	err;
+
+	err = NO_ERR;
+	while (true)
+	{
+		line = get_next_line(fd);
+		if (line == NULL)
+			break ;
+		if (line[0] == '\n')
+			;
+		else if (is_texture_info(line))
 			set_texture_path(this, line);
-		else if (5 <= read_cnt && read_cnt <= 6)
+		else if (is_color_info(line))
 			set_color(this, line);
+		else if (is_sprite_info(line))
+			set_sprite(this, line);
 		else
 		{
-			one_line = append(one_line, line);
-			if (one_line == NULL)
-			{
-				close(fd);
-				return (MEM_ERR);
-			}
+			err = read_map(this, fd, line);
 			continue ;
 		}
 		free(line);
 	}
-	this->map = ft_split(one_line, '\n');
-	if (this->map == NULL)
-	{
-		close(fd);
-		return (MEM_ERR);
-	}
+	return (err);
+}
+
+int	set_config(t_config *this, const char *file)
+{
+	char	*line;
+	int		fd;
+	t_error	err;
+
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		return (CUB_FILE_ERR);
+	err = read_cub_and_set(this, fd);
 	close(fd);
-	return (NO_ERR);
+	return (err);
 }
 
 int	parse_arg(t_config *this, int ac, char **av)
@@ -114,10 +84,12 @@ int	parse_arg(t_config *this, int ac, char **av)
 
 	if (validate_arg_num(ac))
 		return (INVALID_ARG_NUM);
+	print_progress("parse file");
 	err = parse_file_path(av[1]);
 	if (err != NO_ERR)
 		return (err);
-	err = init_config(this, av[1]);
+	print_progress("set config");
+	err = set_config(this, av[1]);
 	if (err != NO_ERR)
 		return (err);
 	this->map_row_size = count_row(this->map);

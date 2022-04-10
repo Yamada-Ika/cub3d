@@ -1,9 +1,16 @@
-#include "cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_game.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/10 17:57:18 by iyamada           #+#    #+#             */
+/*   Updated: 2022/04/10 23:55:38 by iyamada          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-size_t	count_row(char **strs);
-size_t	count_col(char **strs);
-
-void	debug_config(t_config *this);
+#include "parse.h"
 
 static t_matrix	*strs_to_map(char **map)
 {
@@ -70,6 +77,25 @@ static void	*get_mlx(t_window *this)
 	return (this->mlx);
 }
 
+t_sprite	*new_sprites(void	*mlx, t_list *paths, size_t size)
+{
+	t_sprite	*sprites;
+	size_t		i;
+
+	sprites = (t_sprite *)ft_calloc(size, sizeof(t_sprite));
+	if (sprites == NULL)
+		return (NULL);
+	i = 0;
+	while (i < size)
+	{
+		sprites[i].tex = new_texture(mlx, paths->content);
+		sprites[i].x = 2.5f;
+		sprites[i].y = 2.5f;
+		i++;
+	}
+	return (sprites);
+}
+
 int	init_game(t_game *game, t_config *cf)
 {
 	game->window = init_window(WIN_W, WIN_H, WIN_TITLE); // set_window
@@ -86,6 +112,8 @@ int	init_game(t_game *game, t_config *cf)
 	game->map->so = new_texture(get_mlx(game->window), cf->so_tex_path);
 	game->map->we = new_texture(get_mlx(game->window), cf->we_tex_path);
 	game->map->ea = new_texture(get_mlx(game->window), cf->ea_tex_path);
+	game->map->sprites = new_sprites(get_mlx(game->window), cf->sprite_paths, cf->sprite_num);
+	game->map->sprite_num = cf->sprite_num;
 	game->map->floor_color = cf->floor_color;
 	game->map->ceilling_color = cf->ceilling_color;
 	return (NO_ERR);

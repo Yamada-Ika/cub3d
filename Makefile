@@ -25,10 +25,14 @@ SRCS	:=	main.c \
 			handle_perspective.c \
 			handle_movement.c
 # parser
-SRCS	+= destroy_config.c parse_arg2.c\
-init_game.c      parse_config.c\
-parse.c          utils.c\
-parse_arg.c
+SRCS	+= destroy_config.c    parse_player_info.c\
+init_game.c         set_color.c\
+parse.c             set_sprite.c\
+parse_arg.c         set_texture_path.c\
+parse_arg2.c        set_texture_path2.c\
+parse_arg3.c        utils.c\
+parse_config.c      utils2.c\
+parse_map.c
 OBJS	:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEPS	:= $(OBJS:.o=.d)
 LIBMAT_DIR := ./libmat

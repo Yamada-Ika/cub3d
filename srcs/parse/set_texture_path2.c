@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_arg2.c                                       :+:      :+:    :+:   */
+/*   set_texture_path2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 17:57:36 by iyamada           #+#    #+#             */
-/*   Updated: 2022/04/10 17:57:36 by iyamada          ###   ########.fr       */
+/*   Created: 2022/04/10 17:58:28 by iyamada           #+#    #+#             */
+/*   Updated: 2022/04/10 17:58:28 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-int	parse_file_path(const char *path)
+char	*remove_char(const char *s, const char c)
 {
-	if (!has_ext(path, "cub"))
-		return (INVALID_CUB_FILE);
-	return (NO_ERR);
-}
+	char	**strs;
+	char	*rs;
+	size_t	i;
 
-char	*append(char *dst, char *src)
-{
-	char	*tmp_1;
-	char	*tmp_2;
-	char	*new;
-
-	tmp_1 = dst;
-	tmp_2 = src;
-	new = ft_strjoin(dst, src);
-	free(tmp_1);
-	free(tmp_2);
-	return (new);
-}
-
-void	set_map(t_config *this, char *line)
-{
-	this->map = ft_split(line, '\n');
+	strs = ft_split(s, c);
+	if (strs == NULL)
+		return (NULL);
+	i = 0;
+	rs = ft_strdup("");
+	while (strs[i] != NULL)
+	{
+		rs = append(rs, strs[i]);
+		i++;
+	}
+	return (rs);
 }

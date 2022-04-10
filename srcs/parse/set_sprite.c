@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_arg2.c                                       :+:      :+:    :+:   */
+/*   set_sprite.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 17:57:36 by iyamada           #+#    #+#             */
-/*   Updated: 2022/04/10 17:57:36 by iyamada          ###   ########.fr       */
+/*   Created: 2022/04/10 18:20:24 by iyamada           #+#    #+#             */
+/*   Updated: 2022/04/11 00:16:59 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-int	parse_file_path(const char *path)
+void	set_sprite(t_config *this, const char *line)
 {
-	if (!has_ext(path, "cub"))
-		return (INVALID_CUB_FILE);
-	return (NO_ERR);
-}
+	t_list	*new;
+	size_t	start;
+	char	*path;
 
-char	*append(char *dst, char *src)
-{
-	char	*tmp_1;
-	char	*tmp_2;
-	char	*new;
-
-	tmp_1 = dst;
-	tmp_2 = src;
-	new = ft_strjoin(dst, src);
-	free(tmp_1);
-	free(tmp_2);
-	return (new);
-}
-
-void	set_map(t_config *this, char *line)
-{
-	this->map = ft_split(line, '\n');
+	path = &line[1];
+	start = next_nonspace(path);
+	new = ft_lstnew(remove_char(&path[start], '\n'));
+	if (this->sprite_num == 0)
+		this->sprite_paths = new;
+	else
+		ft_lstadd_back(&this->sprite_paths, new);
+	this->sprite_num++;
 }
