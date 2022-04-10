@@ -6,6 +6,8 @@ EA ./map/east.xpm
 F 220,100,0
 C 225,30,0
 
+S ./map/sprite.xpm
+
 11111
 1E001
 10001
