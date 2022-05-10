@@ -104,8 +104,10 @@ void	render(t_cub *cub)
 		double side_dist_y;
 
 		//length of ray from one x or y-side to next x or y-side
-		double delta_dist_x = sqrt(1 + (ray_dir_y * ray_dir_y) / (ray_dir_x * ray_dir_x));
-		double delta_dist_y = sqrt(1 + (ray_dir_x * ray_dir_x) / (ray_dir_y * ray_dir_y));
+		// double delta_dist_x = sqrt(1 + (ray_dir_y * ray_dir_y) / (ray_dir_x * ray_dir_x));
+		// double delta_dist_y = sqrt(1 + (ray_dir_x * ray_dir_x) / (ray_dir_y * ray_dir_y));
+		double delta_dist_x = (ray_dir_x == 0) ? 1e30 : fabs(1 / ray_dir_x);
+		double delta_dist_y = (ray_dir_y == 0) ? 1e30 : fabs(1 / ray_dir_y);
 		double perp_wall_dist;
 
 		//what direction to step in x or y-direction (either +1 or -1)
@@ -242,7 +244,8 @@ void	render(t_cub *cub)
 		double	itr_tex_y = 0.0;
 		for (int i = draw_start; i < draw_end; i++) {
 			unsigned int color;
-			color = get_texture_color(tex, tex_x, itr_tex_y);
+			int tex_y = (int)itr_tex_y;
+			color = get_texture_color(tex, tex_x, tex_y);
 			if (side == NORTH || side == SOUTH)
 				color = (color >> 1) & 0b011111110111111101111111; // be darker
 			cub->buf[i] = color;
