@@ -51,7 +51,7 @@ void	dump_cub(t_cub *cub)
 			else if (cub->map->map[i][j] == 0)
 				fprintf(stderr, " ");
 			else
-				fprintf(stderr, "￭");
+				fprintf(stderr, "█");
 			if (j == cub->map->width -1)
 				fprintf(stderr, "\n");
 		}
@@ -146,18 +146,18 @@ void	render(t_cub *cub)
 				side_dist_x += delta_dist_x;
 				map_x += step_x;
 				if (ray_dir_x > 0)
-					side = WEST;
+					side = NORTH;
 				else
-					side = EAST;
+					side = SOUTH;
 			}
 			else
 			{
 				side_dist_y += delta_dist_y;
 				map_y += step_y;
 				if (ray_dir_y > 0)
-					side = NORTH;
+					side = WEST;
 				else
-					side = SOUTH;
+					side = EAST;
 			}
 			//Check if ray has hit a wall
 			if (cub->map->map[map_x][map_y] > 0)
@@ -165,7 +165,7 @@ void	render(t_cub *cub)
 		}
 
 		//Calculate distance projected on camera direction (Euclidean distance would give fisheye effect!)
-		if(side == WEST || side == EAST)
+		if(side == NORTH || side == SOUTH)
 			perp_wall_dist = (side_dist_x - delta_dist_x);
 		else
 			perp_wall_dist = (side_dist_y - delta_dist_y);
@@ -211,6 +211,22 @@ void	render(t_cub *cub)
 		}
 		int	tex_x = tex->width * tex_x_on_map;
 		double	tex_step = tex->height / (draw_end - draw_start);
+
+		if (x == w/2) {
+			char *side_kw[] = {"NORTH", "SOUTH", "WEST", "EAST"};
+			fprintf(stderr, "-- dump var in draw --\n");
+			fprintf(stderr, "ray index       : %d\n", x);
+			fprintf(stderr, "side            : %d\n", side);
+			fprintf(stderr, "side            : %s\n", side_kw[side]);
+			fprintf(stderr, "pos_x           : %f\n", pos_x);
+			fprintf(stderr, "pos_y           : %f\n", pos_y);
+			fprintf(stderr, "ray_dir_x       : %f\n", ray_dir_x);
+			fprintf(stderr, "ray_dir_y       : %f\n", ray_dir_y);
+			fprintf(stderr, "perp_wall_dist  : %f\n", perp_wall_dist);
+			fprintf(stderr, "ray_dir_y       : %f\n", ray_dir_y);
+			fprintf(stderr, "wall_x          : %f\n", wall_x);
+			fprintf(stderr, "tex_x           : %f\n", tex_x);
+		}
 
 		// fill color to buffer
 		for (int i = 0; i < draw_start; i++) {
@@ -757,21 +773,6 @@ void	dump_config(t_config *config)
 		}
 	}
 	fprintf(stderr, "-- dump config tail --\n");
-}
-
-static t_map	*new_map(void)
-{
-	return ((t_map *)ft_calloc(1, sizeof(t_map)));
-}
-
-static t_img	*new_img(void)
-{
-	return ((t_img *)ft_calloc(1, sizeof(t_img)));
-}
-
-static t_texture	*new_tex(void)
-{
-	return ((t_texture *)ft_calloc(1, sizeof(t_texture)));
 }
 
 t_texture	*new_texture(t_cub *cub, char *file)
