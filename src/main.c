@@ -353,7 +353,8 @@ int	handle_key_hook(int keycode, void *params)
 
 void	set_hooks(t_cub *cub)
 {
-	mlx_key_hook(cub->window->mlx_win, handle_key_hook, cub);
+	// mlx_key_hook(cub->window->mlx_win, handle_key_hook, cub);
+	mlx_hook(cub->window->mlx_win, KeyPress, KeyPressMask, handle_key_hook, cub);
 }
 
 // ----------------- parser -----------------
