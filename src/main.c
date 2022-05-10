@@ -104,8 +104,8 @@ void	render(t_cub *cub)
 		double side_dist_y;
 
 		//length of ray from one x or y-side to next x or y-side
-		double delta_dist_x = (ray_dir_x == 0) ? 1e30 : fabs(1 / ray_dir_x);
-		double delta_dist_y = (ray_dir_y == 0) ? 1e30 : fabs(1 / ray_dir_y);
+		double delta_dist_x = sqrt(1 + (ray_dir_y * ray_dir_y) / (ray_dir_x * ray_dir_x));
+		double delta_dist_y = sqrt(1 + (ray_dir_x * ray_dir_x) / (ray_dir_y * ray_dir_y));
 		double perp_wall_dist;
 
 		//what direction to step in x or y-direction (either +1 or -1)
@@ -175,9 +175,11 @@ void	render(t_cub *cub)
 
 		//calculate lowest and highest pixel to fill in current stripe
 		int draw_start = -line_height / 2 + h / 2;
-		if(draw_start < 0)draw_start = 0;
+		if (draw_start < 0)
+			draw_start = 0;
 		int draw_end = line_height / 2 + h / 2;
-		if(draw_end >= h)draw_end = h - 1;
+		if (draw_end >= h)
+			draw_end = h - 1;
 
 		//choose wall color
 		// calculate value of wall_x
@@ -210,8 +212,9 @@ void	render(t_cub *cub)
 			tex_x_on_map = (1.0 - (wall_x - (int)wall_x));
 		}
 		int	tex_x = tex->width * tex_x_on_map;
-		double	tex_step = tex->height / (draw_end - draw_start);
+		double	tex_step = tex->height / (double)line_height;
 
+		// dump
 		if (x == w/2) {
 			char *side_kw[] = {"NORTH", "SOUTH", "WEST", "EAST"};
 			fprintf(stderr, "-- dump var in draw --\n");
@@ -225,39 +228,31 @@ void	render(t_cub *cub)
 			fprintf(stderr, "perp_wall_dist  : %f\n", perp_wall_dist);
 			fprintf(stderr, "ray_dir_y       : %f\n", ray_dir_y);
 			fprintf(stderr, "wall_x          : %f\n", wall_x);
-			fprintf(stderr, "tex_x           : %f\n", tex_x);
+			fprintf(stderr, "tex_x           : %d\n", tex_x);
+			fprintf(stderr, "tex->width      : %d\n", tex->width);
+			fprintf(stderr, "tex->height     : %d\n", tex->height);
+			fprintf(stderr, "line_height     : %d\n", line_height);
+			fprintf(stderr, "tex_step        : %f\n", tex_step);
 		}
 
-		// fill color to buffer
+		// fill buffer
 		for (int i = 0; i < draw_start; i++) {
-			cub->buf[i] = cub->map->floor;
+			cub->buf[i] = cub->map->ceil;
 		}
-		int	itr_tex_y = 0;
+		double	itr_tex_y = 0.0;
 		for (int i = draw_start; i < draw_end; i++) {
-			cub->buf[i] = get_texture_color(tex, tex_x, itr_tex_y);
+			unsigned int color;
+			color = get_texture_color(tex, tex_x, itr_tex_y);
+			if (side == NORTH || side == SOUTH)
+				color = (color >> 1) & 0b011111110111111101111111; // be darker
+			cub->buf[i] = color;
 			itr_tex_y += tex_step;
 		}
 		for (int i = draw_end; i < WIN_H; i++) {
-			cub->buf[i] = cub->map->ceil;
+			cub->buf[i] = cub->map->floor;
 		}
 
-		// unsigned int color;
-		// switch(cub->map->map[map_x][map_y])
-		// {
-		// 	case 1:  color = RGB_Red;  break; //red
-		// 	case 2:  color = RGB_Green;  break; //green
-		// 	case 3:  color = RGB_Blue;   break; //blue
-		// 	case 4:  color = RGB_White;  break; //white
-		// 	default: color = RGB_Yellow; break; //yellow
-		// }
-
-		// //give x and y sides different brightness
-		// if (side == NORTH || side == EAST)
-		// 	color = color / 2;
-
-		//draw the pixels of the stripe as a vertical line
-		// draw_vertical_line(cub, x, draw_start, draw_end, color);
-
+		// draw buffer on window
 		draw_buffer(cub, x);
 
 		// clear buffer
@@ -273,32 +268,24 @@ bool	can_move(int keycode, t_cub *cub)
 	if (keycode == W_KEY) // move forward
 	{
 		// collide wall ?
-		if (cub->map->map[(int)(cub->player->pos_x)][(int)(cub->player->pos_y + cub->player->dir_y * MOVE_STEP)] == 0)
-		{
-			cub->player->pos_y += cub->player->dir_y * MOVE_STEP;
-			return (true);
-		}
-		if (cub->map->map[(int)(cub->player->pos_x + cub->player->dir_x * MOVE_STEP)][(int)(cub->player->pos_y)] == 0)
-		{
-			cub->player->pos_x += cub->player->dir_x * MOVE_STEP;
-			return (true);
-		}
-		return (false);
+		if (cub->map->map[(int)(cub->player->pos_x)][(int)(cub->player->pos_y + cub->player->dir_y * MOVE_STEP)] != 0)
+			return (false);
+		cub->player->pos_y += cub->player->dir_y * MOVE_STEP;
+		if (cub->map->map[(int)(cub->player->pos_x + cub->player->dir_x * MOVE_STEP)][(int)(cub->player->pos_y)] != 0)
+			return (false);
+		cub->player->pos_x += cub->player->dir_x * MOVE_STEP;
+		return (true);
 	}
 	if (keycode == S_KEY) // move back
 	{
 		// collide wall ?
-		if (cub->map->map[(int)(cub->player->pos_x)][(int)(cub->player->pos_y - cub->player->dir_y * MOVE_STEP)] == 0)
-		{
-			cub->player->pos_y -= cub->player->dir_y * MOVE_STEP;
-			return (true);
-		}
-		if (cub->map->map[(int)(cub->player->pos_x-cub->player->dir_x * MOVE_STEP)][(int)(cub->player->pos_y)] == 0)
-		{
-			cub->player->pos_x -= cub->player->dir_x * MOVE_STEP;
-			return (true);
-		}
-		return (false);
+		if (cub->map->map[(int)(cub->player->pos_x)][(int)(cub->player->pos_y - cub->player->dir_y * MOVE_STEP)] != 0)
+			return (false);
+		cub->player->pos_y -= cub->player->dir_y * MOVE_STEP;
+		if (cub->map->map[(int)(cub->player->pos_x-cub->player->dir_x * MOVE_STEP)][(int)(cub->player->pos_y)] != 0)
+			return (false);
+		cub->player->pos_x -= cub->player->dir_x * MOVE_STEP;
+		return (true);
 	}
 	if (keycode == R_ARROW) // see right
 	{
@@ -350,6 +337,8 @@ int	handle_key_hook(int keycode, void *params)
 		render(cub);
 	}
 }
+
+#include <X11/X.h>
 
 void	set_hooks(t_cub *cub)
 {

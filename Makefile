@@ -1,6 +1,9 @@
 CC			:= gcc
 CFLAGS		:= -MMD -MP #-g -fsanitize=address #-Wall -Wextra -Werror
-COPTS		:= -I include -Ilibft -Llibft -lft -Iminilibx-linux -Lminilibx-linux -I/usr/X11/include -L/usr/X11/include/../lib -lXext -lX11 -lm
+COPTS		:= -I include -I libft -L libft -l ft \
+				-I minilibx-linux -L minilibx-linux \
+				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
+				-l m
 
 # libft
 LIBFT_DIR	:= libft
@@ -41,7 +44,8 @@ $(LIBFT_A): empty
 empty:
 
 obj/%.o: src/%.c
-	$(CC) $(CFLAGS) -o $@ -c $^ -Iinclude -Iminilibx-linux -Ilibft
+	# $(CC) $(CFLAGS) -o $@ -c $^ -Iinclude -Iminilibx-linux -Ilibft
+	$(CC) $(CFLAGS) -o $@ -c $^ $(COPTS)
 
 $(MLX_A): empty
 	make -C $(MLX_DIR)

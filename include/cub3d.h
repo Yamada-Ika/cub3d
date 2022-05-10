@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/10 12:44:48 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/10 17:22:02 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 #define RGB_White 0xffffff
 #define RGB_Black 0x000000
 #define RGB_Yellow 0xffff00
-#define MOVE_STEP 0.1
-#define ROT_STEP 0.01
+#define MOVE_STEP 0.5
+#define ROT_STEP 0.05
 
 typedef struct s_player {
 	double	pos_x;
