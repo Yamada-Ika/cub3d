@@ -363,13 +363,18 @@ void	render(t_cub *cub)
 
 		double	itr_x = 0.0;
 		double	itr_y = 0.0;
+
+		// !TODO Should be more simple
+		if (-sprite_width / 2 + sprite_x_on_window < 0) {
+			itr_x = -(-sprite_width / 2 + sprite_x_on_window); // offset
+		}
+
 		for (int x = draw_start_x; x < draw_end_x; x++) {
-			// the condition sprite should be drawn
-			// 1) it's in front of camera plane so you don't see things behind you
-			// 2) it's on the window
-			// 3) distance from player is shoter than wall
-			if (trans_y <= 0 || x < 0 || WIN_W < x || trans_y >= cub->sprite->buf_perp[x])
+			// !TODO If possible, cut this
+			if (trans_y <= 0 || x < 0 || WIN_W < x || trans_y >= cub->sprite->buf_perp[x]) {
+				itr_x += step_sprite_tex_x;
 				continue ;
+			}
 
 			itr_y = 0.0;
 			for (int y = draw_start_y; y < draw_end_y; y++) {
@@ -381,11 +386,9 @@ void	render(t_cub *cub)
 					continue ;
 				unsigned int color = get_texture_color(sprites[i].tex, tex_x, tex_y);
 
-				// fprintf(stderr, "color              %x\n", color);
-
-				if (color == 0x000000) {
-					continue ;
-				}
+				// if (color == 0x000000) {
+				// 	continue ;
+				// }
 				put_pixel(cub, x, y, color);
 			}
 			itr_x += step_sprite_tex_x;
