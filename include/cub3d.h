@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/10 17:22:02 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/11 23:20:34 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,21 @@ typedef struct s_texture
 	t_img	*img;
 }	t_texture;
 
+typedef struct s_sprite
+{
+	t_texture	*tex;
+	double	x;
+	double	y;
+	double	dist_from_player;
+}	t_sprite;
+
+typedef struct s_sprite_info
+{
+	t_sprite	*sprites;
+	int	num;
+	double		*buf_perp;
+}	t_sprite_info;
+
 typedef struct s_map {
 	int			**map;
 	int 		width;
@@ -68,7 +83,7 @@ typedef struct s_cub {
 	t_window		*window;
 	t_player		*player;
 	t_map			*map;
-	unsigned int	*buf;
+	t_sprite_info	*sprite;
 }	t_cub;
 
 #endif
