@@ -12,7 +12,9 @@ LIBFT_A		:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))
 
 # cub3d
 NAME		:= cub3d
-SRCS		:= handle_window.c main.c position_generator.c
+SRCS		:= handle_window.c      parse.c\
+hooks.c              position_generator.c\
+main.c
 OBJS		:= $(SRCS:%.c=%.o)
 SRCS		:= $(addprefix src/, $(SRCS))
 OBJS		:= $(addprefix obj/, $(OBJS))

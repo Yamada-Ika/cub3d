@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/12 19:55:35 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/12 22:07:24 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,7 @@ typedef struct s_cub {
 	t_map			*map;
 	t_sprite_info	*sprite;
 }	t_cub;
+
+void	render(t_cub *cub);
 
 #endif
