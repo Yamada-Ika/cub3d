@@ -386,9 +386,9 @@ void	render(t_cub *cub)
 					continue ;
 				unsigned int color = get_texture_color(sprites[i].tex, tex_x, tex_y);
 
-				// if (color == 0x000000) {
-				// 	continue ;
-				// }
+				if (color == 0x000000) {
+					continue ;
+				}
 				put_pixel(cub, x, y, color);
 			}
 			itr_x += step_sprite_tex_x;
