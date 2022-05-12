@@ -856,14 +856,20 @@ t_error	parseConfig(t_config *config, t_cub *cub)
 	cub->map->west = new_texture(cub, config->we_tex_path);
 
 	// sprite
+	// !TODO How to define sprite position
 	cub->sprite = ft_calloc(1, sizeof(t_sprite_info));
 	cub->sprite->num = config->sp_num;
 	cub->sprite->sprites = ft_calloc(config->sp_num, sizeof(t_sprite));
 	cub->sprite->buf_perp = ft_calloc(WIN_W, sizeof(double));
 	for (int i = 0; i < config->sp_num; i++) {
 		cub->sprite->sprites->tex = new_texture(cub, config->sp_texs->data[i]);
+		// sprite_position_generator(cub);
 		cub->sprite->sprites->x = 10.0f;
 		cub->sprite->sprites->y = 15.0f;
+		// cub->sprite->sprites[i].tex = new_texture(cub, config->sp_texs->data[i]);
+		// // sprite_position_generator(cub);
+		// cub->sprite->sprites[i].x = 10.0f;
+		// cub->sprite->sprites[i].y = 15.0f;
 	}
 	return (NO_ERR);
 }
