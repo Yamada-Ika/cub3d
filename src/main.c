@@ -299,18 +299,18 @@ void	render(t_cub *cub)
 
 	for (int i = 0; i < cub->sprite->num; i++) {
 		// プレイヤーからの相対位置
-		double	rsp_pos_x = sprites[i].x - pos_x;
-		double	rsp_pos_y = sprites[i].y - pos_y;
+		double	sp_rpos_x = sprites[i].x - pos_x;
+		double	sp_rpos_y = sprites[i].y - pos_y;
 
 		// transform sprite with the inverse camera matrix
 		// [ planeX   dirX ] -1                                       [ dirY      -dirX ]
 		// [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
 		// [ planeY   dirY ]                                          [ -planeY  planeX ]
-		double	inv_det = 1 / (plane_x * dir_y - dir_x * plane_y);
+		double	inv_det = 1.0 / (plane_x * dir_y - dir_x * plane_y);
 
 		// transform camera cordinate
-		double	trans_x = inv_det * (dir_y * rsp_pos_x + (-dir_x) * rsp_pos_y);
-		double	trans_y = inv_det * ((-plane_x) * rsp_pos_x + plane_x * rsp_pos_y);
+		double	trans_x = inv_det * (dir_y * sp_rpos_x + (-dir_x) * sp_rpos_y);
+		double	trans_y = inv_det * ((-plane_y) * sp_rpos_x + plane_x * sp_rpos_y);
 
 		// sprite x on window
 		int	sprite_x_on_window = (WIN_W / 2) * (trans_x / trans_y + 1);
@@ -320,8 +320,8 @@ void	render(t_cub *cub)
 		fprintf(stderr, "sprites[%d].y            %lf\n", i, sprites[i].y);
 		fprintf(stderr, "pos_x                    %lf\n", pos_x);
 		fprintf(stderr, "pos_y                    %lf\n", pos_y);
-		fprintf(stderr, "rsp_pos_x                %lf\n", rsp_pos_x);
-		fprintf(stderr, "rsp_pos_y                %lf\n", rsp_pos_y);
+		fprintf(stderr, "sp_rpos_x                %lf\n", sp_rpos_x);
+		fprintf(stderr, "sp_rpos_y                %lf\n", sp_rpos_y);
 		fprintf(stderr, "plane_x                  %lf\n", plane_x);
 		fprintf(stderr, "plane_y                  %lf\n", plane_y);
 		fprintf(stderr, "dir_y                    %lf\n", dir_y);
@@ -342,7 +342,7 @@ void	render(t_cub *cub)
 		int	draw_end_y = sprite_height / 2 + WIN_H / 2;
 		if (draw_end_y >= WIN_H)
 			draw_end_y = WIN_H - 1;
-		
+
 		// calculate width of sprite
 		int	sprite_width = abs((int)(WIN_H / trans_y));
 		int	draw_start_x = -sprite_width / 2 + sprite_x_on_window;
@@ -386,9 +386,9 @@ void	render(t_cub *cub)
 					continue ;
 				unsigned int color = get_texture_color(sprites[i].tex, tex_x, tex_y);
 
-				if (color == 0x000000) {
-					continue ;
-				}
+				// if (color == 0x000000) {
+				// 	continue ;
+				// }
 				put_pixel(cub, x, y, color);
 			}
 			itr_x += step_sprite_tex_x;
@@ -862,14 +862,13 @@ t_error	parseConfig(t_config *config, t_cub *cub)
 	cub->sprite->sprites = ft_calloc(config->sp_num, sizeof(t_sprite));
 	cub->sprite->buf_perp = ft_calloc(WIN_W, sizeof(double));
 	for (int i = 0; i < config->sp_num; i++) {
-		cub->sprite->sprites->tex = new_texture(cub, config->sp_texs->data[i]);
+		// cub->sprite->sprites->tex = new_texture(cub, config->sp_texs->data[i]);
+		// cub->sprite->sprites->x = 10.0f;
+		// cub->sprite->sprites->y = 15.0f;
+		cub->sprite->sprites[i].tex = new_texture(cub, config->sp_texs->data[i]);
 		// sprite_position_generator(cub);
-		cub->sprite->sprites->x = 10.0f;
-		cub->sprite->sprites->y = 15.0f;
-		// cub->sprite->sprites[i].tex = new_texture(cub, config->sp_texs->data[i]);
-		// // sprite_position_generator(cub);
-		// cub->sprite->sprites[i].x = 10.0f;
-		// cub->sprite->sprites[i].y = 15.0f;
+		cub->sprite->sprites[i].x = 10.0f;
+		cub->sprite->sprites[i].y = 18.0f;
 	}
 	return (NO_ERR);
 }
