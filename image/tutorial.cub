@@ -3,7 +3,10 @@ SO ./image/south.xpm
 WE ./image/west.xpm
 EA ./image/east.xpm
 
-S ./image/sprite.xpm
+S ./image/sprite0.xpm
+S ./image/sprite1.xpm
+S ./image/sprite2.xpm
+S ./image/sprite3.xpm
 
 F 0,81,51
 C 127,204,227

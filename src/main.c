@@ -56,6 +56,10 @@ typedef enum e_error
 void	dump_cub(t_cub *cub);
 void	dump_config(t_config *config);
 
+// ------------------- init cub -------------------
+void	sprite_position_generator(t_cub *cub, double *x, double *y);
+long long	mytime(void);
+
 // -------------- mlx wrapper --------------
 void	put_pixel(t_cub *cub, int x, int y, unsigned int color)
 {
@@ -283,6 +287,16 @@ void	render(t_cub *cub)
 		sprites[i].dist_from_player = (sp_pos_x - pos_x) * (sp_pos_x - pos_x) + (sp_pos_y - pos_y) * (sp_pos_y - pos_y);
 	}
 
+	// fprintf(stderr, "-- dump sprites --\n");
+	// for (int i = 0; i < cub->sprite->num; i++) {
+	// 	fprintf(stderr, "sprites[%d].x                %lf\n", i, sprites[i].x);
+	// 	fprintf(stderr, "sprites[%d].y                %lf\n", i, sprites[i].y);
+	// 	fprintf(stderr, "sprites[%d].dist_from_player %lf\n", i, sprites[i].dist_from_player);
+	// 	fprintf(stderr, "sprites[%d].tex          %p\n", i, sprites[i].tex);
+	// 	fprintf(stderr, "sprites[%d].tex->width   %d\n", i, sprites[i].tex->width);
+	// 	fprintf(stderr, "sprites[%d].tex->height  %d\n", i, sprites[i].tex->height);
+	// }
+
 	// 距離で降順にソート
 	while (true) {
 		bool	has_swap = false;
@@ -296,6 +310,16 @@ void	render(t_cub *cub)
 		if (!has_swap)
 			break ;
 	}
+
+	// fprintf(stderr, "-- dump sprites after sort with distance from player --\n");
+	// for (int i = 0; i < cub->sprite->num; i++) {
+	// 	fprintf(stderr, "sprites[%d].x                %lf\n", i, sprites[i].x);
+	// 	fprintf(stderr, "sprites[%d].y                %lf\n", i, sprites[i].y);
+	// 	fprintf(stderr, "sprites[%d].dist_from_player %lf\n", i, sprites[i].dist_from_player);
+	// 	fprintf(stderr, "sprites[%d].tex          %p\n", i, sprites[i].tex);
+	// 	fprintf(stderr, "sprites[%d].tex->width   %d\n", i, sprites[i].tex->width);
+	// 	fprintf(stderr, "sprites[%d].tex->height  %d\n", i, sprites[i].tex->height);
+	// }
 
 	for (int i = 0; i < cub->sprite->num; i++) {
 		// プレイヤーからの相対位置
@@ -313,24 +337,27 @@ void	render(t_cub *cub)
 		double	trans_y = inv_det * ((-plane_y) * sp_rpos_x + plane_x * sp_rpos_y);
 
 		// sprite x on window
-		int	sprite_x_on_window = (WIN_W / 2) * (trans_x / trans_y + 1);
+		int	sprite_x_on_window = (int)((WIN_W / 2) * (1 + trans_x / trans_y));
 
-		fprintf(stderr, "-- dump sprite var --\n");
-		fprintf(stderr, "sprites[%d].x            %lf\n", i, sprites[i].x);
-		fprintf(stderr, "sprites[%d].y            %lf\n", i, sprites[i].y);
-		fprintf(stderr, "pos_x                    %lf\n", pos_x);
-		fprintf(stderr, "pos_y                    %lf\n", pos_y);
-		fprintf(stderr, "sp_rpos_x                %lf\n", sp_rpos_x);
-		fprintf(stderr, "sp_rpos_y                %lf\n", sp_rpos_y);
-		fprintf(stderr, "plane_x                  %lf\n", plane_x);
-		fprintf(stderr, "plane_y                  %lf\n", plane_y);
-		fprintf(stderr, "dir_y                    %lf\n", dir_y);
-		fprintf(stderr, "dir_x                    %lf\n", dir_x);
-		fprintf(stderr, "inv_det                  %lf\n", inv_det);
-		fprintf(stderr, "trans_x                  %lf\n", trans_x);
-		fprintf(stderr, "trans_y                  %lf\n", trans_y);
-		fprintf(stderr, "trans_x/trans_y          %lf\n", trans_x / trans_y);
-		fprintf(stderr, "sprite_x_on_window       %d\n", sprite_x_on_window);
+		// fprintf(stderr, "-- dump sprite var --\n");
+		// fprintf(stderr, "sprites[%d].x            %lf\n", i, sprites[i].x);
+		// fprintf(stderr, "sprites[%d].y            %lf\n", i, sprites[i].y);
+		// fprintf(stderr, "sprites[%d].tex          %p\n", i, sprites[i].tex);
+		// fprintf(stderr, "sprites[%d].tex->width   %d\n", i, sprites[i].tex->width);
+		// fprintf(stderr, "sprites[%d].tex->height  %d\n", i, sprites[i].tex->height);
+		// fprintf(stderr, "pos_x                    %lf\n", pos_x);
+		// fprintf(stderr, "pos_y                    %lf\n", pos_y);
+		// fprintf(stderr, "sp_rpos_x                %lf\n", sp_rpos_x);
+		// fprintf(stderr, "sp_rpos_y                %lf\n", sp_rpos_y);
+		// fprintf(stderr, "plane_x                  %lf\n", plane_x);
+		// fprintf(stderr, "plane_y                  %lf\n", plane_y);
+		// fprintf(stderr, "dir_y                    %lf\n", dir_y);
+		// fprintf(stderr, "dir_x                    %lf\n", dir_x);
+		// fprintf(stderr, "inv_det                  %lf\n", inv_det);
+		// fprintf(stderr, "trans_x                  %lf\n", trans_x);
+		// fprintf(stderr, "trans_y                  %lf\n", trans_y);
+		// fprintf(stderr, "trans_x/trans_y          %lf\n", trans_x / trans_y);
+		// fprintf(stderr, "sprite_x_on_window       %d\n", sprite_x_on_window);
 
 		// calculate height of the sprite on screen
 		int	sprite_height = abs((int)(WIN_H / trans_y));
@@ -356,10 +383,10 @@ void	render(t_cub *cub)
 		double	step_sprite_tex_x = sprites[i].tex->width / (double)sprite_width;
 		double	step_sprite_tex_y = sprites[i].tex->height / (double)sprite_height;
 
-		fprintf(stderr, "draw_start_x            %d\n", draw_start_x);
-		fprintf(stderr, "draw_end_x              %d\n", draw_end_x);
-		fprintf(stderr, "step_sprite_tex_x       %lf\n", step_sprite_tex_x);
-		fprintf(stderr, "step_sprite_tex_y       %lf\n", step_sprite_tex_y);
+		// fprintf(stderr, "draw_start_x            %d\n", draw_start_x);
+		// fprintf(stderr, "draw_end_x              %d\n", draw_end_x);
+		// fprintf(stderr, "step_sprite_tex_x       %lf\n", step_sprite_tex_x);
+		// fprintf(stderr, "step_sprite_tex_y       %lf\n", step_sprite_tex_y);
 
 		double	itr_x = 0.0;
 		double	itr_y = 0.0;
@@ -367,6 +394,9 @@ void	render(t_cub *cub)
 		// !TODO Should be more simple
 		if (-sprite_width / 2 + sprite_x_on_window < 0) {
 			itr_x = -(-sprite_width / 2 + sprite_x_on_window); // offset
+		}
+		if (sprite_x_on_window < 0) {
+			itr_x += -sprite_x_on_window;
 		}
 
 		for (int x = draw_start_x; x < draw_end_x; x++) {
@@ -386,9 +416,9 @@ void	render(t_cub *cub)
 					continue ;
 				unsigned int color = get_texture_color(sprites[i].tex, tex_x, tex_y);
 
-				// if (color == 0x000000) {
-				// 	continue ;
-				// }
+				if (color == 0x000000) {
+					continue ;
+				}
 				put_pixel(cub, x, y, color);
 			}
 			itr_x += step_sprite_tex_x;
@@ -862,13 +892,8 @@ t_error	parseConfig(t_config *config, t_cub *cub)
 	cub->sprite->sprites = ft_calloc(config->sp_num, sizeof(t_sprite));
 	cub->sprite->buf_perp = ft_calloc(WIN_W, sizeof(double));
 	for (int i = 0; i < config->sp_num; i++) {
-		// cub->sprite->sprites->tex = new_texture(cub, config->sp_texs->data[i]);
-		// cub->sprite->sprites->x = 10.0f;
-		// cub->sprite->sprites->y = 15.0f;
 		cub->sprite->sprites[i].tex = new_texture(cub, config->sp_texs->data[i]);
-		// sprite_position_generator(cub);
-		cub->sprite->sprites[i].x = 10.0f;
-		cub->sprite->sprites[i].y = 18.0f;
+		sprite_position_generator(cub, &cub->sprite->sprites[i].x, &cub->sprite->sprites[i].y);
 	}
 	return (NO_ERR);
 }
@@ -889,7 +914,6 @@ int	main(int argc, char **argv)
 	dump_config(&config); // dump
 
 	cub.window = init_window(WIN_W, WIN_H, "cub3d");
-	// cub.buf = ft_calloc(WIN_H, sizeof(unsigned int));
 
 	err = parseConfig(&config, &cub);
 	if (err != NO_ERR)
@@ -922,6 +946,7 @@ void	dump_cub(t_cub *cub)
 			for (int n = 0; n < cub->sprite->num; n++) {
 				if (i == (int)cub->sprite->sprites[n].x && j == (int)cub->sprite->sprites[n].y) {
 					fprintf(stderr, ".");
+					has_put = true;
 					break ;
 				}
 			}
@@ -949,13 +974,16 @@ void	dump_cub(t_cub *cub)
 	fprintf(stderr, "width %d, height %d\n", cub->map->east->height, cub->map->east->width);
 	fprintf(stderr, "west side  %p\n", cub->map->west);
 	fprintf(stderr, "width %d, height %d\n", cub->map->west->height, cub->map->west->width);
-	fprintf(stderr, "-- sprite info --\n");
-	fprintf(stderr, "num %d\n", cub->sprite->num);
-	for (int i = 0; i < cub->sprite->num; i++) {
-		fprintf(stderr, "x                     %f\n", cub->sprite->sprites[i].x);
-		fprintf(stderr, "y                     %f\n", cub->sprite->sprites[i].y);
-		fprintf(stderr, "dist_from_player %f\n", cub->sprite->sprites[i].dist_from_player);
-	}
+	// fprintf(stderr, "-- sprite info --\n");
+	// fprintf(stderr, "num %d\n", cub->sprite->num);
+	// for (int i = 0; i < cub->sprite->num; i++) {
+	// 	fprintf(stderr, "sprites[%d].x                %lf\n", i, cub->sprite->sprites[i].x);
+	// 	fprintf(stderr, "sprites[%d].y                %lf\n", i, cub->sprite->sprites[i].y);
+	// 	fprintf(stderr, "sprites[%d].dist_from_player %lf\n", i, cub->sprite->sprites[i].dist_from_player);
+	// 	fprintf(stderr, "sprites[%d].tex              %p\n", i, cub->sprite->sprites[i].tex);
+	// 	fprintf(stderr, "sprites[%d].tex->width       %d\n", i, cub->sprite->sprites[i].tex->width);
+	// 	fprintf(stderr, "sprites[%d].tex->height      %d\n", i, cub->sprite->sprites[i].tex->height);
+	// }
 	fprintf(stderr, "-- dump cub tail --\n");
 }
 
