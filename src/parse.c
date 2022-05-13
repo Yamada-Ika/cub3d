@@ -395,5 +395,17 @@ t_error	parse_config(t_config *config, t_cub *cub)
 		cub->sprite->sprites[i].tex = new_texture(cub, config->sp_texs->data[i]);
 		sprite_position_generator(cub, &cub->sprite->sprites[i].x, &cub->sprite->sprites[i].y);
 	}
+
+	// minimap
+	cub->minimap = ft_calloc(1, sizeof(t_minimap_info));
+	cub->minimap->height = 240;
+	cub->minimap->width = 240;
+	cub->minimap->buf = ft_calloc(240, sizeof(unsigned int *));
+	for (int i = 0; i < 240; i++) {
+		cub->minimap->buf[i] = ft_calloc(240, sizeof(unsigned int));
+		for (int j = 0; j < 240; j++) {
+			cub->minimap->buf[i][j] = 0xffffff;
+		}
+	}
 	return (NO_ERR);
 }

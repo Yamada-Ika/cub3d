@@ -1,5 +1,5 @@
 CC			:= gcc
-CFLAGS		:= -MMD -MP #-g -fsanitize=address #-Wall -Wextra -Werror
+CFLAGS		:= -MMD -MP -g -fsanitize=address #-Wall -Wextra -Werror
 COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
@@ -12,9 +12,10 @@ LIBFT_A		:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))
 
 # cub3d
 NAME		:= cub3d
-SRCS		:= handle_window.c      parse.c\
-hooks.c              position_generator.c\
-main.c
+SRCS		:= handle_window.c      mlx_wrapper.c\
+hooks.c              parse.c\
+main.c               position_generator.c\
+minimap.c
 OBJS		:= $(SRCS:%.c=%.o)
 SRCS		:= $(addprefix src/, $(SRCS))
 OBJS		:= $(addprefix obj/, $(OBJS))
@@ -69,5 +70,9 @@ run: all
 texture:
 	gcc test/texture.c $(COPTS) -o test_texture && ./test_texture
 	rm -rf test_texture
+
+circle:
+	gcc test/circle.c $(COPTS) -o test_circle && ./test_circle
+	rm -rf test_circle
 
 .PHONY: all clean fclean re libft empty

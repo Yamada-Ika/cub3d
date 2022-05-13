@@ -20,19 +20,7 @@ void	set_hooks(t_cub *cub);
 int	parse_arg(int argc, char **argv, t_config *config);
 t_error	parse_config(t_config *config, t_cub *cub);
 
-// -------------- mlx wrapper --------------
-void	put_pixel(t_cub *cub, int x, int y, unsigned int color)
-{
-	my_mlx_pixel_put(cub->window->img_front, x, y, color);
-}
-
-void	put_image(t_cub *cub)
-{
-	mlx_put_image_to_window(cub->window->mlx,
-						cub->window->mlx_win,
-						cub->window->img_front->img,
-						0, 0);
-}
+void	draw_minimap(t_cub *cub);
 
 int	get_texture_color(const t_texture *tex, const int x, const int y)
 {
@@ -385,6 +373,8 @@ void	render(t_cub *cub)
 		}
 	}
 
+	draw_minimap(cub);
+
 	put_image(cub);
 }
 
@@ -464,8 +454,8 @@ void	dump_cub(t_cub *cub)
 	fprintf(stderr, "width %d, height %d\n", cub->map->east->height, cub->map->east->width);
 	fprintf(stderr, "west side  %p\n", cub->map->west);
 	fprintf(stderr, "width %d, height %d\n", cub->map->west->height, cub->map->west->width);
-	// fprintf(stderr, "-- sprite info --\n");
-	// fprintf(stderr, "num %d\n", cub->sprite->num);
+	fprintf(stderr, "-- sprite info --\n");
+	fprintf(stderr, "num %d\n", cub->sprite->num);
 	// for (int i = 0; i < cub->sprite->num; i++) {
 	// 	fprintf(stderr, "sprites[%d].x                %lf\n", i, cub->sprite->sprites[i].x);
 	// 	fprintf(stderr, "sprites[%d].y                %lf\n", i, cub->sprite->sprites[i].y);

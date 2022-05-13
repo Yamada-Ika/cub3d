@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/12 22:07:24 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/13 00:52:13 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,25 @@ typedef struct s_map {
 	t_texture	*east;
 }	t_map;
 
+typedef struct s_minimap_info
+{
+	unsigned int	**buf;
+	int	width;
+	int	height;
+}	t_minimap_info;
+
 typedef struct s_cub {
 	t_window		*window;
 	t_player		*player;
 	t_map			*map;
 	t_sprite_info	*sprite;
+	t_minimap_info	*minimap;
 }	t_cub;
 
 void	render(t_cub *cub);
+
+// mlx wrapper
+void	put_pixel(t_cub *cub, int x, int y, unsigned int color);
+void	put_image(t_cub *cub);
 
 #endif
