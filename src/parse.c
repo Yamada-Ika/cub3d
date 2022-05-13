@@ -404,7 +404,7 @@ t_error	parse_config(t_config *config, t_cub *cub)
 	for (int i = 0; i < 240; i++) {
 		cub->minimap->buf[i] = ft_calloc(240, sizeof(unsigned int));
 		for (int j = 0; j < 240; j++) {
-			cub->minimap->buf[i][j] = 0xffffff;
+			cub->minimap->buf[i][j] = 0xbccddb;
 		}
 	}
 	return (NO_ERR);

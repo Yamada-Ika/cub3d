@@ -75,4 +75,8 @@ circle:
 	gcc test/circle.c $(COPTS) -o test_circle && ./test_circle
 	rm -rf test_circle
 
+frame:
+	gcc test/frame_rate.c $(COPTS) -o test_frame_rate && ./test_frame_rate
+	rm -rf test_frame_rate
+
 .PHONY: all clean fclean re libft empty

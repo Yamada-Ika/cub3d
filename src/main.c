@@ -56,6 +56,10 @@ void	render(t_cub *cub)
 
 	dump_cub(cub);
 
+
+	// mlx_hook(cub->window->mlx_win, KeyPress, KeyPressMask, handle_key_hook, cub);
+
+
 	for(int x = 0; x < WIN_W; x++)
 	{
 		//calculate ray position and direction
