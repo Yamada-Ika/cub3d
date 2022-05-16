@@ -52,10 +52,22 @@ static int	handle_key_hook(int keycode, void *params)
 {
 	t_cub	*cub;
 
+	// fprintf(stderr, "keycode %d\n", keycode);
+
 	cub = (t_cub *)params;
 	if (keycode == ESC)
 		exit(0);
 	can_move(keycode, cub);
+
+	// handle camera pitch
+	if (keycode == U_ARROW)
+	{
+		cub->camera->pitch += 10.0;
+	}
+	if (keycode == D_ARROW)
+	{
+		cub->camera->pitch += -10.0;
+	}
 }
 
 void	set_hooks(t_cub *cub)

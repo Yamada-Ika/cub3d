@@ -162,10 +162,10 @@ void	render(t_cub *cub)
 		int line_height = (int)(WIN_H / perp_wall_dist);
 
 		//calculate lowest and highest pixel to fill in current stripe
-		int draw_start = -line_height / 2 + WIN_H / 2;
+		int draw_start = -line_height / 2 + WIN_H / 2 + cub->camera->pitch;
 		if (draw_start < 0)
 			draw_start = 0;
-		int draw_end = line_height / 2 + WIN_H / 2;
+		int draw_end = line_height / 2 + WIN_H / 2 + cub->camera->pitch;
 		if (draw_end >= WIN_H)
 			draw_end = WIN_H - 1;
 
@@ -329,10 +329,10 @@ void	render(t_cub *cub)
 		int	sprite_height = abs((int)(WIN_H / trans_y));
 
 		// calculate lowest and heighest pixel to fill in current sprite
-		int	draw_start_y = -sprite_height / 2 + WIN_H / 2;
+		int	draw_start_y = -sprite_height / 2 + WIN_H / 2 + cub->camera->pitch;
 		if (draw_start_y < 0)
 			draw_start_y = 0;
-		int	draw_end_y = sprite_height / 2 + WIN_H / 2;
+		int	draw_end_y = sprite_height / 2 + WIN_H / 2 + cub->camera->pitch;
 		if (draw_end_y >= WIN_H)
 			draw_end_y = WIN_H - 1;
 
@@ -460,34 +460,36 @@ int	main(int argc, char **argv)
 void	dump_cub(t_cub *cub)
 {
 	fprintf(stderr, "-- dump cub head --\n");
-	fprintf(stderr, "-- player info --\n");
-	fprintf(stderr, "position  (%f, %f)\n", cub->player->pos_x, cub->player->pos_y);
-	fprintf(stderr, "direction (%f, %f)\n", cub->player->dir_x, cub->player->dir_y);
-	fprintf(stderr, "plane     (%f, %f)\n", cub->player->plane_x, cub->player->plane_y);
-	fprintf(stderr, "-- map info --\n");
-	for (int i = 0; i < cub->map->heigth; i++) {
-		for (int j = 0; j < cub->map->width; j++) {
-			// sprite
-			bool	has_put = false;
-			for (int n = 0; n < cub->sprite->num; n++) {
-				if (i == (int)cub->sprite->sprites[n].x && j == (int)cub->sprite->sprites[n].y) {
-					fprintf(stderr, ".");
-					has_put = true;
-					break ;
-				}
-			}
-			if (has_put)
-				continue ;
-			if (i == (int)(cub->player->pos_x) && j == (int)(cub->player->pos_y))
-				fprintf(stderr, "P");
-			else if (cub->map->map[i][j] == 0)
-				fprintf(stderr, " ");
-			else
-				fprintf(stderr, "█");
-			if (j == cub->map->width -1)
-				fprintf(stderr, "\n");
-		}
-	}
+	fprintf(stderr, "-- camera info --\n");
+	fprintf(stderr, "pitch %lf\n", cub->camera->pitch);
+	// fprintf(stderr, "-- player info --\n");
+	// fprintf(stderr, "position  (%f, %f)\n", cub->player->pos_x, cub->player->pos_y);
+	// fprintf(stderr, "direction (%f, %f)\n", cub->player->dir_x, cub->player->dir_y);
+	// fprintf(stderr, "plane     (%f, %f)\n", cub->player->plane_x, cub->player->plane_y);
+	// fprintf(stderr, "-- map info --\n");
+	// for (int i = 0; i < cub->map->heigth; i++) {
+	// 	for (int j = 0; j < cub->map->width; j++) {
+	// 		// sprite
+	// 		bool	has_put = false;
+	// 		for (int n = 0; n < cub->sprite->num; n++) {
+	// 			if (i == (int)cub->sprite->sprites[n].x && j == (int)cub->sprite->sprites[n].y) {
+	// 				fprintf(stderr, ".");
+	// 				has_put = true;
+	// 				break ;
+	// 			}
+	// 		}
+	// 		if (has_put)
+	// 			continue ;
+	// 		if (i == (int)(cub->player->pos_x) && j == (int)(cub->player->pos_y))
+	// 			fprintf(stderr, "P");
+	// 		else if (cub->map->map[i][j] == 0)
+	// 			fprintf(stderr, " ");
+	// 		else
+	// 			fprintf(stderr, "█");
+	// 		if (j == cub->map->width -1)
+	// 			fprintf(stderr, "\n");
+	// 	}
+	// }
 	// fprintf(stderr, "-- color info --\n");
 	// fprintf(stderr, "floor   %x\n", cub->map->floor);
 	// fprintf(stderr, "ceil    %x\n", cub->map->ceil) ;
@@ -500,18 +502,18 @@ void	dump_cub(t_cub *cub)
 	// fprintf(stderr, "width %d, height %d\n", cub->map->east->height, cub->map->east->width);
 	// fprintf(stderr, "west side  %p\n", cub->map->west);
 	// fprintf(stderr, "width %d, height %d\n", cub->map->west->height, cub->map->west->width);
-	fprintf(stderr, "-- sprite info --\n");
-	fprintf(stderr, "num %d\n", cub->sprite->num);
-	for (int i = 0; i < cub->sprite->num; i++) {
+	// fprintf(stderr, "-- sprite info --\n");
+	// fprintf(stderr, "num %d\n", cub->sprite->num);
+	// for (int i = 0; i < cub->sprite->num; i++) {
 		// fprintf(stderr, "sprites[%d].x                   %lf\n", i, cub->sprite->sprites[i].x);
 		// fprintf(stderr, "sprites[%d].y                   %lf\n", i, cub->sprite->sprites[i].y);
-		fprintf(stderr, "sprites[%d].dist_from_player    %lf\n", i, cub->sprite->sprites[i].dist_from_player);
+		// fprintf(stderr, "sprites[%d].dist_from_player    %lf\n", i, cub->sprite->sprites[i].dist_from_player);
 		// for (int j = 0; j < cub->sprite->sprites[i].textures->len; j++) {
 		// 	fprintf(stderr, "sprites[%d].textures[%d]->img    %p\n", i, j, ((t_texture *)vec_at(cub->sprite->sprites[i].textures, j))->img);
 		// 	fprintf(stderr, "sprites[%d].textures[%d]->width  %d\n", i, j, ((t_texture *)vec_at(cub->sprite->sprites[i].textures, j))->width);
 		// 	fprintf(stderr, "sprites[%d].textures[%d]->height %d\n", i, j, ((t_texture *)vec_at(cub->sprite->sprites[i].textures, j))->height);
 		// }
-	}
+	// }
 	fprintf(stderr, "-- dump cub tail --\n");
 }
 

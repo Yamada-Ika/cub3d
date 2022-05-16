@@ -371,5 +371,8 @@ t_error	parse_config(t_config *config, t_cub *cub)
 			cub->minimap->buf[i][j] = 0xbccddb;
 		}
 	}
+
+	// camera
+	cub->camera = ft_calloc(1, sizeof(t_camera));
 	return (NO_ERR);
 }
