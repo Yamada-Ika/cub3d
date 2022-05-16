@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/10 01:22:39 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/17 02:40:15 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define A_KEY 97
 # define S_KEY 115
 # define D_KEY 100
+# define SPACE 32
 # define CLICK_L 1
 # define CLICK_R 2
 # define CLICK_M 3

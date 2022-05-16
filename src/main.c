@@ -148,9 +148,19 @@ void	render(t_cub *cub)
 					side = EAST;
 			}
 			//Check if ray has hit a wall
-			if (cub->map->map[map_x][map_y] > 0)
+			if (cub->map->map[map_x][map_y].kind == WALL)
+				has_hit = true;
+			else if (cub->map->map[map_x][map_y].kind == DOOR
+				&& (side == EAST || side == WEST))
 				has_hit = true;
 		}
+
+		// // 縦方向にあるドアはsideがEASTかWESTのみ描画
+		// if (cub->map->map[map_x][map_y].kind == DOOR)
+		// {
+		// 	if (side == NORTH || side == SOUTH)
+		// 		continue;
+		// }
 
 		//Calculate distance projected on camera direction (Euclidean distance would give fisheye effect!)
 		if(side == NORTH || side == SOUTH)
@@ -223,7 +233,6 @@ void	render(t_cub *cub)
 		// 	fprintf(stderr, "tex_step        : %f\n", tex_step);
 		// }
 
-		// fill buffer
 		for (int i = 0; i < draw_start; i++) {
 			put_pixel(cub, x, i, cub->map->ceil);
 		}
@@ -414,9 +423,9 @@ void	render(t_cub *cub)
 		double delte_y = sp_rpos_y * SP_MOVE_STEP;
 
 		// 移動した時、壁に衝突するか？
-		if (cub->map->map[(int)(sprites[i].x + delte_x)][(int)sprites[i].y] == 0)
+		if (cub->map->map[(int)(sprites[i].x + delte_x)][(int)sprites[i].y].kind == NONE)
 			sprites[i].x += delte_x;
-		if (cub->map->map[(int)sprites[i].x][(int)(sprites[i].y + delte_y)] == 0)
+		if (cub->map->map[(int)sprites[i].x][(int)(sprites[i].y + delte_y)].kind == NONE)
 			sprites[i].y += delte_y;
 	}
 
@@ -466,30 +475,34 @@ void	dump_cub(t_cub *cub)
 	// fprintf(stderr, "position  (%f, %f)\n", cub->player->pos_x, cub->player->pos_y);
 	// fprintf(stderr, "direction (%f, %f)\n", cub->player->dir_x, cub->player->dir_y);
 	// fprintf(stderr, "plane     (%f, %f)\n", cub->player->plane_x, cub->player->plane_y);
-	// fprintf(stderr, "-- map info --\n");
-	// for (int i = 0; i < cub->map->heigth; i++) {
-	// 	for (int j = 0; j < cub->map->width; j++) {
-	// 		// sprite
-	// 		bool	has_put = false;
-	// 		for (int n = 0; n < cub->sprite->num; n++) {
-	// 			if (i == (int)cub->sprite->sprites[n].x && j == (int)cub->sprite->sprites[n].y) {
-	// 				fprintf(stderr, ".");
-	// 				has_put = true;
-	// 				break ;
-	// 			}
-	// 		}
-	// 		if (has_put)
-	// 			continue ;
-	// 		if (i == (int)(cub->player->pos_x) && j == (int)(cub->player->pos_y))
-	// 			fprintf(stderr, "P");
-	// 		else if (cub->map->map[i][j] == 0)
-	// 			fprintf(stderr, " ");
-	// 		else
-	// 			fprintf(stderr, "█");
-	// 		if (j == cub->map->width -1)
-	// 			fprintf(stderr, "\n");
-	// 	}
-	// }
+	fprintf(stderr, "-- map info --\n");
+	for (int i = 0; i < cub->map->heigth; i++) {
+		for (int j = 0; j < cub->map->width; j++) {
+			// sprite
+			bool	has_put = false;
+			for (int n = 0; n < cub->sprite->num; n++) {
+				if (i == (int)cub->sprite->sprites[n].x && j == (int)cub->sprite->sprites[n].y) {
+					fprintf(stderr, ".");
+					has_put = true;
+					break ;
+				}
+			}
+			if (has_put)
+				continue ;
+			if (i == (int)(cub->player->pos_x) && j == (int)(cub->player->pos_y))
+				fprintf(stderr, "P");
+			else if (cub->map->map[i][j].kind == NONE)
+				fprintf(stderr, " ");
+			else if (cub->map->map[i][j].kind == WALL)
+				fprintf(stderr, "█");
+			else if (cub->map->map[i][j].kind == DOOR && cub->map->map[i][j].side == LONGITUDINAL && cub->map->map[i][j].door_state == CLOSE)
+				fprintf(stderr, "|");
+			else
+				fprintf(stderr, " ");
+			if (j == cub->map->width -1)
+				fprintf(stderr, "\n");
+		}
+	}
 	// fprintf(stderr, "-- color info --\n");
 	// fprintf(stderr, "floor   %x\n", cub->map->floor);
 	// fprintf(stderr, "ceil    %x\n", cub->map->ceil) ;

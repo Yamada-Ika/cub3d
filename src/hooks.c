@@ -6,10 +6,10 @@ static bool	can_move(int keycode, t_cub *cub)
 	if (keycode == W_KEY) // move forward
 	{
 		// collide wall ?
-		if (cub->map->map[(int)(cub->player->pos_x)][(int)(cub->player->pos_y + cub->player->dir_y * MOVE_STEP)] != 0)
+		if (cub->map->map[(int)(cub->player->pos_x)][(int)(cub->player->pos_y + cub->player->dir_y * MOVE_STEP)].kind != NONE)
 			return (false);
 		cub->player->pos_y += cub->player->dir_y * MOVE_STEP;
-		if (cub->map->map[(int)(cub->player->pos_x + cub->player->dir_x * MOVE_STEP)][(int)(cub->player->pos_y)] != 0)
+		if (cub->map->map[(int)(cub->player->pos_x + cub->player->dir_x * MOVE_STEP)][(int)(cub->player->pos_y)].kind != NONE)
 			return (false);
 		cub->player->pos_x += cub->player->dir_x * MOVE_STEP;
 		return (true);
@@ -17,10 +17,10 @@ static bool	can_move(int keycode, t_cub *cub)
 	if (keycode == S_KEY) // move back
 	{
 		// collide wall ?
-		if (cub->map->map[(int)(cub->player->pos_x)][(int)(cub->player->pos_y - cub->player->dir_y * MOVE_STEP)] != 0)
+		if (cub->map->map[(int)(cub->player->pos_x)][(int)(cub->player->pos_y - cub->player->dir_y * MOVE_STEP)].kind != NONE)
 			return (false);
 		cub->player->pos_y -= cub->player->dir_y * MOVE_STEP;
-		if (cub->map->map[(int)(cub->player->pos_x-cub->player->dir_x * MOVE_STEP)][(int)(cub->player->pos_y)] != 0)
+		if (cub->map->map[(int)(cub->player->pos_x-cub->player->dir_x * MOVE_STEP)][(int)(cub->player->pos_y)].kind != NONE)
 			return (false);
 		cub->player->pos_x -= cub->player->dir_x * MOVE_STEP;
 		return (true);
@@ -51,10 +51,15 @@ static bool	can_move(int keycode, t_cub *cub)
 static int	handle_key_hook(int keycode, void *params)
 {
 	t_cub	*cub;
+	t_cell	**map;
+	t_player	*player;
 
-	// fprintf(stderr, "keycode %d\n", keycode);
+	fprintf(stderr, "keycode %d\n", keycode);
 
 	cub = (t_cub *)params;
+	map = cub->map->map;
+	player = cub->player;
+
 	if (keycode == ESC)
 		exit(0);
 	can_move(keycode, cub);
@@ -63,10 +68,33 @@ static int	handle_key_hook(int keycode, void *params)
 	if (keycode == U_ARROW)
 	{
 		cub->camera->pitch += 10.0;
+		return (0);
 	}
 	if (keycode == D_ARROW)
 	{
 		cub->camera->pitch += -10.0;
+		return (0);
+	}
+	if (keycode == SPACE)
+	{
+		double	pos_x = player->pos_x + player->dir_x * 1.0;
+		double	pos_y = player->pos_y + player->dir_y * 1.0;
+		// ドアの近くにいるとドアを開閉する
+		if (map[(int)pos_x][(int)pos_y].kind == DOOR
+			&& map[(int)pos_x][(int)pos_y].door_state == CLOSE)
+		{
+			map[(int)pos_x][(int)pos_y].door_state = OPENING;
+			map[(int)pos_x][(int)pos_y].timer = 0.0f;
+			return (0);
+		}
+		if (map[(int)pos_x][(int)pos_y].kind == DOOR
+			&& map[(int)pos_x][(int)pos_y].door_state == OPEN)
+		{
+			map[(int)pos_x][(int)pos_y].door_state = CLOSING;
+			map[(int)pos_x][(int)pos_y].timer = 1.0f;
+			return (0);
+		}
+		return (0);
 	}
 }
 

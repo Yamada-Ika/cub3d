@@ -34,7 +34,7 @@ void	sprite_position_generator(t_cub *cub, double *x, double *y)
 	{
 		double	cand_x = random_generator() * (cub->map->heigth - 1);
 		double	cand_y = random_generator() * (cub->map->width - 1);
-		if (cub->map->map[(int)cand_x][(int)cand_y] != 0)
+		if (cub->map->map[(int)cand_x][(int)cand_y].kind != NONE)
 			continue ;
 		*x = cand_x;
 		*y = cand_y;

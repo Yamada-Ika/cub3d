@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/16 18:29:53 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/17 02:09:52 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,37 @@ typedef struct s_sprite_info
 	double		*buf_perp;
 }	t_sprite_info;
 
+typedef enum e_cell_kind
+{
+	NONE,
+	WALL,
+	DOOR,
+}	t_cell_kind;
+
+typedef enum e_door_state_kind
+{
+	CLOSE,
+	CLOSING,
+	OPEN,
+	OPENING,
+}	t_door_state_kind;
+
+typedef enum e_door_side_kind
+{
+	TRANSVERSE, // 横
+	LONGITUDINAL, // 縦
+}	t_door_side_kind;
+
+typedef struct s_cell
+{
+	t_cell_kind kind; // none, wall, door
+	t_door_state_kind door_state; // 0 : 閉じているので障害物判定, 1 : 空いているので通れる
+	t_door_side_kind	side;
+	double timer; // 0 ~ 1, 0は閉じている, 1は空いている, 0.5は半分空いている
+}	t_cell;
+
 typedef struct s_map {
-	int			**map;
+	t_cell		**map;
 	int 		width;
 	int 		heigth;
 	unsigned int	floor;

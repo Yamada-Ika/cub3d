@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/16 13:17:48 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/16 21:09:55 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_config
 	long long sp_num;
 	int		floor_color;
 	int		ceil_color;
-	int		**map;
+	t_cell	**map;
 	long long	height;
 	long long	width;
 	double	pos_x;

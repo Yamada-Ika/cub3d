@@ -151,13 +151,18 @@ t_error	set_map(t_config *config)
 		i++;
 	}
 	width = ft_strlen(file[idx]);
-	int	**map = malloc(height * sizeof(int *));
+	// int	**map = malloc(height * sizeof(int *));
+	t_cell	**map = ft_calloc(height, sizeof(t_cell *));
 	config->map = map;
 	config->height = height;
 	config->width = width;
+	// for (int i = 0; i < height; i++)
+	// {
+	// 	map[i] = malloc(width * sizeof(int));
+	// }
 	for (int i = 0; i < height; i++)
 	{
-		map[i] = malloc(width * sizeof(int));
+		map[i] = ft_calloc(width, sizeof(t_cell));
 	}
 	size_t j;
 	i = 0;
@@ -175,7 +180,7 @@ t_error	set_map(t_config *config)
 				config->pos_y = j;
 				config->plane_x = 0;
 				config->plane_y = 0.66;
-				map[i][j] = 0;
+				map[i][j].kind = NONE;
 				j++;
 				continue ;
 			}
@@ -188,7 +193,7 @@ t_error	set_map(t_config *config)
 				config->pos_y = j;
 				config->plane_x = 0;
 				config->plane_y = -0.66;
-				map[i][j] = 0;
+				map[i][j].kind = NONE;
 				j++;
 				continue ;
 			}
@@ -201,7 +206,7 @@ t_error	set_map(t_config *config)
 				config->pos_y = j;
 				config->plane_x = 0.66;
 				config->plane_y = 0;
-				map[i][j] = 0;
+				map[i][j].kind = NONE;
 				j++;
 				continue ;
 			}
@@ -214,11 +219,31 @@ t_error	set_map(t_config *config)
 				config->pos_y = j;
 				config->plane_x = -0.66;
 				config->plane_y = 0;
-				map[i][j] = 0;
+				map[i][j].kind = NONE;;
 				j++;
 				continue ;
 			}
-			map[i][j] = file[idx][j] - '0';
+			if (file[idx][j] == '0')
+			{
+				map[i][j].kind = NONE;
+				j++;
+				continue ;
+			}
+			if (file[idx][j] == '1')
+			{
+				map[i][j].kind = WALL;
+				j++;
+				continue ;
+			}
+			if (file[idx][j] == '|')
+			{
+				map[i][j].kind = DOOR;
+				map[i][j].door_state = CLOSE;
+				map[i][j].side = LONGITUDINAL;
+				map[i][j].timer = 0.0;
+				j++;
+				continue ;
+			}
 			j++;
 		}
 		idx++;

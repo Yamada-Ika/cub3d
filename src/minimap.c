@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:34:48 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/13 16:32:33 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/17 03:01:51 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ void	fill_buf(t_cub *cub)
 			if (trans_i < 0 || trans_i >= map_info->heigth
 				|| trans_j < 0 || trans_j >= map_info->width)
 				continue;
-			if (map_info->map[trans_i][trans_j] == 1)
+			if (map_info->map[trans_i][trans_j].kind == WALL)
 				color = 0xbccddb; // wall
+			else if (map_info->map[trans_i][trans_j].kind == DOOR
+				&& map_info->map[trans_i][trans_j].door_state == CLOSE)
+				color = 0x000000; // door
 			else
 				color = 0x003f8e;
 			cub->minimap->buf[i][j] = color;
