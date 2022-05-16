@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/16 13:17:40 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/16 18:17:09 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 #define RGB_Black 0x000000
 #define RGB_Yellow 0xffff00
 #define MOVE_STEP 0.5
+#define SP_MOVE_STEP 0.01
 #define ROT_STEP 0.05
 
 typedef struct s_player {

@@ -399,6 +399,27 @@ void	render(t_cub *cub)
 	double frame_time = (cub->timestamp.tv_usec - old.tv_usec) / 1000000.0;
 	// fprintf(stderr, "FPS        = %lf\n", 1 / frame_time);
 
+	// スプライトを移動させる
+	for (int i = 0; i < cub->sprite->num; i++) {
+		// 遠すぎるスプライトは追っかけてこない
+		if (sprites[i].dist_from_player > 10.0)
+			continue;
+
+		// スプライトからプレイヤの位置ベクトル
+		double	sp_rpos_x = pos_x - sprites[i].x;
+		double	sp_rpos_y = pos_y - sprites[i].y;
+
+		// スプライトの微小移動量
+		double delte_x = sp_rpos_x * SP_MOVE_STEP;
+		double delte_y = sp_rpos_y * SP_MOVE_STEP;
+
+		// 移動した時、壁に衝突するか？
+		if (cub->map->map[(int)(sprites[i].x + delte_x)][(int)sprites[i].y] == 0)
+			sprites[i].x += delte_x;
+		if (cub->map->map[(int)sprites[i].x][(int)(sprites[i].y + delte_y)] == 0)
+			sprites[i].y += delte_y;
+	}
+
 	usleep(16 * 1000); // 1 / 60 seconds
 }
 
@@ -467,29 +488,29 @@ void	dump_cub(t_cub *cub)
 				fprintf(stderr, "\n");
 		}
 	}
-	fprintf(stderr, "-- color info --\n");
-	fprintf(stderr, "floor   %x\n", cub->map->floor);
-	fprintf(stderr, "ceil    %x\n", cub->map->ceil) ;
-	fprintf(stderr, "-- texture info --\n");
-	fprintf(stderr, "north side %p\n", cub->map->north);
-	fprintf(stderr, "width %d, height %d\n", cub->map->north->height, cub->map->north->width);
-	fprintf(stderr, "south side %p\n", cub->map->south);
-	fprintf(stderr, "width %d, height %d\n", cub->map->south->height, cub->map->south->width);
-	fprintf(stderr, "east side  %p\n", cub->map->east);
-	fprintf(stderr, "width %d, height %d\n", cub->map->east->height, cub->map->east->width);
-	fprintf(stderr, "west side  %p\n", cub->map->west);
-	fprintf(stderr, "width %d, height %d\n", cub->map->west->height, cub->map->west->width);
+	// fprintf(stderr, "-- color info --\n");
+	// fprintf(stderr, "floor   %x\n", cub->map->floor);
+	// fprintf(stderr, "ceil    %x\n", cub->map->ceil) ;
+	// fprintf(stderr, "-- texture info --\n");
+	// fprintf(stderr, "north side %p\n", cub->map->north);
+	// fprintf(stderr, "width %d, height %d\n", cub->map->north->height, cub->map->north->width);
+	// fprintf(stderr, "south side %p\n", cub->map->south);
+	// fprintf(stderr, "width %d, height %d\n", cub->map->south->height, cub->map->south->width);
+	// fprintf(stderr, "east side  %p\n", cub->map->east);
+	// fprintf(stderr, "width %d, height %d\n", cub->map->east->height, cub->map->east->width);
+	// fprintf(stderr, "west side  %p\n", cub->map->west);
+	// fprintf(stderr, "width %d, height %d\n", cub->map->west->height, cub->map->west->width);
 	fprintf(stderr, "-- sprite info --\n");
 	fprintf(stderr, "num %d\n", cub->sprite->num);
 	for (int i = 0; i < cub->sprite->num; i++) {
-		fprintf(stderr, "sprites[%d].x                   %lf\n", i, cub->sprite->sprites[i].x);
-		fprintf(stderr, "sprites[%d].y                   %lf\n", i, cub->sprite->sprites[i].y);
+		// fprintf(stderr, "sprites[%d].x                   %lf\n", i, cub->sprite->sprites[i].x);
+		// fprintf(stderr, "sprites[%d].y                   %lf\n", i, cub->sprite->sprites[i].y);
 		fprintf(stderr, "sprites[%d].dist_from_player    %lf\n", i, cub->sprite->sprites[i].dist_from_player);
-		for (int j = 0; j < cub->sprite->sprites[i].textures->len; j++) {
-			fprintf(stderr, "sprites[%d].textures[%d]->img    %p\n", i, j, ((t_texture *)vec_at(cub->sprite->sprites[i].textures, j))->img);
-			fprintf(stderr, "sprites[%d].textures[%d]->width  %d\n", i, j, ((t_texture *)vec_at(cub->sprite->sprites[i].textures, j))->width);
-			fprintf(stderr, "sprites[%d].textures[%d]->height %d\n", i, j, ((t_texture *)vec_at(cub->sprite->sprites[i].textures, j))->height);
-		}
+		// for (int j = 0; j < cub->sprite->sprites[i].textures->len; j++) {
+		// 	fprintf(stderr, "sprites[%d].textures[%d]->img    %p\n", i, j, ((t_texture *)vec_at(cub->sprite->sprites[i].textures, j))->img);
+		// 	fprintf(stderr, "sprites[%d].textures[%d]->width  %d\n", i, j, ((t_texture *)vec_at(cub->sprite->sprites[i].textures, j))->width);
+		// 	fprintf(stderr, "sprites[%d].textures[%d]->height %d\n", i, j, ((t_texture *)vec_at(cub->sprite->sprites[i].textures, j))->height);
+		// }
 	}
 	fprintf(stderr, "-- dump cub tail --\n");
 }
