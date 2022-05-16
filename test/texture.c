@@ -16,7 +16,7 @@ int main(void)
 	t_img	*img = calloc(1, sizeof(t_img));
 	int	width, height;
 
-	img->img = mlx_xpm_file_to_image(mlx, "./image/east.xpm", &width, &height);
+	img->img = mlx_xpm_file_to_image(mlx, "./image/anime_sprite1.xpm", &width, &height);
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
 
 	mlx_put_image_to_window(mlx, win, img->img, 0, 0);

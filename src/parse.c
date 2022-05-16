@@ -10,6 +10,13 @@ char	*concat(char *s1, char *s2)
 	return (res);
 }
 
+char	*skip_spaces(char *s)
+{
+	while (*s != '\0' && *s == ' ')
+		s++;
+	return (s);
+}
+
 t_error	load_cub(t_config *config, const char *path)
 {
 	int	fd;
@@ -220,75 +227,6 @@ t_error	set_map(t_config *config)
 	return (NO_ERR);
 }
 
-void	vec_delete(t_vector *vec)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < vec->len)
-	{
-		free(vec->data[i]);
-		i++;
-	}
-	free(vec->data);
-	free(vec);
-}
-
-void	vec_delete_data(char **data, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		free(data[i]);
-		i++;
-	}
-	free(data);
-}
-
-void	vec_datacopy(t_vector *dst, char **data, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		dst->data[i] = ft_strdup(data[i]);
-		i++;
-	}
-}
-
-t_vector	*vec_push_back(t_vector *dst, char *elem)
-{
-	if (dst == NULL || dst->data == NULL)
-	{
-		t_vector	*new;
-
-		new = ft_calloc(1, sizeof(t_vector));
-		new->data = ft_calloc(128, sizeof(char **));
-		new->cap = 128;
-		dst = new;
-	}
-	if (dst->cap == dst->len)
-	{
-		// realloc的な
-		t_vector *tmp = dst;
-		size_t	old_len = dst->len;
-		size_t	old_cap = dst->cap;
-
-		dst = ft_calloc(1, sizeof(t_vector));
-		dst->data = ft_calloc(old_cap + 128, sizeof(char **));
-		dst->cap = old_cap + 128;
-		dst->len = old_len;
-		vec_datacopy(dst, tmp->data, old_len);
-		vec_delete(tmp);
-	}
-	dst->data[dst->len] = ft_strdup(elem);
-	dst->len++;
-	return (dst);
-}
-
 t_error	set_sprite_path(t_config *config)
 {
 	char	**file;
@@ -300,17 +238,32 @@ t_error	set_sprite_path(t_config *config)
 	file = config->cub;
 	flag = 0;
 	i = 0;
-	config->sp_num = 0;
-	config->sp_texs = ft_calloc(1, sizeof(t_vector));
+	config->sp_texs = vec_new(sizeof(t_sprite_path));
 	while (file[i] != NULL)
 	{
-		if (ft_strncmp(file[i], "S ", 2) == 0)
+		if (ft_strncmp(file[i], "SP ", 3) == 0)
 		{
-			config->sp_texs = vec_push_back(config->sp_texs, &file[i][2]);
-			config->sp_num++;
+			// config->sp_texs = vec_push_back(config->sp_texs, &file[i][2]);
+			t_sprite_path sp;
+			char *end;
+			sp.group = ft_strtoll(&file[i][2], &end, 10);
+			end = skip_spaces(end); // skip spaces
+			sp.path = end;
+			vec_push_back(config->sp_texs, &sp);
+			// config->sp_num++;
 		}
 		i++;
 	}
+	// resize sprite number
+	config->sp_num = 0;
+	int old = -1;
+	for (int i = 0; i < config->sp_texs->len; i++) {
+		if (((t_sprite_path *)vec_at(config->sp_texs, i))->group != old) {
+			config->sp_num++;
+			old = ((t_sprite_path *)vec_at(config->sp_texs, i))->group;
+		}
+	}
+
 	return (NO_ERR);
 }
 
@@ -386,13 +339,24 @@ t_error	parse_config(t_config *config, t_cub *cub)
 	cub->map->west = new_texture(cub, config->we_tex_path);
 
 	// sprite
-	// !TODO How to define sprite position
 	cub->sprite = ft_calloc(1, sizeof(t_sprite_info));
 	cub->sprite->num = config->sp_num;
 	cub->sprite->sprites = ft_calloc(config->sp_num, sizeof(t_sprite));
 	cub->sprite->buf_perp = ft_calloc(WIN_W, sizeof(double));
+
+	int seek = 0;
 	for (int i = 0; i < config->sp_num; i++) {
-		cub->sprite->sprites[i].tex = new_texture(cub, config->sp_texs->data[i]);
+		cub->sprite->sprites[i].textures = vec_new(sizeof(t_texture));
+		fprintf(stderr, "cub->sprite->sprites[%d].textures : %p\n", i, cub->sprite->sprites[i].textures);
+		for (; seek < config->sp_texs; seek++) {
+			if (((t_sprite_path *)vec_at(config->sp_texs, seek))->group == i) {
+				t_texture *tex = new_texture(cub, ((t_sprite_path *)vec_at(config->sp_texs, seek))->path);
+
+				vec_push_back(cub->sprite->sprites[i].textures, tex);
+				continue;
+			}
+			break;
+		}
 		sprite_position_generator(cub, &cub->sprite->sprites[i].x, &cub->sprite->sprites[i].y);
 	}
 

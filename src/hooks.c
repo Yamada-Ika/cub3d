@@ -52,20 +52,15 @@ static int	handle_key_hook(int keycode, void *params)
 {
 	t_cub	*cub;
 
-	fprintf(stderr, "keycode : %d\n", keycode);
-
 	cub = (t_cub *)params;
 	if (keycode == ESC)
 		exit(0);
-	if (can_move(keycode, cub))
-	{
-		render(cub);
-	}
+	can_move(keycode, cub);
 }
 
 void	set_hooks(t_cub *cub)
 {
 	// mlx_key_hook(cub->window->mlx_win, handle_key_hook, cub);
 	mlx_hook(cub->window->mlx_win, KeyPress, KeyPressMask, handle_key_hook, cub);
-	mlx_loop_hook(cub->window->mlx_win, render, cub);
+	mlx_loop_hook(cub->window->mlx, render, cub);
 }

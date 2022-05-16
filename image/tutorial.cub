@@ -3,10 +3,17 @@ SO ./image/south.xpm
 WE ./image/west.xpm
 EA ./image/east.xpm
 
-S ./image/sprite0.xpm
-S ./image/sprite1.xpm
-S ./image/sprite2.xpm
-S ./image/sprite3.xpm
+SP 0 ./image/circle_red.xpm
+SP 0 ./image/circle_pink.xpm
+SP 0 ./image/circle_purple.xpm
+SP 0 ./image/circle_blue.xpm
+SP 0 ./image/circle_light_blue.xpm
+SP 0 ./image/circle_light_green.xpm
+SP 0 ./image/circle_yellow.xpm
+SP 0 ./image/circle_orange.xpm
+SP 1 ./image/sprite1.xpm
+SP 2 ./image/sprite2.xpm
+SP 3 ./image/sprite3.xpm
 
 F 0,81,51
 C 127,204,227

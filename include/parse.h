@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/12 22:06:34 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/16 13:17:48 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 # define PARSE_H
 
 #include "cub3d.h"
-
-// vector data structure
-typedef struct s_vector
-{
-	char	**data;
-	size_t	cap; // メモリ領域の長さ
-	size_t	len; // データが詰まってるサイズ
-}	t_vector;
 
 typedef struct s_config
 {
@@ -45,6 +37,12 @@ typedef struct s_config
 	double	plane_x;
 	double	plane_y;
 }	t_config;
+
+typedef struct s_sprite_path
+{
+	char	*path;
+	int		group;
+}	t_sprite_path;
 
 typedef enum e_error
 {

@@ -7,7 +7,6 @@
 
 int	hoge(int keycode)
 {
-	fprintf(stderr, "keycode %d\n", keycode);
 	if (keycode == ESC)
 		exit(0);
 }
@@ -26,7 +25,7 @@ int	fuga(t_test *test)
 
 	mlx_pixel_put(test->mlx, test->win, calltime, 100, 0xffffff);
 	fprintf(stderr, "call fuga %d\n", calltime++);
-	usleep(1000 * 1000); // wait 10 mili-seconds
+	usleep(10 * 1000); // wait 10 mili-seconds
 }
 
 int main(void)
@@ -36,7 +35,7 @@ int main(void)
 	test.mlx = mlx_init();
 	test.win = mlx_new_window(test.mlx, 500, 500, "texture");
 
-	mlx_key_hook(test.mlx, hoge, test.win);
+	mlx_key_hook(test.win, hoge, NULL);
 	mlx_loop_hook(test.mlx, fuga, &test);
 	mlx_loop(test.mlx);
 }

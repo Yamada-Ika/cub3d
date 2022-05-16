@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/13 00:52:13 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/16 13:17:40 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <sys/time.h>
 
 #include "libft.h"
 #include "mlx.h"
 #include "mlx_window.h"
+#include "vector.h"
 
 #define mapWidth 24
 #define mapHeight 24
@@ -52,12 +55,14 @@ typedef struct s_texture
 	t_img	*img;
 }	t_texture;
 
+// TODO tex -> vectorにしてアニメーションに対応
 typedef struct s_sprite
 {
-	t_texture	*tex;
+	t_vector	*textures;
 	double	x;
 	double	y;
 	double	dist_from_player;
+	int		len;
 }	t_sprite;
 
 typedef struct s_sprite_info
@@ -86,12 +91,15 @@ typedef struct s_minimap_info
 	int	height;
 }	t_minimap_info;
 
+typedef struct timeval	t_time;
+
 typedef struct s_cub {
 	t_window		*window;
 	t_player		*player;
 	t_map			*map;
 	t_sprite_info	*sprite;
 	t_minimap_info	*minimap;
+	t_time			timestamp;
 }	t_cub;
 
 void	render(t_cub *cub);
