@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/16 21:09:55 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/20 19:38:12 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,8 @@ typedef enum e_error
 // ------------------- init cub -------------------
 void	sprite_position_generator(t_cub *cub, double *x, double *y);
 long long	mytime(void);
+
+// dump
+void	dump_config(t_config *config);
 
 #endif

@@ -15,7 +15,7 @@ NAME		:= cub3d
 SRCS		:= handle_window.c      mlx_wrapper.c\
 hooks.c              parse.c\
 main.c               position_generator.c\
-minimap.c            vector.c
+minimap.c            vector.c render.c
 OBJS		:= $(SRCS:%.c=%.o)
 SRCS		:= $(addprefix src/, $(SRCS))
 OBJS		:= $(addprefix obj/, $(OBJS))
