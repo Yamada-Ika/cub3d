@@ -46,13 +46,13 @@ void	swap_sprite(t_sprite *lhs, t_sprite *rhs)
 }
 
 // for calcluate frame index
-long long time_in_ms() {
+long long time_in_ms(void) {
 	t_time tv;
 	gettimeofday(&tv, NULL);
 	return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
-long long time_in_500ms() {
+long long time_in_500ms(void) {
 	t_time tv;
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000) / 500;
@@ -63,7 +63,19 @@ int	calc_frame_index(int frame_len)
 	return (time_in_500ms() % frame_len);
 }
 
-void	render(t_cub *cub)
+double	subtend_angle(double dir1_x, double dir1_y, double dir2_x, double dir2_y)
+{
+	double	inner;
+	double	norm1;
+	double	norm2;
+
+	inner = dir1_x * dir2_x + dir1_y * dir2_y;
+	norm1 = sqrtf(dir1_x * dir1_x + dir1_y * dir1_y);
+	norm2 = sqrtf(dir2_x * dir2_x + dir2_y * dir2_y);
+	return (acos(inner / (norm1 * norm2)));
+}
+
+void	draw_walls(t_cub *cub)
 {
 	double pos_x = cub->player->pos_x;
 	double pos_y = cub->player->pos_y;
@@ -72,7 +84,7 @@ void	render(t_cub *cub)
 	double plane_x = cub->player->plane_x;
 	double plane_y = cub->player->plane_y;
 
-	dump_cub(cub);
+	// dump_cub(cub);
 
 	for(int x = 0; x < WIN_W; x++)
 	{
@@ -90,10 +102,8 @@ void	render(t_cub *cub)
 		double side_dist_y;
 
 		//length of ray from one x or y-side to next x or y-side
-		// double delta_dist_x = sqrt(1 + (ray_dir_y * ray_dir_y) / (ray_dir_x * ray_dir_x));
-		// double delta_dist_y = sqrt(1 + (ray_dir_x * ray_dir_x) / (ray_dir_y * ray_dir_y));
-		double delta_dist_x = (ray_dir_x == 0) ? 1e30 : fabs(1 / ray_dir_x);
-		double delta_dist_y = (ray_dir_y == 0) ? 1e30 : fabs(1 / ray_dir_y);
+		double delta_dist_x = sqrt(1 + (ray_dir_y * ray_dir_y) / (ray_dir_x * ray_dir_x));
+		double delta_dist_y = sqrt(1 + (ray_dir_x * ray_dir_x) / (ray_dir_y * ray_dir_y));
 		double perp_wall_dist;
 
 		//what direction to step in x or y-direction (either +1 or -1)
@@ -150,23 +160,44 @@ void	render(t_cub *cub)
 			//Check if ray has hit a wall
 			if (cub->map->map[map_x][map_y].kind == WALL)
 				has_hit = true;
-			else if (cub->map->map[map_x][map_y].kind == DOOR
-				&& (side == EAST || side == WEST))
-				has_hit = true;
+			else if (cub->map->map[map_x][map_y].kind == DOOR)
+			{
+				if (side == EAST)
+				{
+					// ハーフステップ分足して、ドアのマスの中だったらドアに衝突している。
+					double	half_step_y = 0.5f;
+					// double	half_step_x = (ray_dir_x / ray_dir_y) * half_step_y;
+					double	half_step_x = fabs((ray_dir_x / ray_dir_y) * half_step_y);
+					if (x == WIN_W/2) {
+						fprintf(stderr, "-- dump var in render --\n");
+						fprintf(stderr, "ray_dir_x / ray_dir_y            %lf\n", ray_dir_x / ray_dir_y);
+						fprintf(stderr, "half_step_y                      %lf\n", half_step_y);
+						fprintf(stderr, "half_step_x                      %lf\n", half_step_x);
+						fprintf(stderr, "map_x                            %d\n", map_x);
+						fprintf(stderr, "map_x - half_step_x              %lf\n", map_x - half_step_x);
+						fprintf(stderr, "(int)roundf(map_x - half_step_x) %d\n", (int)roundf(map_x - half_step_x));
+					}
+					if ((int)roundf(map_x - half_step_x) == map_x)
+					{
+						side_dist_y += delta_dist_y * (0.5f);
+						has_hit = true;
+					}
+				}
+			}
 		}
 
-		// // 縦方向にあるドアはsideがEASTかWESTのみ描画
-		// if (cub->map->map[map_x][map_y].kind == DOOR)
-		// {
-		// 	if (side == NORTH || side == SOUTH)
-		// 		continue;
-		// }
+		// プレイヤーから衝突した壁までの直線距離
+		double	euclid_dist;
 
 		//Calculate distance projected on camera direction (Euclidean distance would give fisheye effect!)
 		if(side == NORTH || side == SOUTH)
-			perp_wall_dist = (side_dist_x - delta_dist_x);
+			euclid_dist = (side_dist_x - delta_dist_x);
 		else
-			perp_wall_dist = (side_dist_y - delta_dist_y);
+			euclid_dist = (side_dist_y - delta_dist_y);
+
+		perp_wall_dist = euclid_dist * cos(subtend_angle(dir_x, dir_y, ray_dir_x, ray_dir_y));
+		if (x == WIN_W / 2)
+			perp_wall_dist = euclid_dist;
 
 		//Calculate height of line to draw on screen
 		int line_height = (int)(WIN_H / perp_wall_dist);
@@ -215,7 +246,7 @@ void	render(t_cub *cub)
 		// // dump
 		// if (x == WIN_W/2) {
 		// 	char *side_kw[] = {"NORTH", "SOUTH", "WEST", "EAST"};
-		// 	fprintf(stderr, "-- dump var in draw --\n");
+			// fprintf(stderr, "-- dump var in draw --\n");
 		// 	fprintf(stderr, "ray index       : %d\n", x);
 		// 	fprintf(stderr, "side            : %d\n", side);
 		// 	fprintf(stderr, "side            : %s\n", side_kw[side]);
@@ -223,7 +254,7 @@ void	render(t_cub *cub)
 		// 	fprintf(stderr, "pos_y           : %f\n", pos_y);
 		// 	fprintf(stderr, "ray_dir_x       : %f\n", ray_dir_x);
 		// 	fprintf(stderr, "ray_dir_y       : %f\n", ray_dir_y);
-		// 	fprintf(stderr, "perp_wall_dist  : %f\n", perp_wall_dist);
+			// fprintf(stderr, "perp_wall_dist  : %f\n", perp_wall_dist);
 		// 	fprintf(stderr, "ray_dir_y       : %f\n", ray_dir_y);
 		// 	fprintf(stderr, "wall_x          : %f\n", wall_x);
 		// 	fprintf(stderr, "tex_x           : %d\n", tex_x);
@@ -253,8 +284,18 @@ void	render(t_cub *cub)
 		// fill perp-buffer
 		cub->sprite->buf_perp[x] = perp_wall_dist;
 	}
+}
 
+void	draw_sprites(t_cub *cub)
+{
+	double pos_x = cub->player->pos_x;
+	double pos_y = cub->player->pos_y;
+	double dir_x = cub->player->dir_x;
+	double dir_y = cub->player->dir_y;
+	double plane_x = cub->player->plane_x;
+	double plane_y = cub->player->plane_y;
 	t_sprite	*sprites = cub->sprite->sprites;
+
 	// spriteの距離を計算
 	for (int i = 0; i < cub->sprite->num; i++) {
 		double	sp_pos_x = sprites[i].x;
@@ -398,17 +439,7 @@ void	render(t_cub *cub)
 		}
 	}
 
-	draw_minimap(cub);
-
-	put_image(cub);
-
-	// FPS
-	t_time	old = cub->timestamp;
-	gettimeofday(&cub->timestamp, NULL);
-	double frame_time = (cub->timestamp.tv_usec - old.tv_usec) / 1000000.0;
-	// fprintf(stderr, "FPS        = %lf\n", 1 / frame_time);
-
-	// スプライトを移動させる
+	// move sprite
 	for (int i = 0; i < cub->sprite->num; i++) {
 		// 遠すぎるスプライトは追っかけてこない
 		if (sprites[i].dist_from_player > 10.0)
@@ -428,6 +459,28 @@ void	render(t_cub *cub)
 		if (cub->map->map[(int)sprites[i].x][(int)(sprites[i].y + delte_y)].kind == NONE)
 			sprites[i].y += delte_y;
 	}
+}
+
+void	render(t_cub *cub)
+{
+	// dump_cub(cub);
+
+	draw_walls(cub);
+	draw_sprites(cub);
+	draw_minimap(cub);
+
+	// for debug
+	for (int y = 0; y < WIN_H; y++) {
+		put_pixel(cub, WIN_W/2, y, 0xff0000);
+	}
+
+	put_image(cub);
+
+	// FPS
+	t_time	old = cub->timestamp;
+	gettimeofday(&cub->timestamp, NULL);
+	double frame_time = (cub->timestamp.tv_usec - old.tv_usec) / 1000000.0;
+	// fprintf(stderr, "FPS        = %lf\n", 1 / frame_time);
 
 	usleep(16 * 1000); // 1 / 60 seconds
 }
@@ -475,34 +528,34 @@ void	dump_cub(t_cub *cub)
 	// fprintf(stderr, "position  (%f, %f)\n", cub->player->pos_x, cub->player->pos_y);
 	// fprintf(stderr, "direction (%f, %f)\n", cub->player->dir_x, cub->player->dir_y);
 	// fprintf(stderr, "plane     (%f, %f)\n", cub->player->plane_x, cub->player->plane_y);
-	fprintf(stderr, "-- map info --\n");
-	for (int i = 0; i < cub->map->heigth; i++) {
-		for (int j = 0; j < cub->map->width; j++) {
-			// sprite
-			bool	has_put = false;
-			for (int n = 0; n < cub->sprite->num; n++) {
-				if (i == (int)cub->sprite->sprites[n].x && j == (int)cub->sprite->sprites[n].y) {
-					fprintf(stderr, ".");
-					has_put = true;
-					break ;
-				}
-			}
-			if (has_put)
-				continue ;
-			if (i == (int)(cub->player->pos_x) && j == (int)(cub->player->pos_y))
-				fprintf(stderr, "P");
-			else if (cub->map->map[i][j].kind == NONE)
-				fprintf(stderr, " ");
-			else if (cub->map->map[i][j].kind == WALL)
-				fprintf(stderr, "█");
-			else if (cub->map->map[i][j].kind == DOOR && cub->map->map[i][j].side == LONGITUDINAL && cub->map->map[i][j].door_state == CLOSE)
-				fprintf(stderr, "|");
-			else
-				fprintf(stderr, " ");
-			if (j == cub->map->width -1)
-				fprintf(stderr, "\n");
-		}
-	}
+	// fprintf(stderr, "-- map info --\n");
+	// for (int i = 0; i < cub->map->heigth; i++) {
+	// 	for (int j = 0; j < cub->map->width; j++) {
+	// 		// sprite
+	// 		bool	has_put = false;
+	// 		for (int n = 0; n < cub->sprite->num; n++) {
+	// 			if (i == (int)cub->sprite->sprites[n].x && j == (int)cub->sprite->sprites[n].y) {
+	// 				fprintf(stderr, ".");
+	// 				has_put = true;
+	// 				break ;
+	// 			}
+	// 		}
+	// 		if (has_put)
+	// 			continue ;
+	// 		if (i == (int)(cub->player->pos_x) && j == (int)(cub->player->pos_y))
+	// 			fprintf(stderr, "P");
+	// 		else if (cub->map->map[i][j].kind == NONE)
+	// 			fprintf(stderr, " ");
+	// 		else if (cub->map->map[i][j].kind == WALL)
+	// 			fprintf(stderr, "█");
+	// 		else if (cub->map->map[i][j].kind == DOOR && cub->map->map[i][j].side == LONGITUDINAL && cub->map->map[i][j].door_state == CLOSE)
+	// 			fprintf(stderr, "|");
+	// 		else
+	// 			fprintf(stderr, " ");
+	// 		if (j == cub->map->width -1)
+	// 			fprintf(stderr, "\n");
+	// 	}
+	// }
 	// fprintf(stderr, "-- color info --\n");
 	// fprintf(stderr, "floor   %x\n", cub->map->floor);
 	// fprintf(stderr, "ceil    %x\n", cub->map->ceil) ;

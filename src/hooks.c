@@ -1,6 +1,17 @@
 #include "cub3d.h"
 #include <X11/X.h>
 
+static void	rotate_2d(double *a, double *b, double angle)
+{
+	double	tmp_a;
+	double	tmp_b;
+
+	tmp_a = (*a) * cos(angle) + (*b) * sin(angle);
+	tmp_b = -(*a) * sin(angle) + (*b) * cos(angle);
+	*a = tmp_a;
+	*b = tmp_b;
+}
+
 static bool	can_move(int keycode, t_cub *cub)
 {
 	if (keycode == W_KEY) // move forward
@@ -23,6 +34,32 @@ static bool	can_move(int keycode, t_cub *cub)
 		if (cub->map->map[(int)(cub->player->pos_x-cub->player->dir_x * MOVE_STEP)][(int)(cub->player->pos_y)].kind != NONE)
 			return (false);
 		cub->player->pos_x -= cub->player->dir_x * MOVE_STEP;
+		return (true);
+	}
+	if (keycode == A_KEY) // move left
+	{
+		// collide wall ?
+		double ortho_dir_x = cub->player->dir_x;
+		double ortho_dir_y = cub->player->dir_y;
+
+		rotate_2d(&ortho_dir_x, &ortho_dir_y, -1.57079632679);
+		if (cub->map->map[(int)(cub->player->pos_x + ortho_dir_x * MOVE_STEP)][(int)(cub->player->pos_y + ortho_dir_y * MOVE_STEP)].kind != NONE)
+			return (false);
+		cub->player->pos_x += ortho_dir_x * MOVE_STEP;
+		cub->player->pos_y += ortho_dir_y * MOVE_STEP;
+		return (true);
+	}
+	if (keycode == D_KEY) // move right
+	{
+		// collide wall ?
+		double ortho_dir_x = cub->player->dir_x;
+		double ortho_dir_y = cub->player->dir_y;
+	
+		rotate_2d(&ortho_dir_x, &ortho_dir_y, 1.57079632679);
+		if (cub->map->map[(int)(cub->player->pos_x + ortho_dir_x * MOVE_STEP)][(int)(cub->player->pos_y + ortho_dir_y * MOVE_STEP)].kind != NONE)
+			return (false);
+		cub->player->pos_x += ortho_dir_x * MOVE_STEP;
+		cub->player->pos_y += ortho_dir_y * MOVE_STEP;
 		return (true);
 	}
 	if (keycode == R_ARROW) // see right
