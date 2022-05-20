@@ -147,22 +147,80 @@ void	draw_walls(t_cub *cub)
 				break ;
 			else if (map->map[map_x][map_y].kind == DOOR)
 			{
-				if (side == EAST)
+				if (map->map[map_x][map_y].door_state == OPEN)
+					fprintf(stderr, "door_state : OPEN\n");
+				if (map->map[map_x][map_y].door_state == OPENING)
+					fprintf(stderr, "door_state : OPENING\n");
+				if (map->map[map_x][map_y].door_state == CLOSE)
+					fprintf(stderr, "door_state : CLOSE\n");
+				if (map->map[map_x][map_y].door_state == CLOSING)
+					fprintf(stderr, "door_state : CLOSING\n");
+				fprintf(stderr, "timer : %lf\n", map->map[map_x][map_y].timer);
+
+				if (side == EAST || side == WEST)
 				{
 					// ハーフステップ分足して、ドアのマスの中だったらドアに衝突している。
 					double	half_step_y = 0.5f;
-					// double	half_step_x = (ray->dir_y / ray->dir_y) * half_step_y;
-					double	half_step_x = fabs((ray->dir_x / ray->dir_y) * half_step_y);
+					// side==WESTの時、こうしたら上手くいったけどなぜかはあんまりわからん
+					if (ray->dir_y > 0)
+						half_step_y = -0.5f;
+					double	half_step_x = ((ray->dir_x / ray->dir_y) * half_step_y);
+
+					// rayが衝突したx座標を計算
+					double euclid_dist = (side_dist_y - delta_dist_y);
+					perp_wall_dist = euclid_dist * cos(subtend_angle(player->dir_x, player->dir_y, ray->dir_x, ray->dir_y));
+					if (x == WIN_W / 2)
+						perp_wall_dist = euclid_dist;
+					double ray_head_x = player->pos_x + perp_wall_dist * ray->dir_x;
+
+					// 半ステップ移動した時のx座標を計算
+					double added_half_step_x = ray_head_x - half_step_x;
+
+					// dump
 					if (x == WIN_W/2) {
 						fprintf(stderr, "-- dump var in render --\n");
-						fprintf(stderr, "ray->dir_y / ray->dir_y            %lf\n", ray->dir_x / ray->dir_y);
-						fprintf(stderr, "half_step_y                      %lf\n", half_step_y);
-						fprintf(stderr, "half_step_x                      %lf\n", half_step_x);
-						fprintf(stderr, "map_x                            %d\n", map_x);
-						fprintf(stderr, "map_x - half_step_x              %lf\n", map_x - half_step_x);
-						fprintf(stderr, "(int)roundf(map_x - half_step_x) %d\n", (int)roundf(map_x - half_step_x));
+						fprintf(stderr, "sqrt(1 - ray->dir_y * ray->dir_y) %lf\n", sqrt(1 - ray->dir_y * ray->dir_y));
+						fprintf(stderr, "ray_head_x                        %lf\n", ray_head_x);
+						fprintf(stderr, "half_step_x                       %lf\n", half_step_x);
+						fprintf(stderr, "added_half_step_x                 %lf\n", added_half_step_x);
+						fprintf(stderr, "roundf(added_half_step_x)         %lf\n", roundf(added_half_step_x));
+						fprintf(stderr, "(int)roundf(added_half_step_x)    %d\n", (int)roundf(added_half_step_x));
 					}
-					if ((int)roundf(map_x - half_step_x) == map_x)
+
+					t_time	old = cub->timestamp;
+					t_time	now;
+					gettimeofday(&now, NULL);
+					double diff_time_in_sec = (now.tv_usec - old.tv_usec) / 100000000.0;
+
+					fprintf(stderr, "diff_time_in_sec : %lf\n", diff_time_in_sec);
+
+					// DOORがOPENINGだったら
+					// now - 前描画した時間の100msの倍数だけtimerに足す
+					// 242ms -> 0.242を足す
+					// 値は1.0までなので超えたら1.0に
+					if (map->map[map_x][map_y].door_state == OPENING) {
+						map->map[map_x][map_y].timer += diff_time_in_sec;
+						if (map->map[map_x][map_y].timer < 0.0) {
+							map->map[map_x][map_y].timer = 0.0;
+						}
+						if (map->map[map_x][map_y].timer > 1.0) {
+							map->map[map_x][map_y].timer = 1.0;
+							map->map[map_x][map_y].door_state = OPEN;
+						}
+					}
+					if (map->map[map_x][map_y].door_state == CLOSING) {
+						map->map[map_x][map_y].timer -= diff_time_in_sec;
+						if (map->map[map_x][map_y].timer > 1.0) {
+							map->map[map_x][map_y].timer = 1.0;
+						}
+						if (map->map[map_x][map_y].timer < 0.0) {
+							map->map[map_x][map_y].timer = 0.0;
+							map->map[map_x][map_y].door_state = CLOSE;
+						}
+					}
+
+					// それがmap_xと等しかったらドアと衝突
+					if ((int)(added_half_step_x - map->map[map_x][map_y].timer) == map_x)
 					{
 						side_dist_y += delta_dist_y * (0.5f);
 						break ;
@@ -228,26 +286,26 @@ void	draw_walls(t_cub *cub)
 		int	tex_x = tex->width * tex_x_on_map;
 		double	tex_step = tex->height / (double)line_height;
 
-		// dump
-		if (x == WIN_W/2) {
-			char *side_kw[] = {"NORTH", "SOUTH", "WEST", "EAST"};
-			fprintf(stderr, "-- dump var in draw --\n");
-			fprintf(stderr, "ray index       : %d\n", x);
-			fprintf(stderr, "side            : %d\n", side);
-			fprintf(stderr, "side            : %s\n", side_kw[side]);
-			fprintf(stderr, "pos_x           : %f\n", player->pos_x);
-			fprintf(stderr, "pos_y           : %f\n", player->pos_y);
-			fprintf(stderr, "ray->dir_y       : %f\n", ray->dir_y);
-			fprintf(stderr, "ray->dir_y       : %f\n", ray->dir_y);
-			fprintf(stderr, "perp_wall_dist  : %f\n", perp_wall_dist);
-			fprintf(stderr, "ray->dir_y       : %f\n", ray->dir_y);
-			fprintf(stderr, "wall_x          : %f\n", wall_x);
-			fprintf(stderr, "tex_x           : %d\n", tex_x);
-			fprintf(stderr, "tex->width      : %d\n", tex->width);
-			fprintf(stderr, "tex->height     : %d\n", tex->height);
-			fprintf(stderr, "line_height     : %d\n", line_height);
-			fprintf(stderr, "tex_step        : %f\n", tex_step);
-		}
+		// // dump
+		// if (x == WIN_W/2) {
+		// 	char *side_kw[] = {"NORTH", "SOUTH", "WEST", "EAST"};
+		// 	fprintf(stderr, "-- dump var in draw --\n");
+		// 	fprintf(stderr, "ray index       : %d\n", x);
+		// 	fprintf(stderr, "side            : %d\n", side);
+		// 	fprintf(stderr, "side            : %s\n", side_kw[side]);
+		// 	fprintf(stderr, "pos_x           : %f\n", player->pos_x);
+		// 	fprintf(stderr, "pos_y           : %f\n", player->pos_y);
+		// 	fprintf(stderr, "ray->dir_y       : %f\n", ray->dir_y);
+		// 	fprintf(stderr, "ray->dir_y       : %f\n", ray->dir_y);
+		// 	fprintf(stderr, "perp_wall_dist  : %f\n", perp_wall_dist);
+		// 	fprintf(stderr, "ray->dir_y       : %f\n", ray->dir_y);
+		// 	fprintf(stderr, "wall_x          : %f\n", wall_x);
+		// 	fprintf(stderr, "tex_x           : %d\n", tex_x);
+		// 	fprintf(stderr, "tex->width      : %d\n", tex->width);
+		// 	fprintf(stderr, "tex->height     : %d\n", tex->height);
+		// 	fprintf(stderr, "line_height     : %d\n", line_height);
+		// 	fprintf(stderr, "tex_step        : %f\n", tex_step);
+		// }
 
 		for (int i = 0; i < draw_start; i++) {
 			put_pixel(cub, x, i, cub->map->ceil);
@@ -457,9 +515,9 @@ void	render(t_cub *cub)
 	put_image(cub);
 
 	// FPS
-	t_time	old = cub->timestamp;
+	// t_time	old = cub->timestamp;
 	gettimeofday(&cub->timestamp, NULL);
-	double frame_time = (cub->timestamp.tv_usec - old.tv_usec) / 1000000.0;
+	// double frame_time = (cub->timestamp.tv_usec - old.tv_usec) / 1000000.0;
 	// fprintf(stderr, "FPS        = %lf\n", 1 / frame_time);
 
 	usleep(16 * 1000); // 1 / 60 seconds
