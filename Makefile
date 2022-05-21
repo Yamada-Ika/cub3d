@@ -63,7 +63,7 @@ $(MLX_A): empty
 	make -C $(MLX_DIR)
 
 clean:
-	rm -rf obj/*.o
+	rm -rf $(OBJS)
 	make -C $(LIBFT_DIR) clean
 	make -C $(MLX_DIR) clean
 
