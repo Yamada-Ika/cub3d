@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/21 16:08:15 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/21 21:12:15 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,6 @@ typedef struct s_player {
 	double	plane_x;
 	double	plane_y;
 }	t_player;
-
-typedef struct s_ray {
-	double	dir_x;
-	double	dir_y;
-}	t_ray;
 
 typedef struct s_texture
 {
@@ -135,7 +130,6 @@ typedef struct s_camera
 typedef struct s_cub {
 	t_window		*window;
 	t_player		*player;
-	t_ray			*ray;
 	t_map			*map;
 	t_sprite_info	*sprite;
 	t_minimap_info	*minimap;

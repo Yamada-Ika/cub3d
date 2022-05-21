@@ -337,9 +337,6 @@ t_texture	*new_texture(t_cub *cub, char *file)
 
 t_error	parse_config(t_config *config, t_cub *cub)
 {
-	// ray
-	cub->ray = ft_calloc(1, sizeof(t_ray));
-
 	// player
 	cub->player = ft_calloc(1, sizeof(t_player));
 	cub->player->pos_x = config->pos_x;

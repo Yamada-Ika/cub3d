@@ -4,6 +4,8 @@ typedef struct s_raycastvar
 {
 	int		x;
 	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
 	int		map_x;
 	int		map_y;
 	double	side_dist_x;
@@ -43,35 +45,31 @@ double	subtend_angle(double dir1_x, double dir1_y, double dir2_x, double dir2_y)
 	double	norm2;
 
 	inner = dir1_x * dir2_x + dir1_y * dir2_y;
-	norm1 = sqrtf(dir1_x * dir1_x + dir1_y * dir1_y);
-	norm2 = sqrtf(dir2_x * dir2_x + dir2_y * dir2_y);
+	norm1 = sqrt(dir1_x * dir1_x + dir1_y * dir1_y);
+	norm2 = sqrt(dir2_x * dir2_x + dir2_y * dir2_y);
 	return (acos(inner / (norm1 * norm2)));
 }
 
 void	calc_ray_dirction(t_cub *cub, t_raycastvar *lvar)
 {
-	t_player		*player;
-	t_ray			*ray;
+	t_player	*player;
 
 	player = cub->player;
-	ray = cub->ray;
 	lvar->camera_x = 2 * lvar->x / (double)WIN_W - 1;
-	ray->dir_x = player->dir_x + player->plane_x * lvar->camera_x;
-	ray->dir_y = player->dir_y + player->plane_y * lvar->camera_x;
+	lvar->ray_dir_x = player->dir_x + player->plane_x * lvar->camera_x;
+	lvar->ray_dir_y = player->dir_y + player->plane_y * lvar->camera_x;
 }
 
 void	init_raycast_iterator(t_cub *cub, t_raycastvar *lvar)
 {
 	t_player		*player;
-	t_ray			*ray;
 
 	player = cub->player;
-	ray = cub->ray;
 	lvar->map_x = (int)(player->pos_x);
 	lvar->map_y = (int)(player->pos_y);
-	lvar->delta_dist_x = sqrt(1 + (ray->dir_y * ray->dir_y) / (ray->dir_x * ray->dir_x));
-	lvar->delta_dist_y = sqrt(1 + (ray->dir_x * ray->dir_x) / (ray->dir_y * ray->dir_y));
-	if (ray->dir_x < 0)
+	lvar->delta_dist_x = sqrt(1 + (lvar->ray_dir_y * lvar->ray_dir_y) / (lvar->ray_dir_x * lvar->ray_dir_x));
+	lvar->delta_dist_y = sqrt(1 + (lvar->ray_dir_x * lvar->ray_dir_x) / (lvar->ray_dir_y * lvar->ray_dir_y));
+	if (lvar->ray_dir_x < 0)
 	{
 		lvar->step_x = -1;
 		lvar->side_dist_x = (player->pos_x - lvar->map_x) * lvar->delta_dist_x;
@@ -81,7 +79,7 @@ void	init_raycast_iterator(t_cub *cub, t_raycastvar *lvar)
 		lvar->step_x = 1;
 		lvar->side_dist_x = (lvar->map_x + 1.0 - player->pos_x) * lvar->delta_dist_x;
 	}
-	if (ray->dir_y < 0)
+	if (lvar->ray_dir_y < 0)
 	{
 		lvar->step_y = -1;
 		lvar->side_dist_y = (player->pos_y - lvar->map_y) * lvar->delta_dist_y;
@@ -97,18 +95,16 @@ void	cast_ray(t_cub *cub, t_raycastvar *lvar)
 {
 	t_player		*player;
 	t_map			*map;
-	t_ray			*ray;
 
 	player = cub->player;
 	map = cub->map;
-	ray = cub->ray;
 	while (true)
 	{
 		if (lvar->side_dist_x < lvar->side_dist_y)
 		{
 			lvar->side_dist_x += lvar->delta_dist_x;
 			lvar->map_x += lvar->step_x;
-			if (ray->dir_x > 0)
+			if (lvar->ray_dir_x > 0)
 				lvar->side = NORTH;
 			else
 				lvar->side = SOUTH;
@@ -117,7 +113,7 @@ void	cast_ray(t_cub *cub, t_raycastvar *lvar)
 		{
 			lvar->side_dist_y += lvar->delta_dist_y;
 			lvar->map_y += lvar->step_y;
-			if (ray->dir_y > 0)
+			if (lvar->ray_dir_y > 0)
 				lvar->side = WEST;
 			else
 				lvar->side = EAST;
@@ -128,30 +124,21 @@ void	cast_ray(t_cub *cub, t_raycastvar *lvar)
 		{
 			if (lvar->side == EAST || lvar->side == WEST)
 			{
-				// ハーフステップ分足して、ドアのマスの中だったらドアに衝突している。
 				double	half_step_y = 0.5f;
-				// side==WESTの時、こうしたら上手くいったけどなぜかはあんまりわからん
-				if (ray->dir_y > 0)
+				if (lvar->ray_dir_y > 0)
 					half_step_y = -0.5f;
-				double	half_step_x = ((ray->dir_x / ray->dir_y) * half_step_y);
-
-				// rayが衝突したx座標を計算
+				double	half_step_x = ((lvar->ray_dir_x / lvar->ray_dir_y) * half_step_y);
 				lvar->euclid_dist = (lvar->side_dist_y - lvar->delta_dist_y);
-				lvar->perp_wall_dist = lvar->euclid_dist * cos(subtend_angle(player->dir_x, player->dir_y, ray->dir_x, ray->dir_y));
+				lvar->perp_wall_dist = lvar->euclid_dist * cos(subtend_angle(player->dir_x, player->dir_y, lvar->ray_dir_x, lvar->ray_dir_y));
 				if (lvar->x == WIN_W / 2)
 					lvar->perp_wall_dist = lvar->euclid_dist;
-				double ray_head_x = player->pos_x + lvar->perp_wall_dist * ray->dir_x;
+				double ray_head_x = player->pos_x + lvar->perp_wall_dist * lvar->ray_dir_x;
 				double added_half_step_x = ray_head_x - half_step_x;
 
 				double diff_time_in_sec = (gettimestamp() - cub->timestamp) / 100000.0;
 				if (diff_time_in_sec < 0) {
 					diff_time_in_sec = 0.000130;
 				}
-
-				// DOORがOPENINGだったら
-				// now - 前描画した時間の100msの倍数だけtimerに足す
-				// 242ms -> 0.242を足す
-				// 値は1.0までなので超えたら1.0に
 				if (map->map[lvar->map_x][lvar->map_y].door_state == OPENING) {
 					map->map[lvar->map_x][lvar->map_y].timer += diff_time_in_sec;
 					if (map->map[lvar->map_x][lvar->map_y].timer < 0.0) {
@@ -174,8 +161,6 @@ void	cast_ray(t_cub *cub, t_raycastvar *lvar)
 				}
 				if ((int)added_half_step_x != lvar->map_x)
 					continue;
-
-				// それがmap_xと等しかったらドアと衝突
 				if ((int)(added_half_step_x - map->map[lvar->map_x][lvar->map_y].timer) == lvar->map_x)
 				{
 					lvar->side_dist_y += lvar->delta_dist_y * (0.5f);
@@ -189,7 +174,7 @@ void	cast_ray(t_cub *cub, t_raycastvar *lvar)
 	else
 		lvar->euclid_dist = (lvar->side_dist_y - lvar->delta_dist_y);
 
-	lvar->perp_wall_dist = lvar->euclid_dist * cos(subtend_angle(player->dir_x, player->dir_y, ray->dir_x, ray->dir_y));
+	lvar->perp_wall_dist = lvar->euclid_dist * cos(subtend_angle(player->dir_x, player->dir_y, lvar->ray_dir_x, lvar->ray_dir_y));
 	if (lvar->x == WIN_W / 2)
 		lvar->perp_wall_dist = lvar->euclid_dist;
 }
@@ -216,19 +201,16 @@ void	draw_vertilcal_line(t_cub *cub, t_raycastvar *lvar)
 
 void	set_wall_texture(t_cub *cub, t_raycastvar *lvar)
 {
-	t_player		*player;
-	t_map			*map;
-	t_ray			*ray;
+	t_player	*player;
+	t_map		*map;
+	double		tex_x_on_map;
 
 	player = cub->player;
 	map = cub->map;
-	ray = cub->ray;
 	if(lvar->side == NORTH || lvar->side == SOUTH)
-		lvar->wall_x = player->pos_y + lvar->perp_wall_dist * ray->dir_y;
+		lvar->wall_x = player->pos_y + lvar->perp_wall_dist * lvar->ray_dir_y;
 	else
-		lvar->wall_x = player->pos_x + lvar->perp_wall_dist * ray->dir_x;
-
-	double	tex_x_on_map;
+		lvar->wall_x = player->pos_x + lvar->perp_wall_dist * lvar->ray_dir_x;
 	if (lvar->side == WEST)
 	{
 		lvar->tex = map->west;
