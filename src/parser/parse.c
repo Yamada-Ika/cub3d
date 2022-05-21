@@ -152,15 +152,10 @@ t_error	set_map(t_config *config)
 		i++;
 	}
 	width = ft_strlen(file[idx]);
-	// int	**map = malloc(height * sizeof(int *));
 	t_cell	**map = ft_calloc(height, sizeof(t_cell *));
 	config->map = map;
 	config->height = height;
 	config->width = width;
-	// for (int i = 0; i < height; i++)
-	// {
-	// 	map[i] = malloc(width * sizeof(int));
-	// }
 	for (int i = 0; i < height; i++)
 	{
 		map[i] = ft_calloc(width, sizeof(t_cell));
@@ -241,6 +236,15 @@ t_error	set_map(t_config *config)
 				map[i][j].kind = DOOR;
 				map[i][j].door_state = CLOSE;
 				map[i][j].side = LONGITUDINAL;
+				map[i][j].timer = 0.0;
+				j++;
+				continue ;
+			}
+			if (file[idx][j] == '-')
+			{
+				map[i][j].kind = DOOR;
+				map[i][j].door_state = CLOSE;
+				map[i][j].side = TRANSVERSE;
 				map[i][j].timer = 0.0;
 				j++;
 				continue ;
@@ -351,6 +355,18 @@ t_error	parse_config(t_config *config, t_cub *cub)
 	cub->map->map = config->map;
 	cub->map->width = config->width;
 	cub->map->heigth = config->height;
+	// ドアの座標を覚えておく
+	cub->map->door_points = vec_new(sizeof(t_point));
+	for (int x = 0; x < cub->map->heigth; x++) {
+		for (int y = 0; y < cub->map->width; y++) {
+			if (cub->map->map[x][y].kind == DOOR) {
+				t_point	p;
+				p.x = x;
+				p.y = y;
+				vec_push_back(cub->map->door_points, &p);
+			}
+		}
+	}
 
 	// floor and ceil color
 	cub->map->floor = config->floor_color;

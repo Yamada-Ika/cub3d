@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/21 21:12:15 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/22 02:50:08 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,12 @@ typedef struct s_cell
 	double timer; // 0 ~ 1, 0は閉じている, 1は空いている, 0.5は半分空いている
 }	t_cell;
 
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}	t_point;
+
 typedef struct s_map {
 	t_cell		**map;
 	int 		width;
@@ -112,6 +118,7 @@ typedef struct s_map {
 	t_texture	*south;
 	t_texture	*west;
 	t_texture	*east;
+	t_vector	*door_points;
 }	t_map;
 
 typedef struct s_minimap_info
@@ -150,7 +157,7 @@ typedef enum e_error
 	NON_PLAYER,
 }	t_error;
 
-void	render(t_cub *cub);
+int	render(t_cub *cub);
 
 // mlx wrapper
 void	put_pixel(t_cub *cub, int x, int y, unsigned int color);

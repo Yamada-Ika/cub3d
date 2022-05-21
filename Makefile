@@ -1,5 +1,5 @@
 CC			:= gcc
-CFLAGS		:= -MMD -MP -g -fsanitize=address #-Wall -Wextra -Werror
+CFLAGS		:= -MMD -MP #-g -fsanitize=address #-Wall -Wextra -Werror
 COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
@@ -12,13 +12,16 @@ LIBFT_A		:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))
 
 # cub3d
 NAME		:= cub3d
+VPATH		:= src:\
+				src/parser:\
+				src/render:\
+				src/utils
 SRCS		:= handle_window.c      mlx_wrapper.c\
 hooks.c              parse.c\
 main.c               position_generator.c\
 minimap.c            vector.c render.c draw_wall.c draw_sprite.c
-OBJS		:= $(SRCS:%.c=%.o)
-SRCS		:= $(addprefix src/, $(SRCS))
-OBJS		:= $(addprefix obj/, $(OBJS))
+OBJS		:= $(addprefix obj/, $(SRCS:.c=.o))
+DEPS		:= $(OBJS:.o=.d)
 
 # minilib
 MLX_DIR		:= minilibx-linux
@@ -46,9 +49,8 @@ $(LIBFT_A): empty
 
 empty:
 
-obj/%.o: src/%.c
-	# $(CC) $(CFLAGS) -o $@ -c $^ -Iinclude -Iminilibx-linux -Ilibft
-	$(CC) $(CFLAGS) -o $@ -c $^ $(COPTS)
+obj/%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ -Iinclude -Iminilibx-linux -Ilibft -I /opt/X11/include
 
 $(MLX_A): empty
 	make -C $(MLX_DIR)
@@ -67,16 +69,6 @@ re:	fclean all
 run: all
 	./cub3d image/tutorial.cub
 
-texture:
-	gcc test/texture.c $(COPTS) -o test_texture && ./test_texture
-	rm -rf test_texture
-
-circle:
-	gcc test/circle.c $(COPTS) -o test_circle && ./test_circle
-	rm -rf test_circle
-
-frame:
-	gcc test/frame_rate.c $(COPTS) -o test_frame_rate && ./test_frame_rate
-	rm -rf test_frame_rate
+-include $(DEPS)
 
 .PHONY: all clean fclean re libft empty

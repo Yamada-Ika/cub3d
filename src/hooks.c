@@ -184,6 +184,7 @@ static int	handle_key_hook(int keycode, void *params)
 		update_doorstate(cub, keycode);
 		return (0);
 	}
+	return (0);
 }
 
 void	install_event_hooks(t_cub *cub)

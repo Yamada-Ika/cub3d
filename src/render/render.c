@@ -88,7 +88,45 @@ void	update_timestamp(t_cub *cub)
 	cub->timestamp = gettimestamp();
 }
 
-void	render(t_cub *cub)
+void	update_doorstate(t_cub *cub)
+{
+	t_cell	**map;
+	t_point	*p;
+	double	timespan;
+
+	map = cub->map->map;
+	for (int i = 0; i < cub->map->door_points->len; i++) {
+		p = (t_point *)vec_at(cub->map->door_points, i);
+		if (map[p->x][p->y].door_state == OPEN
+			|| map[p->x][p->y].door_state == CLOSE)
+		{
+			continue ;
+		}
+		timespan = (gettimestamp() - cub->timestamp) / 100.0;
+		if (map[p->x][p->y].door_state == OPENING) {
+			map[p->x][p->y].timer += timespan;
+			if (map[p->x][p->y].timer < 0.0) {
+				map[p->x][p->y].timer = 0.0;
+			}
+			if (map[p->x][p->y].timer > 1.0) {
+				map[p->x][p->y].timer = 1.0;
+				map[p->x][p->y].door_state = OPEN;
+			}
+		}
+		if (map[p->x][p->y].door_state == CLOSING) {
+			map[p->x][p->y].timer -= timespan;
+			if (map[p->x][p->y].timer > 1.0) {
+				map[p->x][p->y].timer = 1.0;
+			}
+			if (map[p->x][p->y].timer < 0.0) {
+				map[p->x][p->y].timer = 0.0;
+				map[p->x][p->y].door_state = CLOSE;
+			}
+		}
+	}
+}
+
+int	render(t_cub *cub)
 {
 	// dump_cub(cub);
 	draw_walls(cub);
@@ -99,7 +137,9 @@ void	render(t_cub *cub)
 		put_pixel(cub, WIN_W/2, y, 0xff0000);
 	}
 	put_image(cub);
-	update_timestamp(cub);
 	move_sprites(cub);
+	update_doorstate(cub);
 	usleep(16 * 1000); // 1 / 60 seconds
+	update_timestamp(cub);
+	return (0);
 }
