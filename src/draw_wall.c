@@ -28,6 +28,16 @@ typedef struct s_raycastvar
 	double		tex_step;
 }	t_raycastvar;
 
+void	dump_lvar(t_raycastvar *lvar)
+{
+	if (lvar->x == WIN_W / 2) {
+		fprintf(stderr, "-- dump lvar in render --\n");
+		fprintf(stderr, "euclid_dist    %lf\n", lvar->euclid_dist);
+		fprintf(stderr, "perp_wall_dist %lf\n", lvar->perp_wall_dist);
+		fprintf(stderr, "wall_x         %lf\n", lvar->wall_x);
+	}
+}
+
 typedef enum e_side
 {
 	NORTH,
@@ -184,7 +194,11 @@ void	draw_vertilcal_line(t_cub *cub, t_raycastvar *lvar)
 	for (int i = 0; i < lvar->draw_start; i++) {
 		put_pixel(cub, lvar->x, i, cub->map->ceil);
 	}
-	double	itr_tex_y = 0.0;
+	double	itr_tex_y = 0.0; // オフセットが必要
+	if (-lvar->line_height / 2 + WIN_H / 2 + cub->camera->pitch < 0)
+	{
+		itr_tex_y += abs(-lvar->line_height / 2 + WIN_H / 2 + cub->camera->pitch) * lvar->tex_step;
+	}
 	for (int i = lvar->draw_start; i < lvar->draw_end; i++) {
 		unsigned int color;
 		int tex_y = (int)itr_tex_y;
@@ -266,5 +280,6 @@ void	draw_walls(t_cub *cub)
 		set_wall_texture(cub, &lvar);
 		draw_vertilcal_line(cub, &lvar);
 		fill_perpbuf(cub, &lvar);
+		dump_lvar(&lvar);
 	}
 }
