@@ -16,10 +16,17 @@ VPATH		:= src:\
 				src/parser:\
 				src/render:\
 				src/utils
-SRCS		:= handle_window.c      mlx_wrapper.c\
-hooks.c              parse.c\
-main.c               position_generator.c\
-minimap.c            vector.c render.c draw_wall.c draw_sprite.c
+SRCS		:= handle_window.c\
+				mlx_wrapper.c\
+				hooks.c\
+				parse.c\
+				main.c\
+				position_generator.c\
+				minimap.c\
+				vector.c\
+				render.c\
+				draw_wall.c\
+				draw_sprite.c
 OBJS		:= $(addprefix obj/, $(SRCS:.c=.o))
 DEPS		:= $(OBJS:.o=.d)
 
