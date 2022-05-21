@@ -36,13 +36,13 @@ void	swap_sprite(t_sprite *lhs, t_sprite *rhs)
 
 // for calcluate frame index
 long long time_in_ms(void) {
-	t_time tv;
+	struct timeval	tv;
 	gettimeofday(&tv, NULL);
 	return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
 long long time_in_500ms(void) {
-	t_time tv;
+	struct timeval	tv;
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000) / 500;
 }
@@ -62,6 +62,14 @@ double	subtend_angle(double dir1_x, double dir1_y, double dir2_x, double dir2_y)
 	norm1 = sqrtf(dir1_x * dir1_x + dir1_y * dir1_y);
 	norm2 = sqrtf(dir2_x * dir2_x + dir2_y * dir2_y);
 	return (acos(inner / (norm1 * norm2)));
+}
+
+long long	gettimestamp(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec + tv.tv_usec / 1000);
 }
 
 void	draw_walls(t_cub *cub)
@@ -147,15 +155,16 @@ void	draw_walls(t_cub *cub)
 				break ;
 			else if (map->map[map_x][map_y].kind == DOOR)
 			{
-				if (map->map[map_x][map_y].door_state == OPEN)
-					fprintf(stderr, "door_state : OPEN\n");
-				if (map->map[map_x][map_y].door_state == OPENING)
-					fprintf(stderr, "door_state : OPENING\n");
-				if (map->map[map_x][map_y].door_state == CLOSE)
-					fprintf(stderr, "door_state : CLOSE\n");
-				if (map->map[map_x][map_y].door_state == CLOSING)
-					fprintf(stderr, "door_state : CLOSING\n");
-				fprintf(stderr, "timer : %lf\n", map->map[map_x][map_y].timer);
+				// if (map->map[map_x][map_y].door_state == OPEN) {
+				// 	fprintf(stderr, "door_state : OPEN\n");
+				// }
+				// if (map->map[map_x][map_y].door_state == OPENING)
+				// 	fprintf(stderr, "door_state : OPENING\n");
+				// if (map->map[map_x][map_y].door_state == CLOSE)
+				// 	fprintf(stderr, "door_state : CLOSE\n");
+				// if (map->map[map_x][map_y].door_state == CLOSING)
+				// 	fprintf(stderr, "door_state : CLOSING\n");
+				// fprintf(stderr, "timer : %lf\n", map->map[map_x][map_y].timer);
 
 				if (side == EAST || side == WEST)
 				{
@@ -172,27 +181,12 @@ void	draw_walls(t_cub *cub)
 					if (x == WIN_W / 2)
 						perp_wall_dist = euclid_dist;
 					double ray_head_x = player->pos_x + perp_wall_dist * ray->dir_x;
-
-					// 半ステップ移動した時のx座標を計算
 					double added_half_step_x = ray_head_x - half_step_x;
 
-					// dump
-					if (x == WIN_W/2) {
-						fprintf(stderr, "-- dump var in render --\n");
-						fprintf(stderr, "sqrt(1 - ray->dir_y * ray->dir_y) %lf\n", sqrt(1 - ray->dir_y * ray->dir_y));
-						fprintf(stderr, "ray_head_x                        %lf\n", ray_head_x);
-						fprintf(stderr, "half_step_x                       %lf\n", half_step_x);
-						fprintf(stderr, "added_half_step_x                 %lf\n", added_half_step_x);
-						fprintf(stderr, "roundf(added_half_step_x)         %lf\n", roundf(added_half_step_x));
-						fprintf(stderr, "(int)roundf(added_half_step_x)    %d\n", (int)roundf(added_half_step_x));
+					double diff_time_in_sec = (gettimestamp() - cub->timestamp) / 100000.0;
+					if (diff_time_in_sec < 0) {
+						diff_time_in_sec = 0.000130;
 					}
-
-					t_time	old = cub->timestamp;
-					t_time	now;
-					gettimeofday(&now, NULL);
-					double diff_time_in_sec = (now.tv_usec - old.tv_usec) / 100000000.0;
-
-					fprintf(stderr, "diff_time_in_sec : %lf\n", diff_time_in_sec);
 
 					// DOORがOPENINGだったら
 					// now - 前描画した時間の100msの倍数だけtimerに足す
@@ -218,6 +212,24 @@ void	draw_walls(t_cub *cub)
 							map->map[map_x][map_y].door_state = CLOSE;
 						}
 					}
+
+					// 半ステップ移動した時のx座標を計算
+					// if (half_step_x > map->map[map_x][map_y].timer)
+					// 	continue;
+
+					// dump
+					if (x == WIN_W/2) {
+						fprintf(stderr, "-- dump var in render --\n");
+						fprintf(stderr, "sqrt(1 - ray->dir_y * ray->dir_y)                          %lf\n", sqrt(1 - ray->dir_y * ray->dir_y));
+						fprintf(stderr, "ray_head_x                                                 %lf\n", ray_head_x);
+						fprintf(stderr, "half_step_x                                                %lf\n", half_step_x);
+						fprintf(stderr, "added_half_step_x                                          %lf\n", added_half_step_x);
+						fprintf(stderr, "(added_half_step_x - map->map[map_x][map_y].timer)         %lf\n", (added_half_step_x - map->map[map_x][map_y].timer));
+						fprintf(stderr, "(int)(added_half_step_x - map->map[map_x][map_y].timer)    %d\n", (int)(added_half_step_x - map->map[map_x][map_y].timer));
+					}
+
+					if ((int)added_half_step_x != map_x)
+						continue;
 
 					// それがmap_xと等しかったらドアと衝突
 					if ((int)(added_half_step_x - map->map[map_x][map_y].timer) == map_x)
@@ -516,7 +528,8 @@ void	render(t_cub *cub)
 
 	// FPS
 	// t_time	old = cub->timestamp;
-	gettimeofday(&cub->timestamp, NULL);
+	// gettimeofday(&cub->timestamp, NULL);
+	cub->timestamp = gettimestamp();
 	// double frame_time = (cub->timestamp.tv_usec - old.tv_usec) / 1000000.0;
 	// fprintf(stderr, "FPS        = %lf\n", 1 / frame_time);
 

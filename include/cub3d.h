@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/20 20:03:47 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/21 14:23:52 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,6 @@ typedef struct s_minimap_info
 	int	height;
 }	t_minimap_info;
 
-typedef struct timeval	t_time;
-
 typedef struct s_camera
 {
 	double	pitch;
@@ -142,7 +140,7 @@ typedef struct s_cub {
 	t_sprite_info	*sprite;
 	t_minimap_info	*minimap;
 	t_camera		*camera;
-	t_time			timestamp;
+	long long		timestamp;
 }	t_cub;
 
 
@@ -154,5 +152,7 @@ void	put_image(t_cub *cub);
 
 // dump
 void	dump_cub(t_cub *cub);
+
+long long	gettimestamp(void);
 
 #endif

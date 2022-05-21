@@ -400,6 +400,9 @@ t_error	parse_config(t_config *config, t_cub *cub)
 
 	// camera
 	cub->camera = ft_calloc(1, sizeof(t_camera));
+
+	// time
+	cub->timestamp = gettimestamp();
 	return (NO_ERR);
 }
 
