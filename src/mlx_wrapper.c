@@ -12,3 +12,8 @@ void	put_image(t_cub *cub)
 						cub->window->img_front->img,
 						0, 0);
 }
+
+void	loop(t_cub *cub)
+{
+	mlx_loop(cub->window->mlx);
+}

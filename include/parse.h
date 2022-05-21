@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/20 19:38:12 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/21 16:08:56 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,6 @@ typedef struct s_sprite_path
 	char	*path;
 	int		group;
 }	t_sprite_path;
-
-typedef enum e_error
-{
-	NO_ERR,
-	INVALID_ARG_NUM_ERR,
-	INVALID_CUB_FILE,
-	CUB_FILE_ERR,
-	MEM_ERR,
-	TEX_FILE_ERR,
-	INVALID_RGB,
-	NON_CLOSED_MAP,
-	NON_PLAYER,
-}	t_error;
 
 // ------------------- init cub -------------------
 void	sprite_position_generator(t_cub *cub, double *x, double *y);

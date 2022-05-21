@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/21 14:23:52 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/21 16:08:15 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,18 @@ typedef struct s_cub {
 	long long		timestamp;
 }	t_cub;
 
+typedef enum e_error
+{
+	NO_ERR,
+	INVALID_ARG_NUM_ERR,
+	INVALID_CUB_FILE,
+	CUB_FILE_ERR,
+	MEM_ERR,
+	TEX_FILE_ERR,
+	INVALID_RGB,
+	NON_CLOSED_MAP,
+	NON_PLAYER,
+}	t_error;
 
 void	render(t_cub *cub);
 

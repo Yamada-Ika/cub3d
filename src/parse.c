@@ -1,4 +1,5 @@
 #include "parse.h"
+#include "cub3d.h"
 
 char	*concat(char *s1, char *s2)
 {
