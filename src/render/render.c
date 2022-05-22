@@ -128,7 +128,6 @@ void	update_doorstate(t_cub *cub)
 
 int	render(t_cub *cub)
 {
-	// dump_cub(cub);
 	draw_walls(cub);
 	draw_sprites(cub);
 	draw_minimap(cub);

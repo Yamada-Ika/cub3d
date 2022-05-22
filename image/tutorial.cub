@@ -3,6 +3,9 @@ SO ./image/south.xpm
 WE ./image/west.xpm
 EA ./image/east.xpm
 
+F 0,81,51
+C 127,204,227
+
 SP 0 ./image/circle_red.xpm
 SP 0 ./image/circle_pink.xpm
 SP 0 ./image/circle_purple.xpm
@@ -14,9 +17,6 @@ SP 0 ./image/circle_orange.xpm
 SP 1 ./image/sprite1.xpm
 SP 2 ./image/sprite2.xpm
 SP 3 ./image/sprite3.xpm
-
-F 0,81,51
-C 127,204,227
 
 111111111111111111111111
 100000000000000000000001

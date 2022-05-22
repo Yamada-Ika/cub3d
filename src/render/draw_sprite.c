@@ -1,31 +1,4 @@
-#include "cub3d.h"
-
-typedef struct s_spritevar
-{
-	double	sp_pos_x;
-	double	sp_pos_y;
-	double	sp_rpos_x;
-	double	sp_rpos_y;
-	int		idx;
-	double	trans_x;
-	double	trans_y;
-	int		sprite_x_on_window;
-	int		sprite_height;
-	int		sprite_width;
-	int		draw_start_x;
-	int		draw_start_y;
-	int		draw_end_x;
-	int		draw_end_y;
-	int		frame_index;
-	double	step_sprite_tex_x;
-	double	step_sprite_tex_y;
-	double	itr_x;
-	double	itr_y;
-	double	delta_x;
-	double	delta_y;
-}	t_spritevar;
-
-int	get_texture_color(const t_texture *tex, const int x, const int y);
+#include "render.h"
 
 void	swap_sprite(t_sprite *lhs, t_sprite *rhs)
 {
@@ -144,7 +117,6 @@ void	init_sprite_texture_iterator(t_cub *cub, t_spritevar *lvar)
 	lvar->step_sprite_tex_y = ((t_texture *)vec_at(sprites[lvar->idx].textures, lvar->frame_index))->height / (double)lvar->sprite_height;
 	lvar->itr_x = 0.0;
 	lvar->itr_y = 0.0;
-	// !TODO Should be more simple
 	if (-lvar->sprite_width / 2 + lvar->sprite_x_on_window < 0) {
 		lvar->itr_x = -(-lvar->sprite_width / 2 + lvar->sprite_x_on_window); // offset
 	}
@@ -155,26 +127,31 @@ void	init_sprite_texture_iterator(t_cub *cub, t_spritevar *lvar)
 
 void	draw_sprite(t_cub *cub, t_spritevar *lvar)
 {
-	t_sprite	*sprites;
+	t_sprite		*sprites;
+	int				x;
+	int				y;
+	int				tex_x;
+	int				tex_y;
+	unsigned int	color;
 
 	sprites = cub->sprite->sprites;
-	for (int x = lvar->draw_start_x; x < lvar->draw_end_x; x++) {
-		// !TODO If possible, cut this
+	x = lvar->draw_start_x - 1;
+	while (++x < lvar->draw_end_x)
+	{
 		if (lvar->trans_y <= 0 || x < 0 || WIN_W < x || lvar->trans_y >= cub->sprite->buf_perp[x]) {
 			lvar->itr_x += lvar->step_sprite_tex_x;
 			continue ;
 		}
-
 		lvar->itr_y = 0.0;
-		for (int y = lvar->draw_start_y; y < lvar->draw_end_y; y++) {
-			int	tex_x = (int)lvar->itr_x;
-			int	tex_y = (int)lvar->itr_y;
-
+		y = lvar->draw_start_y - 1;
+		while (++y < lvar->draw_end_y)
+		{
+			tex_x = (int)lvar->itr_x;
+			tex_y = (int)lvar->itr_y;
 			lvar->itr_y += lvar->step_sprite_tex_y;
 			if (tex_x > ((t_texture *)vec_at(sprites[lvar->idx].textures, lvar->frame_index))->width || tex_y > ((t_texture *)vec_at(sprites[lvar->idx].textures, lvar->frame_index))->height)
 				continue ;
-			unsigned int color = get_texture_color((t_texture *)vec_at(sprites[lvar->idx].textures, lvar->frame_index), tex_x, tex_y);
-
+			color = get_texture_color((t_texture *)vec_at(sprites[lvar->idx].textures, lvar->frame_index), tex_x, tex_y);
 			if (color == 0x000000) {
 				continue ;
 			}

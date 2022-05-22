@@ -1,14 +1,9 @@
 CC			:= gcc
-CFLAGS		:= -MMD -MP #-g -fsanitize=address #-Wall -Wextra -Werror
+CFLAGS		:= -MMD -MP -g -fsanitize=address #-Wall -Wextra -Werror
 COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
 				-l m
-
-# libft
-LIBFT_DIR	:= libft
-LIBFT_A		:= libft.a
-LIBFT_A		:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))
 
 # cub3d
 NAME		:= cub3d
@@ -16,17 +11,25 @@ VPATH		:= src:\
 				src/parser:\
 				src/render:\
 				src/utils
-SRCS		:= handle_window.c\
-				mlx_wrapper.c\
-				hooks.c\
-				parse.c\
-				main.c\
-				position_generator.c\
-				minimap.c\
-				vector.c\
-				render.c\
-				draw_wall.c\
-				draw_sprite.c
+SRCS		:= render.c\
+draw_wall3.c\
+minimap.c\
+draw_sprite.c\
+draw_wall2.c\
+draw_wall.c\
+vector.c\
+position_generator.c\
+parse_arg_map.c\
+parse_arg_utils.c\
+parse_arg.c\
+parse_arg_color.c\
+parse_arg_texture.c\
+parse_arg_load_cub.c\
+parse.c\
+main.c\
+handle_window.c\
+hooks.c\
+mlx_wrapper.c
 OBJS		:= $(addprefix obj/, $(SRCS:.c=.o))
 DEPS		:= $(OBJS:.o=.d)
 
@@ -40,6 +43,11 @@ else ifeq ($(shell uname), Darwin)
 	COPTS	+= -lmlx_Darwin
 endif
 MLX_A	:= $(addprefix $(MLX_DIR)/, $(MLX_A))
+
+# libft
+LIBFT_DIR	:= libft
+LIBFT_A		:= libft.a
+LIBFT_A		:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))
 
 all: $(NAME)
 
@@ -56,11 +64,11 @@ $(LIBFT_A): empty
 
 empty:
 
-obj/%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -Iinclude -Iminilibx-linux -Ilibft -I /opt/X11/include
-
 $(MLX_A): empty
 	make -C $(MLX_DIR)
+
+obj/%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ -I include -I minilibx-linux -I libft -I /opt/X11/include
 
 clean:
 	rm -rf $(OBJS)
@@ -75,6 +83,13 @@ re:	fclean all
 
 run: all
 	./cub3d image/tutorial.cub
+
+err: all
+	./cub3d image/error_noright.cub
+	./cub3d image/error_walltex1.cub
+	./cub3d image/error_walltex2.cub
+	./cub3d image/error_walltex3.cub
+	./cub3d image/error_walltex4.cub
 
 -include $(DEPS)
 

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/22 02:50:08 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/22 21:50:25 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@
 
 #define mapWidth 24
 #define mapHeight 24
-#define w 800
-#define h 1000
 #define RGB_Red 0xff0000
 #define RGB_Green 0x00ff00
 #define RGB_Blue 0x0000ff
@@ -148,6 +146,18 @@ typedef enum e_error
 {
 	NO_ERR,
 	INVALID_ARG_NUM_ERR,
+	CUB_FILE_READ_ERR,
+	UNKNOWN_SYMBOL,
+	DUPLICATE_NORTH_TEX_ERR,
+	DUPLICATE_SOUTH_TEX_ERR,
+	DUPLICATE_WEST_TEX_ERR,
+	DUPLICATE_EAST_TEX_ERR,
+	NOT_ENOUGH_WALL_TEX_ERR,
+	DUPLICATE_FLOOR_COLOR_ERR,
+	DUPLICATE_CEIL_COLOR_ERR,
+	INVALID_COLOR_VAL_ERR,
+	INVALID_SPRITE_ID_ERR,
+
 	INVALID_CUB_FILE,
 	CUB_FILE_ERR,
 	MEM_ERR,

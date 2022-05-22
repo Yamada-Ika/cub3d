@@ -12,6 +12,32 @@ void	run(t_cub *cub)
 	loop(cub);
 }
 
+const char	*get_error_msg(t_error err)
+{
+	const char *kw[] = {
+		"Error: Invalid number of arguments\n",
+		"Error: Failed to read cub file\n",
+		"Error: Unknown symbol in cub file\n",
+		"Error: Duplication of north texture\n",
+		"Error: Duplication of south texture\n",
+		"Error: Duplication of west texture\n",
+		"Error: Duplication of east texture\n",
+		"Error: Not enough numbers of texture\n",
+		"Error: Invalid format of cub file\n",
+		"Error: Memory depletion\n",
+		"Error: Failed to read texture file\n",
+		"Error: Map is not closed\n",
+		"Error: Player is not in map\n",
+	};
+
+	return (kw[err - 1]);
+}
+
+void	print_error(t_error err)
+{
+	ft_putstr_fd(get_error_msg(err), STDERR_FILENO);
+}
+
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
@@ -20,8 +46,9 @@ int	main(int argc, char **argv)
 	err = parse(argc, argv, &cub);
 	if (err != NO_ERR)
 	{
-		fprintf(stderr, "%d\n", err);
-		return (1);
+		// print_error(err);
+		fprintf(stderr, "error kind %d\n", err);
+		return (0);
 	}
 	run(&cub);
 }

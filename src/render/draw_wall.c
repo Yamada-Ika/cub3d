@@ -1,49 +1,41 @@
 #include "render.h"
 
-void	dump_lvar(t_raycastvar *lvar)
-{
-	if (lvar->x == WIN_W / 2) {
-		fprintf(stderr, "-- dump lvar in render --\n");
-		fprintf(stderr, "euclid_dist    %lf\n", lvar->euclid_dist);
-		fprintf(stderr, "perp_wall_dist %lf\n", lvar->perp_wall_dist);
-		fprintf(stderr, "wall_x         %lf\n", lvar->wall_x);
-	}
-}
-
-static double	subtend_angle(double dir1_x, double dir1_y, double dir2_x, double dir2_y)
-{
-	double	inner;
-	double	norm1;
-	double	norm2;
-
-	inner = dir1_x * dir2_x + dir1_y * dir2_y;
-	norm1 = sqrt(dir1_x * dir1_x + dir1_y * dir1_y);
-	norm2 = sqrt(dir2_x * dir2_x + dir2_y * dir2_y);
-	return (acos(inner / (norm1 * norm2)));
-}
+// void	dump_lvar(t_raycastvar *lvar)
+// {
+// 	if (lvar->x == WIN_W / 2) {
+// 		fprintf(stderr, "-- dump lvar in render --\n");
+// 		fprintf(stderr, "euclid_dist    %lf\n", lvar->euclid_dist);
+// 		fprintf(stderr, "perp_wall_dist %lf\n", lvar->perp_wall_dist);
+// 		fprintf(stderr, "wall_x         %lf\n", lvar->wall_x);
+// 	}
+// }
 
 void	draw_vertilcal_line(t_raycastvar *lvar, t_cub *cub)
 {
-	for (int i = 0; i < lvar->draw_start; i++) {
+	int				i;
+	double			itr_tex_y;
+	unsigned int	color;
+	int				tex_y;
+
+	i = -1;
+	while (++i < lvar->draw_start)
 		put_pixel(cub, lvar->x, i, cub->map->ceil);
-	}
-	double	itr_tex_y = 0.0; // オフセットが必要
+	itr_tex_y = 0.0;
 	if (-lvar->line_height / 2 + WIN_H / 2 + cub->camera->pitch < 0)
-	{
 		itr_tex_y += abs(-lvar->line_height / 2 + WIN_H / 2 + cub->camera->pitch) * lvar->tex_step;
-	}
-	for (int i = lvar->draw_start; i < lvar->draw_end; i++) {
-		unsigned int color;
-		int tex_y = (int)itr_tex_y;
+	i = lvar->draw_start - 1;
+	while (++i < lvar->draw_end)
+	{
+		tex_y = (int)itr_tex_y;
 		color = get_texture_color(lvar->tex, lvar->tex_x, tex_y);
 		if (lvar->side == EAST || lvar->side == SOUTH)
 			color = (color >> 1) & 0b011111110111111101111111; // be darker
 		put_pixel(cub, lvar->x, i, color);
 		itr_tex_y += lvar->tex_step;
 	}
-	for (int i = lvar->draw_end; i < WIN_H; i++) {
+	i = lvar->draw_end - 1;
+	while (++i < WIN_H)
 		put_pixel(cub, lvar->x, i, cub->map->floor);
-	}
 }
 
 void	set_wall_texture(t_raycastvar *lvar, t_cub *cub)
@@ -98,6 +90,18 @@ void	set_draw_range(t_raycastvar *lvar, t_cub *cub)
 		lvar->draw_end = WIN_H - 1;
 }
 
+static double	angle_formed_by(t_player *player, t_raycastvar *lvar)
+{
+	double	inner;
+	double	norm1;
+	double	norm2;
+
+	inner = player->dir_x * lvar->ray_dir_x + player->dir_y * lvar->ray_dir_y;
+	norm1 = sqrt(player->dir_x * player->dir_x + player->dir_y * player->dir_y);
+	norm2 = sqrt(lvar->ray_dir_x * lvar->ray_dir_x + lvar->ray_dir_y * lvar->ray_dir_y);
+	return (acos(inner / (norm1 * norm2)));
+}
+
 void	set_perpdist(t_raycastvar *lvar, t_cub *cub)
 {
 	t_player	*player;
@@ -107,7 +111,7 @@ void	set_perpdist(t_raycastvar *lvar, t_cub *cub)
 		lvar->euclid_dist = lvar->side_dist_x - lvar->delta_dist_x;
 	else
 		lvar->euclid_dist = lvar->side_dist_y - lvar->delta_dist_y;
-	lvar->perp_wall_dist = lvar->euclid_dist * cos(subtend_angle(player->dir_x, player->dir_y, lvar->ray_dir_x, lvar->ray_dir_y));
+	lvar->perp_wall_dist = lvar->euclid_dist * cos(angle_formed_by(player, lvar));
 	if (lvar->x == WIN_W / 2)
 		lvar->perp_wall_dist = lvar->euclid_dist;
 }
@@ -127,6 +131,6 @@ void	draw_walls(t_cub *cub)
 		set_wall_texture(&lvar, cub);
 		draw_vertilcal_line(&lvar, cub);
 		set_perpbuf(&lvar, cub);
-		dump_lvar(&lvar);
+		// dump_lvar(&lvar);
 	}
 }

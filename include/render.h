@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/22 02:07:47 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/22 16:48:59 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define RENDER_H
 
 #include "cub3d.h"
+
+# define MINIMAP_SIZE 240
+# define MINIMAP_CENTER_X 120
+# define MINIMAP_CENTER_Y 120
 
 typedef struct s_raycastvar
 {
@@ -42,6 +46,31 @@ typedef struct s_raycastvar
 	int			tex_x;
 	double		tex_step;
 }	t_raycastvar;
+
+typedef struct s_spritevar
+{
+	double	sp_pos_x;
+	double	sp_pos_y;
+	double	sp_rpos_x;
+	double	sp_rpos_y;
+	int		idx;
+	double	trans_x;
+	double	trans_y;
+	int		sprite_x_on_window;
+	int		sprite_height;
+	int		sprite_width;
+	int		draw_start_x;
+	int		draw_start_y;
+	int		draw_end_x;
+	int		draw_end_y;
+	int		frame_index;
+	double	step_sprite_tex_x;
+	double	step_sprite_tex_y;
+	double	itr_x;
+	double	itr_y;
+	double	delta_x;
+	double	delta_y;
+}	t_spritevar;
 
 typedef enum e_side
 {

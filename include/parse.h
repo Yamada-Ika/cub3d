@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/21 16:08:56 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/22 21:39:15 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 # define PARSE_H
 
 #include "cub3d.h"
+
+typedef enum e_tex_flag
+{
+	NORTH_FLAG = 1,
+	SOUTH_FLAG,
+	WEST_FLAG,
+	EAST_FLAG,
+}	t_tex_flag;
 
 typedef struct s_config
 {
@@ -43,6 +51,18 @@ typedef struct s_sprite_path
 	char	*path;
 	int		group;
 }	t_sprite_path;
+
+int	parse_arg(int argc, char **argv, t_config *config);
+t_error	load_cub(t_config *config, const char *path);
+t_error	set_tex_path(t_config *config);
+t_error	set_color(t_config *config);
+t_error	set_sprite_paths(t_config *config);
+t_error	set_map(t_config *config);
+
+char	*skip_spaces(char *s);
+bool	is_texture_symbol(const char *s);
+bool	is_color_symbol(const char *s);
+bool	is_sprite_symbol(const char *s);
 
 // ------------------- init cub -------------------
 void	sprite_position_generator(t_cub *cub, double *x, double *y);
