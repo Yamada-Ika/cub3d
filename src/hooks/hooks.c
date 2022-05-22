@@ -6,41 +6,11 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:32:33 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 02:38:56 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 03:01:58 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hooks.h"
-
-static void	update_doorstate(t_cub *cub, int keycode)
-{
-	t_cell		**map;
-	t_player	*player;
-
-	map = cub->map->map;
-	player = cub->player;
-	if (keycode == SPACE)
-	{
-		double	pos_x = player->pos_x + player->dir_x * 1.0;
-		double	pos_y = player->pos_y + player->dir_y * 1.0;
-
-		if (map[(int)pos_x][(int)pos_y].kind == DOOR
-			&& map[(int)pos_x][(int)pos_y].door_state == CLOSE)
-		{
-			map[(int)pos_x][(int)pos_y].door_state = OPENING;
-			map[(int)pos_x][(int)pos_y].timer = 0.0f;
-			return ;
-		}
-		if (map[(int)pos_x][(int)pos_y].kind == DOOR
-			&& map[(int)pos_x][(int)pos_y].door_state == OPEN)
-		{
-			map[(int)pos_x][(int)pos_y].door_state = CLOSING;
-			map[(int)pos_x][(int)pos_y].timer = 1.0f;
-			return ;
-		}
-		return ;
-	}
-}
 
 static bool	should_move_viewpoint(int keycode)
 {
@@ -86,6 +56,11 @@ static int	handle_key_hook(int keycode, void *params)
 
 void	install_event_hooks(t_cub *cub)
 {
-	mlx_hook(cub->window->mlx_win, KeyPress, KeyPressMask, handle_key_hook, cub);
-	mlx_loop_hook(cub->window->mlx, render, cub);
+	void	*mlx;
+	void	*win;
+
+	mlx = cub->window->mlx;
+	win = cub->window->mlx_win;
+	mlx_hook(win, KeyPress, KeyPressMask, handle_key_hook, cub);
+	mlx_loop_hook(mlx, render, cub);
 }
