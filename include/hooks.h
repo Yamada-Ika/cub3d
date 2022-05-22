@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_wrapper.c                                      :+:      :+:    :+:   */
+/*   hooks.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 02:32:10 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 02:32:10 by iyamada          ###   ########.fr       */
+/*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
+/*   Updated: 2022/05/23 02:38:46 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#ifndef HOOKS_H
+# define HOOKS_H
 
-void	put_pixel(t_cub *cub, int x, int y, unsigned int color)
-{
-	my_mlx_pixel_put(cub->window->img_front, x, y, color);
-}
+# include "cub3d.h"
+# include <X11/X.h>
 
-void	put_image(t_cub *cub)
-{
-	void	*mlx;
-	void	*win;
-	void	*img;
+void	move_player(t_cub *cub, int keycode);
+bool	should_move_player(int keycode);
+void	rotate_2d(double *a, double *b, double angle);
+void	move_viewpoint(t_cub *cub, int keycode);
 
-	mlx = cub->window->mlx;
-	win = cub->window->mlx_win;
-	img = cub->window->img_front->img;
-	mlx_put_image_to_window(mlx, win, img, 0, 0);
-}
-
-void	loop(t_cub *cub)
-{
-	mlx_loop(cub->window->mlx);
-}
+#endif

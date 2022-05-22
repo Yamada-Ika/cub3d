@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:36 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:57:37 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:25:26 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_error	set_color(t_config *config)
 	{
 		if (err != NO_ERR)
 			return (err);
-		if (flag == (1<<FLOOR_FLAG | 1<<CEIL_FLAG))
+		if (flag == (1 << FLOOR_FLAG | 1 << CEIL_FLAG))
 			break ;
 		if (is_color_symbol(file[i]))
 		{

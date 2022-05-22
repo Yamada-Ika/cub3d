@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:52 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:57:53 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:25:53 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_error	set_sprite_path(t_config *config, char *s)
 {
 	t_sprite_path	sp;
-	char 			*end;
+	char			*end;
 
 	sp.group = ft_strtoll(s, &end, 10);
 	if (*end != ' ')

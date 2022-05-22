@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/23 01:29:50 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:27:49 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define PARSE_H
 
 #include "cub3d.h"
+
+# define A 48271
+# define B 0
+# define M INT_MAX
 
 typedef enum e_tex_flag
 {
@@ -58,6 +62,7 @@ typedef struct s_sprite_path
 	int		group;
 }	t_sprite_path;
 
+// parse arg
 int	parse_arg(int argc, char **argv, t_config *config);
 t_error	load_cub(t_config *config, const char *path);
 t_error	set_tex_path(t_config *config);
@@ -70,9 +75,15 @@ bool	is_texture_symbol(const char *s);
 bool	is_color_symbol(const char *s);
 bool	is_sprite_symbol(const char *s);
 
+// parse config
 t_error	parse_config(t_config *config, t_cub *cub);
+void	set_texture_var(t_cub *cub, t_config *config);
+void	set_sprite_var(t_cub *cub, t_config *config);
+void	set_map_var(t_cub *cub, t_config *config);
+void	set_minimap_var(t_cub *cub);
+t_texture	*new_texture(t_cub *cub, char *file);
 
-void	sprite_position_generator(t_cub *cub, double *x, double *y);
+void	sprite_pos_generator(t_cub *cub, double *x, double *y);
 long long	mytime(void);
 
 void	dump_config(t_config *config);

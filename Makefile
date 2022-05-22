@@ -18,19 +18,22 @@ draw_sprite.c\
 draw_wall2.c\
 draw_wall.c\
 vector.c\
+handle_window.c\
+hooks.c\
+mlx_wrapper.c\
 position_generator.c\
 parse_arg_map.c\
 parse_arg_utils.c\
 parse_arg.c\
 parse_arg_color.c\
 parse_arg_texture.c\
-parse_arg_load_cub.c\
 parse_config.c\
+parse_config_texture.c\
+parse_arg_load_cub.c\
+parse_config_map.c\
 parse.c\
-main.c\
-handle_window.c\
-hooks.c\
-mlx_wrapper.c
+parse_config_sprite.c\
+main.c
 OBJS		:= $(addprefix obj/, $(SRCS:.c=.o))
 DEPS		:= $(OBJS:.o=.d)
 

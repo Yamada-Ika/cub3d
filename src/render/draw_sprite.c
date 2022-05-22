@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:02 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:58:02 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:47:03 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ void	swap_sprite(t_sprite *lhs, t_sprite *rhs)
 	rhs->dist_from_player = tmp.dist_from_player;
 }
 
-long long time_in_500ms(void)
+long long	time_in_500ms(void)
 {
 	struct timeval	tv;
+
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000) / 500;
 }
@@ -46,7 +47,7 @@ void	calc_dist_from_player_to_sprites(t_cub *cub, t_spritevar *lvar)
 {
 	t_sprite	*sprites;
 	t_player	*player;
-	int	i;
+	int			i;
 
 	sprites = cub->sprite->sprites;
 	player = cub->player;
@@ -62,9 +63,9 @@ void	calc_dist_from_player_to_sprites(t_cub *cub, t_spritevar *lvar)
 
 void	sort_sprites(t_cub *cub, t_spritevar *lvar)
 {
-	bool	has_swap;
+	bool		has_swap;
 	t_sprite	*sprites;
-	int	i;
+	int			i;
 
 	sprites = cub->sprite->sprites;
 	has_swap = false;
@@ -131,7 +132,7 @@ void	init_sprite_texture_iterator(t_cub *cub, t_spritevar *lvar)
 	lvar->itr_x = 0.0;
 	lvar->itr_y = 0.0;
 	if (-lvar->sprite_width / 2 + lvar->sprite_x_on_window < 0) {
-		lvar->itr_x = -(-lvar->sprite_width / 2 + lvar->sprite_x_on_window); // offset
+		lvar->itr_x = -(-lvar->sprite_width / 2 + lvar->sprite_x_on_window);
 	}
 	if (lvar->sprite_x_on_window < 0) {
 		lvar->itr_x += -lvar->sprite_x_on_window;
@@ -174,10 +175,16 @@ void	draw_sprite(t_cub *cub, t_spritevar *lvar)
 	}
 }
 
+void	update_frame_index(t_cub *cub, t_spritevar *lvar)
+{
+	t_sprite	*sprites;
+
+	sprites = cub->sprite->sprites;
+	lvar->frame_index = calc_frame_index(sprites[lvar->idx].textures->len);
+}
+
 void	draw_sprites(t_cub *cub)
 {
-	t_sprite	*sprites = cub->sprite->sprites;
-	t_player	*player = cub->player;
 	t_spritevar	lvar;
 
 	calc_dist_from_player_to_sprites(cub, &lvar);
@@ -187,7 +194,7 @@ void	draw_sprites(t_cub *cub)
 	{
 		trans_to_camera_cordinate(cub, &lvar);
 		set_sprite_draw_range(cub, &lvar);
-		lvar.frame_index = calc_frame_index(sprites[lvar.idx].textures->len);
+		update_frame_index(cub, &lvar);
 		init_sprite_texture_iterator(cub, &lvar);
 		draw_sprite(cub, &lvar);
 	}

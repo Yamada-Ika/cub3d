@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:58:15 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:42:16 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,12 @@ void	update_doorstate(t_cub *cub)
 	t_cell	**map;
 	t_point	*p;
 	double	timespan;
+	int		i;
 
 	map = cub->map->map;
-	for (int i = 0; i < cub->map->door_points->len; i++) {
+	i = -1;
+	while (++i < cub->map->door_points->len)
+	{
 		p = (t_point *)vec_at(cub->map->door_points, i);
 		if (map[p->x][p->y].door_state == OPEN
 			|| map[p->x][p->y].door_state == CLOSE)

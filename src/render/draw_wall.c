@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:04 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:58:05 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:48:11 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	draw_vertilcal_line(t_raycastvar *lvar, t_cub *cub)
 		tex_y = (int)itr_tex_y;
 		color = get_texture_color(lvar->tex, lvar->tex_x, tex_y);
 		if (lvar->side == EAST || lvar->side == SOUTH)
-			color = (color >> 1) & 0b011111110111111101111111; // be darker
+			color = (color >> 1) & 0b011111110111111101111111;
 		put_pixel(cub, lvar->x, i, color);
 		itr_tex_y += lvar->tex_step;
 	}
@@ -143,6 +143,5 @@ void	draw_walls(t_cub *cub)
 		set_wall_texture(&lvar, cub);
 		draw_vertilcal_line(&lvar, cub);
 		set_perpbuf(&lvar, cub);
-		// dump_lvar(&lvar);
 	}
 }

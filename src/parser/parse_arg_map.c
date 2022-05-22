@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:43 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:57:43 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:26:37 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ size_t	count_map_width(t_config *config)
 void	skip_newline(t_config *config)
 {
 	char	**file;
-	int	i;
+	int		i;
 
 	file = config->cub;
 	i = config->seek - 1;
@@ -50,7 +50,7 @@ void	skip_newline(t_config *config)
 
 t_error	new_map(t_config *config)
 {
-	int	i;
+	int		i;
 	t_cell	**map;
 
 	skip_newline(config);
@@ -160,6 +160,8 @@ void	set_map_(t_config *config, int i, int j, int idx)
 t_error	set_map(t_config *config)
 {
 	int		i;
+	int		j;
+	int		idx;
 	int		flag;
 	char	*end;
 	t_error	err;
@@ -167,8 +169,7 @@ t_error	set_map(t_config *config)
 	err = new_map(config);
 	if (err != NO_ERR)
 		return (err);
-	int j;
-	int idx = config->seek - 1;
+	idx = config->seek - 1;
 	i = -1;
 	while (++i < config->height)
 	{

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:46 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:57:46 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:22:57 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ static t_error	set_texturea_path(t_config *config, char *s, int *flag)
 	return (NO_ERR);
 }
 
+static bool	has_set_all_textures(const int flag)
+{
+	return (
+		flag == (1 << NORTH_FLAG | 1 << SOUTH_FLAG
+			| 1 << WEST_FLAG | 1 << EAST_FLAG)
+	);
+}
+
 t_error	set_tex_path(t_config *config)
 {
 	char	**file;
@@ -62,7 +70,7 @@ t_error	set_tex_path(t_config *config)
 	{
 		if (err != NO_ERR)
 			return (err);
-		if (flag == (1<<NORTH_FLAG | 1<<SOUTH_FLAG | 1<<WEST_FLAG | 1<<EAST_FLAG))
+		if (has_set_all_textures(flag))
 			break ;
 		if (is_texture_symbol(file[i]))
 		{
@@ -74,6 +82,5 @@ t_error	set_tex_path(t_config *config)
 		return (UNKNOWN_SYMBOL);
 	}
 	config->seek = i + 1;
-	fprintf(stderr, "set_tex_path config->seek %d\n", config->seek);
 	return (NO_ERR);
 }
