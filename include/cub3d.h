@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/22 21:50:25 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 01:36:27 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,12 @@
 
 #define mapWidth 24
 #define mapHeight 24
-#define RGB_Red 0xff0000
-#define RGB_Green 0x00ff00
-#define RGB_Blue 0x0000ff
-#define RGB_White 0xffffff
-#define RGB_Black 0x000000
-#define RGB_Yellow 0xffff00
 #define MOVE_STEP 0.5
 #define SP_MOVE_STEP 0.01
 #define ROT_STEP 0.05
 
-typedef struct s_player {
+typedef struct s_player
+{
 	double	pos_x;
 	double	pos_y;
 	double	dir_x;
@@ -54,7 +49,6 @@ typedef struct s_texture
 	t_img	*img;
 }	t_texture;
 
-// TODO tex -> vectorにしてアニメーションに対応
 typedef struct s_sprite
 {
 	t_vector	*textures;
@@ -132,7 +126,8 @@ typedef struct s_camera
 	double	vertical_pos;
 }	t_camera;
 
-typedef struct s_cub {
+typedef struct s_cub
+{
 	t_window		*window;
 	t_player		*player;
 	t_map			*map;
@@ -157,7 +152,7 @@ typedef enum e_error
 	DUPLICATE_CEIL_COLOR_ERR,
 	INVALID_COLOR_VAL_ERR,
 	INVALID_SPRITE_ID_ERR,
-
+	UNKNOWN_MAP_SYMBOL,
 	INVALID_CUB_FILE,
 	CUB_FILE_ERR,
 	MEM_ERR,

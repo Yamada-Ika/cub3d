@@ -18,7 +18,8 @@ void	swap_sprite(t_sprite *lhs, t_sprite *rhs)
 	rhs->dist_from_player = tmp.dist_from_player;
 }
 
-long long time_in_500ms(void) {
+long long time_in_500ms(void)
+{
 	struct timeval	tv;
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000) / 500;

@@ -1,11 +1,5 @@
 #include "parse.h"
 
-typedef enum e_color_flag
-{
-	FLOOR_FLAG = 1,
-	CEIL_FLAG,
-}	t_color_flag;
-
 t_error	get_color(char *s, int *color)
 {
 	char	*end;
@@ -72,6 +66,5 @@ t_error	set_color(t_config *config)
 		return (UNKNOWN_SYMBOL);
 	}
 	config->seek = i + 1;
-	fprintf(stderr, "set_color config->seek %d\n", config->seek);
 	return (NO_ERR);
 }

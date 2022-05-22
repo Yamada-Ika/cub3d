@@ -25,6 +25,7 @@ parse_arg.c\
 parse_arg_color.c\
 parse_arg_texture.c\
 parse_arg_load_cub.c\
+parse_config.c\
 parse.c\
 main.c\
 handle_window.c\

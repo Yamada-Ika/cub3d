@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/22 16:48:59 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 01:16:37 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ void	set_ray_dirction(t_raycastvar *lvar, t_cub *cub);
 void	set_raycast_iterator(t_raycastvar *lvar, t_cub *cub);
 void	cast_ray(t_raycastvar *lvar, t_cub *cub);
 void	set_perpdist(t_raycastvar *lvar, t_cub *cub);
+
+void	draw_minimap(t_cub *cub);
+void	dump_cub(t_cub *cub);
+void	draw_walls(t_cub *cub);
+void	draw_sprites(t_cub *cub);
+void	move_sprites(t_cub *cub);
 
 int		get_texture_color(const t_texture *tex, const int x, const int y);
 

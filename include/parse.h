@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/22 21:39:15 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 01:29:50 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ typedef enum e_tex_flag
 	WEST_FLAG,
 	EAST_FLAG,
 }	t_tex_flag;
+
+typedef enum e_color_flag
+{
+	FLOOR_FLAG = 1,
+	CEIL_FLAG,
+}	t_color_flag;
 
 typedef struct s_config
 {
@@ -64,11 +70,11 @@ bool	is_texture_symbol(const char *s);
 bool	is_color_symbol(const char *s);
 bool	is_sprite_symbol(const char *s);
 
-// ------------------- init cub -------------------
+t_error	parse_config(t_config *config, t_cub *cub);
+
 void	sprite_position_generator(t_cub *cub, double *x, double *y);
 long long	mytime(void);
 
-// dump
 void	dump_config(t_config *config);
 
 #endif
