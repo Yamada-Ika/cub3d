@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/23 02:27:49 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:53:39 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	set_minimap_var(t_cub *cub);
 t_texture	*new_texture(t_cub *cub, char *file);
 
 void	sprite_pos_generator(t_cub *cub, double *x, double *y);
-long long	mytime(void);
 
 void	dump_config(t_config *config);
 

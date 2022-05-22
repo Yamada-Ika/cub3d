@@ -8,6 +8,7 @@ COPTS		:= -I include -I libft -L libft -l ft \
 # cub3d
 NAME		:= cub3d
 VPATH		:= src:\
+				src/hooks:\
 				src/parser:\
 				src/render:\
 				src/utils
@@ -19,7 +20,6 @@ draw_wall2.c\
 draw_wall.c\
 vector.c\
 handle_window.c\
-hooks.c\
 mlx_wrapper.c\
 position_generator.c\
 parse_arg_map.c\
@@ -33,7 +33,10 @@ parse_arg_load_cub.c\
 parse_config_map.c\
 parse.c\
 parse_config_sprite.c\
-main.c
+main.c\
+hooks_viewpoint.c\
+hooks_player.c\
+hooks.c
 OBJS		:= $(addprefix obj/, $(SRCS:.c=.o))
 DEPS		:= $(OBJS:.o=.d)
 
