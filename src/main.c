@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:18 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:58:18 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 18:44:53 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	run(t_cub *cub)
 
 const char	*get_error_msg(t_error err)
 {
-	const char *kw[] = {
+	const char	*kw[] = {
 		"Error: Invalid number of arguments\n",
 		"Error: Failed to read cub file\n",
 		"Error: Unknown symbol in cub file\n",
@@ -58,7 +58,6 @@ int	main(int argc, char **argv)
 	err = parse(argc, argv, &cub);
 	if (err != NO_ERR)
 	{
-		// print_error(err);
 		fprintf(stderr, "error kind %d\n", err);
 		return (0);
 	}

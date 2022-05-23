@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/23 02:53:39 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 18:58:39 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ t_error	set_color(t_config *config);
 t_error	set_sprite_paths(t_config *config);
 t_error	set_map(t_config *config);
 
+// utils
 char	*skip_spaces(char *s);
+void	skip_newline(t_config *config);
 bool	is_texture_symbol(const char *s);
 bool	is_color_symbol(const char *s);
 bool	is_sprite_symbol(const char *s);
@@ -86,5 +88,23 @@ t_texture	*new_texture(t_cub *cub, char *file);
 void	sprite_pos_generator(t_cub *cub, double *x, double *y);
 
 void	dump_config(t_config *config);
+
+// config setter
+void	set_player_info_in_north(t_config *config, int i, int j);
+void	set_player_info_in_south(t_config *config, int i, int j);
+void	set_player_info_in_east(t_config *config, int i, int j);
+void	set_player_info_in_west(t_config *config, int i, int j);
+t_error	set_north(t_config *config, char *s, int *flag);
+t_error	set_south(t_config *config, char *s, int *flag);
+t_error	set_west(t_config *config, char *s, int *flag);
+t_error	set_east(t_config *config, char *s, int *flag);
+t_error	new_map(t_config *config);
+
+// cub setter
+void	set_mlx_var(t_cub *cub);
+void	set_player_var(t_cub *cub, t_config *config);
+void	set_color_var(t_cub *cub, t_config *config);
+void	set_camera_var(t_cub *cub);
+void	set_time_var(t_cub *cub);
 
 #endif

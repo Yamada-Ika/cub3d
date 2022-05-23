@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_window.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 10:40:26 by iyamada           #+#    #+#             */
+/*   Updated: 2022/05/23 10:42:03 by iyamada          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mlx.h"
 #include "mlx_window.h"
 #include "libft.h"
@@ -12,11 +24,8 @@ t_img	*init_img(t_window *win)
 
 	img = (t_img *)ft_calloc(1, sizeof(t_img));
 	img->img = mlx_new_image(win->mlx, win->width, win->height);
-	img->addr = mlx_get_data_addr(
-									img->img,
-									&(img->bits_per_pixel),
-									&(img->line_length),
-									&(img->endian));
+	img->addr = mlx_get_data_addr(img->img, &(img->bits_per_pixel),
+			&(img->line_length), &(img->endian));
 	return (img);
 }
 
@@ -40,9 +49,8 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 
 	if (!is_out_of_range(x, WIN_W) && !is_out_of_range(y, WIN_H))
 	{
-		dst = img->addr +
-				(y * img->line_length +
-				x * (img->bits_per_pixel / 8));
+		dst = img->addr
+			+ (y * img->line_length + x * (img->bits_per_pixel / 8));
 		*(unsigned int *)dst = color;
 	}
 }

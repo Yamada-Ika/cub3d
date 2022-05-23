@@ -1,35 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hooks_player.c                                     :+:      :+:    :+:   */
+/*   draw_sprite2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 02:35:48 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 09:57:59 by iyamada          ###   ########.fr       */
+/*   Created: 2022/05/23 17:41:34 by iyamada           #+#    #+#             */
+/*   Updated: 2022/05/23 17:42:02 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hooks.h"
+#include "render.h"
 
-void	move_player(t_cub *cub, int keycode)
-{
-	if (keycode == W_KEY)
-		return (move_front(cub));
-	if (keycode == S_KEY)
-		return (move_back(cub));
-	if (keycode == A_KEY)
-		return (move_left(cub));
-	if (keycode == D_KEY)
-		return (move_right(cub));
-}
-
-bool	should_move_player(int keycode)
+bool	should_draw_sprite(t_cub *cub, t_spritevar *lvar, int x)
 {
 	return (
-		keycode == W_KEY
-		|| keycode == S_KEY
-		|| keycode == A_KEY
-		|| keycode == D_KEY
+		lvar->trans_y > 0
+		&& (0 <= x && x < WIN_W)
+		&& lvar->trans_y < cub->sprite->buf_perp[x]
 	);
 }

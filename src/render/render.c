@@ -6,24 +6,11 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 02:42:16 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 18:43:08 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
-
-int	get_texture_color(const t_texture *tex, const int x, const int y)
-{
-	return (*(int *)(tex->img->addr + (y * tex->img->line_length + x * (tex->img->bits_per_pixel / 8))));
-}
-
-long long	gettimestamp(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec + tv.tv_usec / 1000);
-}
 
 // void	dump_cub(t_cub *cub)
 // {
@@ -39,7 +26,6 @@ long long	gettimestamp(void)
 // 	fprintf(stderr, "width  %d\n", cub->map->width);
 // 	for (int i = 0; i < cub->map->heigth; i++) {
 // 		for (int j = 0; j < cub->map->width; j++) {
-// 			// sprite
 // 			bool	has_put = false;
 // 			for (int n = 0; n < cub->sprite->num; n++) {
 // 				if (i == (int)cub->sprite->sprites[n].x && j == (int)cub->sprite->sprites[n].y) {
@@ -61,7 +47,7 @@ long long	gettimestamp(void)
 // 			else if (cub->map->map[i][j].kind == DOOR && cub->map->map[i][j].side == TRANSVERSE && cub->map->map[i][j].door_state == CLOSE)
 // 				fprintf(stderr, "-");
 // 			else
-// 				fprintf(stderr, " ");
+// 				fprintf(stderr, "x");
 // 			if (j == cub->map->width -1)
 // 				fprintf(stderr, "\n");
 // 		}
@@ -94,50 +80,22 @@ long long	gettimestamp(void)
 // 	fprintf(stderr, "-- dump cub tail --\n");
 // }
 
+int	get_texture_color(const t_texture *tex, const int x, const int y)
+{
+	return (*(int *)(tex->img->addr + (y * tex->img->line_length + x * (tex->img->bits_per_pixel / 8))));
+}
+
+long long	gettimestamp(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec + tv.tv_usec / 1000);
+}
+
 void	update_timestamp(t_cub *cub)
 {
 	cub->timestamp = gettimestamp();
-}
-
-void	update_doorstate(t_cub *cub)
-{
-	t_cell	**map;
-	t_point	*p;
-	double	timespan;
-	int		i;
-
-	map = cub->map->map;
-	i = -1;
-	while (++i < cub->map->door_points->len)
-	{
-		p = (t_point *)vec_at(cub->map->door_points, i);
-		if (map[p->x][p->y].door_state == OPEN
-			|| map[p->x][p->y].door_state == CLOSE)
-		{
-			continue ;
-		}
-		timespan = (gettimestamp() - cub->timestamp) / 100.0;
-		if (map[p->x][p->y].door_state == OPENING) {
-			map[p->x][p->y].timer += timespan;
-			if (map[p->x][p->y].timer < 0.0) {
-				map[p->x][p->y].timer = 0.0;
-			}
-			if (map[p->x][p->y].timer > 1.0) {
-				map[p->x][p->y].timer = 1.0;
-				map[p->x][p->y].door_state = OPEN;
-			}
-		}
-		if (map[p->x][p->y].door_state == CLOSING) {
-			map[p->x][p->y].timer -= timespan;
-			if (map[p->x][p->y].timer > 1.0) {
-				map[p->x][p->y].timer = 1.0;
-			}
-			if (map[p->x][p->y].timer < 0.0) {
-				map[p->x][p->y].timer = 0.0;
-				map[p->x][p->y].door_state = CLOSE;
-			}
-		}
-	}
 }
 
 int	render(t_cub *cub)

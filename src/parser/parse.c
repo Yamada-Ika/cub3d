@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:27 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:57:28 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 09:51:32 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,5 @@ t_error	parse(int argc, char **argv, t_cub *cub)
 // 	fprintf(stderr, "player pos_y       : [%f]\n", config->pos_y);
 // 	fprintf(stderr, "map height         : [%lld]\n", config->height);
 // 	fprintf(stderr, "map width          : [%lld]\n", config->width);
-// 	// fprintf(stderr, "-- dump map --\n");
-// 	// for (long long i = 0; i < config->height; i++) {
-// 	// 	for (long long j = 0; j < config->width; j++) {
-// 	// 		fprintf(stderr, "%d", config->map[i][j]);
-// 	// 		if (j == config->width - 1)
-// 	// 			fprintf(stderr, "\n");
-// 	// 	}
-// 	// }
 // 	fprintf(stderr, "-- dump config tail --\n");
 // }

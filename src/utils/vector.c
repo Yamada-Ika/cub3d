@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 10:40:01 by iyamada           #+#    #+#             */
+/*   Updated: 2022/05/23 10:40:10 by iyamada          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vector.h"
 
 t_vector	*vec_new(size_t type_size)
@@ -10,7 +22,6 @@ t_vector	*vec_new(size_t type_size)
 	new->type_size = type_size;
 	return (new);
 }
-
 
 void	vec_push_back(t_vector *v, void *data)
 {

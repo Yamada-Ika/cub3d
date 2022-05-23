@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:32:33 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 03:01:58 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 19:10:20 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	handle_key_hook(int keycode, void *params)
 	t_cub	*cub;
 
 	cub = (t_cub *)params;
+	fprintf(stderr, "keycode %d\n", keycode);
 	if (keycode == ESC)
 		exit(0);
 	if (should_move_player(keycode))
@@ -48,7 +49,7 @@ static int	handle_key_hook(int keycode, void *params)
 	}
 	if (should_update_doorstate(keycode))
 	{
-		update_doorstate(cub, keycode);
+		hooks_update_doorstate(cub, keycode);
 		return (0);
 	}
 	return (0);
