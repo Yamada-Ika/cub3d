@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:43 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 10:29:32 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 01:44:43 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	is_map_symbol(const char c)
 		|| c == '1'
 		|| c == '|'
 		|| c == '-'
-		// || c == ' '
+		|| c == ' '
 	);
 }
 
@@ -65,11 +65,7 @@ t_error	set_map(t_config *config)
 	int		i;
 	int		j;
 	int		idx;
-	t_error	err;
 
-	err = new_map(config);
-	if (err != NO_ERR)
-		return (err);
 	idx = config->seek - 1;
 	i = -1;
 	while (++i < config->height)
@@ -82,6 +78,7 @@ t_error	set_map(t_config *config)
 				set_map_(config, i, j, idx);
 				continue ;
 			}
+			fprintf(stderr, "unknown [%c], idx %d, j %d\n", config->cub[idx][j], idx, j);
 			return (UNKNOWN_MAP_SYMBOL);
 		}
 		idx++;

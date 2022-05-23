@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:52 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 20:53:17 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 01:49:28 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,11 @@ int	parse_arg(int argc, char **argv, t_config *config)
 	err = load_cub(config, argv[1]);
 	if (err != NO_ERR)
 		return (err);
-	err = set_tex_path(config);
+	fprintf(stderr, "-- dump cub --\n");
+	for (int i = 0; config->cub[i] != NULL; i++) {
+		fprintf(stderr, "[%s]\n", config->cub[i]);
+	}
+	err = parse_tex_paths(config);
 	if (err != NO_ERR)
 		return (err);
 	err = set_color(config);
@@ -107,7 +111,7 @@ int	parse_arg(int argc, char **argv, t_config *config)
 		if (err != NO_ERR)
 			return (err);
 	}
-	err = set_map(config);
+	err = parse_map(config);
 	if (err != NO_ERR)
 		return (err);
 	return (NO_ERR);

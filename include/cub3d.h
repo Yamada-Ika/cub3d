@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/23 01:36:27 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 02:13:02 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ typedef struct s_point
 	int	y;
 }	t_point;
 
-typedef struct s_map {
+typedef struct s_map
+{
 	t_cell		**map;
 	int 		width;
 	int 		heigth;
@@ -153,6 +154,20 @@ typedef enum e_error
 	INVALID_COLOR_VAL_ERR,
 	INVALID_SPRITE_ID_ERR,
 	UNKNOWN_MAP_SYMBOL,
+	VALIDATE_NORTH_TEX_NOT_XPM_ERR,
+	VALIDATE_SOUTH_TEX_NOT_XPM_ERR,
+	VALIDATE_WEST_TEX_NOT_XPM_ERR,
+	VALIDATE_EAST_TEX_NOT_XPM_ERR,
+	VALIDATE_NORTH_TEX_CANT_OPEN_ERR,
+	VALIDATE_SOUTH_TEX_CANT_OPEN_ERR,
+	VALIDATE_WEST_TEX_CANT_OPEN_ERR,
+	VALIDATE_EAST_TEX_CANT_OPEN_ERR,
+	VALIDATE_NORTH_TEX_IS_DIRECTORY_ERR,
+	VALIDATE_SOUTH_TEX_IS_DIRECTORY_ERR,
+	VALIDATE_WEST_TEX_IS_DIRECTORY_ERR,
+	VALIDATE_EAST_TEX_IS_DIRECTORY_ERR,
+	VALIDATE_MAP_ISNOT_RECTANGLE_ERR,
+	VALIDATE_MAP_HAS_INVALID_CHAR_ERR,
 	INVALID_CUB_FILE,
 	CUB_FILE_ERR,
 	MEM_ERR,

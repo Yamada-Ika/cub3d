@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/23 18:58:39 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 02:03:36 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,25 @@ typedef enum e_color_flag
 
 typedef struct s_config
 {
-	char	**cub;
+	char		**cub;
 	long long	seek;
-	char	*no_tex_path;
-	char	*so_tex_path;
-	char	*we_tex_path;
-	char	*ea_tex_path;
+	char		*no_tex_path;
+	char		*so_tex_path;
+	char		*we_tex_path;
+	char		*ea_tex_path;
 	t_vector	*sp_texs;
-	long long sp_num;
-	int		floor_color;
-	int		ceil_color;
-	t_cell	**map;
+	long long	sp_num;
+	int			floor_color;
+	int			ceil_color;
+	t_cell		**map;
 	long long	height;
 	long long	width;
-	double	pos_x;
-	double	pos_y;
-	double	dir_x;
-	double	dir_y;
-	double	plane_x;
-	double	plane_y;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
 }	t_config;
 
 typedef struct s_sprite_path
@@ -64,8 +64,11 @@ typedef struct s_sprite_path
 
 // parse arg
 int	parse_arg(int argc, char **argv, t_config *config);
+
+t_error	parse_tex_paths(t_config *config);
+
 t_error	load_cub(t_config *config, const char *path);
-t_error	set_tex_path(t_config *config);
+// t_error	set_tex_path(t_config *config);
 t_error	set_color(t_config *config);
 t_error	set_sprite_paths(t_config *config);
 t_error	set_map(t_config *config);
@@ -76,6 +79,11 @@ void	skip_newline(t_config *config);
 bool	is_texture_symbol(const char *s);
 bool	is_color_symbol(const char *s);
 bool	is_sprite_symbol(const char *s);
+bool	is_map_symbol(const char c);
+
+// validate config
+t_error	validate(t_config *config);
+t_error	validate_texture_path(t_config *config);
 
 // parse config
 t_error	parse_config(t_config *config, t_cub *cub);

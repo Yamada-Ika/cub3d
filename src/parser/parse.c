@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:27 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 20:39:35 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 01:39:24 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,8 @@ t_error	parse(int argc, char **argv, t_cub *cub)
 	err = parse_arg(argc, argv, &config);
 	if (err != NO_ERR)
 		return (err);
+	// err = validate(&config);
+	// if (err != NO_ERR)
+	// 	return (err);
 	return (parse_config(&config, cub));
 }
