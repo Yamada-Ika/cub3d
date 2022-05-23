@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 10:22:37 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 18:58:49 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 20:51:34 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static size_t	count_map_width(t_config *config)
 t_error	new_map(t_config *config)
 {
 	int		i;
-	t_cell	**map;
 
 	skip_newline(config);
 	config->height = count_map_heigth(config);

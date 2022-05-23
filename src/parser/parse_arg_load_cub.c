@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:41 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 01:57:41 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 20:56:00 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static char	*read_to_string(const int fd)
 t_error	load_cub(t_config *config, const char *path)
 {
 	int		fd;
-	char	*read_line;
 	char	*whole_line;
 
 	fd = open(path, O_RDONLY);

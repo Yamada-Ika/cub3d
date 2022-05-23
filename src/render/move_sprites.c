@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 17:29:03 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 18:17:38 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 23:59:18 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,11 @@ void	move_sprites(t_cub *cub)
 {
 	t_sprite	*sprites;
 	t_player	*player;
-	t_cell		**map;
 	t_spritevar	lvar;
 	int			i;
 
 	sprites = cub->sprite->sprites;
 	player = cub->player;
-	map = cub->map->map;
 	i = -1;
 	while (++i < cub->sprite->num)
 	{

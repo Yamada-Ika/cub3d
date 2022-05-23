@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/16 01:19:09 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 20:52:36 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 #include "libft.h"
 
 typedef struct s_vector {
-	void	*data;
-	size_t	cap;
-	size_t	len;
-	size_t	type_size;
+	void		*data;
+	long long	cap;
+	long long	len;
+	size_t		type_size;
 }	t_vector;
 
 t_vector	*vec_new(size_t type_size);

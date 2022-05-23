@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 17:09:07 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 18:46:51 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 00:02:03 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	swap_sprite(t_sprite *lhs, t_sprite *rhs)
 	rhs->dist_from_player = tmp.dist_from_player;
 }
 
-void	sort_sprites(t_cub *cub, t_spritevar *lvar)
+void	sort_sprites(t_cub *cub)
 {
 	bool		has_swap;
 	t_sprite	*sprites;

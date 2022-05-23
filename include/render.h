@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/23 18:57:52 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 00:02:14 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	set_raycast_iterator(t_raycastvar *lvar, t_cub *cub);
 void	cast_ray(t_raycastvar *lvar, t_cub *cub);
 void	set_perpdist(t_raycastvar *lvar, t_cub *cub);
 void	update_doorstate(t_cub *cub);
-void	sort_sprites(t_cub *cub, t_spritevar *lvar);
+void	sort_sprites(t_cub *cub);
 void	move_sprites(t_cub *cub);
 
 void	set_wall_texture(t_raycastvar *lvar, t_cub *cub);

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:18 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 18:44:53 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 20:51:00 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	run(t_cub *cub)
 	loop(cub);
 }
 
-const char	*get_error_msg(t_error err)
+char	*get_error_msg(t_error err)
 {
 	const char	*kw[] = {
 		"Error: Invalid number of arguments\n",
@@ -42,7 +42,7 @@ const char	*get_error_msg(t_error err)
 		"Error: Player is not in map\n",
 	};
 
-	return (kw[err - 1]);
+	return ((char *)kw[err - 1]);
 }
 
 void	print_error(t_error err)

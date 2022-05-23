@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:52 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 02:25:53 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 20:53:17 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,9 @@ t_error	set_sprite_paths(t_config *config)
 {
 	char	**file;
 	size_t	i;
-	int		flag;
-	char	*end;
 	t_error	err;
 
 	file = config->cub;
-	flag = 0;
 	i = config->seek - 1;
 	config->sp_texs = vec_new(sizeof(t_sprite_path));
 	while (file[++i] != NULL)
@@ -76,11 +73,8 @@ bool	should_read_spritepath(t_config *config)
 {
 	char	**file;
 	size_t	i;
-	int		flag;
-	char	*end;
 
 	file = config->cub;
-	flag = 0;
 	i = config->seek - 1;
 	while (file[++i] != NULL)
 	{

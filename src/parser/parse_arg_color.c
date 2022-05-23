@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:36 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 02:25:26 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 20:55:22 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ t_error	get_color(char *s, int *color)
 	char	*end;
 
 	*color = ft_strtoll(&s[1], &end, 10) << 16;
-	if (*end != ',' || (*color >> 16 < 0 && 255 < *color >> 16 < 0))
+	if (*end != ',' || ((*color >> 16) < 0 && 255 < (*color >> 16)))
 		return (INVALID_COLOR_VAL_ERR);
 	end++;
 	*color |= ft_strtoll(end, &end, 10) << 8;
-	if (*end != ',' || (*color >> 16 < 0 && 255 < *color >> 16 < 0))
+	if (*end != ',' || ((*color >> 16) < 0 && 255 < (*color >> 16)))
 		return (INVALID_COLOR_VAL_ERR);
 	end++;
 	*color |= ft_strtoll(end, &end, 10);
-	if (*end != '\0' || (*color >> 16 < 0 && 255 < *color >> 16 < 0))
+	if (*end != '\0' || ((*color >> 16) < 0 && 255 < (*color >> 16)))
 		return (INVALID_COLOR_VAL_ERR);
 	return (NO_ERR);
 }
@@ -57,7 +57,6 @@ t_error	set_color(t_config *config)
 	char	**file;
 	size_t	i;
 	int		flag;
-	char	*end;
 	t_error	err;
 
 	err = NO_ERR;

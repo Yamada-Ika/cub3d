@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:02 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 17:35:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 00:02:31 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	draw_sprites(t_cub *cub)
 	t_spritevar	lvar;
 
 	calc_dist_from_player_to_sprites(cub, &lvar);
-	sort_sprites(cub, &lvar);
+	sort_sprites(cub);
 	lvar.idx = -1;
 	while (++lvar.idx < cub->sprite->num)
 	{

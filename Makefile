@@ -1,5 +1,5 @@
 CC			:= gcc
-CFLAGS		:= -MMD -MP -g -fsanitize=address #-Wall -Wextra -Werror
+CFLAGS		:= -MMD -MP -g -fsanitize=address -Wall -Wextra -Werror
 COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
@@ -12,50 +12,57 @@ VPATH		:= src:\
 				src/parser:\
 				src/render:\
 				src/utils
-SRCS		:= raycastvar_set_texture.c\
-draw_vertline.c\
-has_hit_transverse_door.c\
-move_sprites.c\
-spritevar_sort.c\
-spritevar_set_tex_iter.c\
-has_hit_longitudinal_door.c\
-cast_ray.c\
-render.c\
-fill_minimap_buf.c\
-raycastvar_set_iterator.c\
-draw_sprites.c\
-draw_sprite.c\
-draw_minimap.c\
-draw_wall2.c\
-draw_wall.c\
-draw_sprite2.c\
-spritevar_set_frame_index.c\
-update_door_state.c\
-vector.c\
-handle_window.c\
-mlx_wrapper.c\
-position_generator.c\
-parse_arg_map.c\
-parse_arg_utils.c\
-parse_arg.c\
-parse_arg_color.c\
-parse_arg_texture.c\
-parse_config.c\
-config_set_texture.c\
-config_new_map.c\
-parse_config_texture.c\
-parse_arg_load_cub.c\
-parse_config_map.c\
-cub_set.c\
-parse.c\
-parse_config_sprite.c\
-config_set_player.c\
-main.c\
-hooks_move.c\
-hooks_door.c\
-hooks_viewpoint.c\
-hooks_player.c\
-hooks.c
+
+SRCS		:= main.c
+# hooks
+SRCS		+= hooks.c \
+				hooks_door.c \
+				hooks_move.c \
+				hooks_player.c \
+				hooks_viewpoint.c
+# parse
+SRCS		+= config_new_map.c \
+				config_set_player.c \
+				config_set_texture.c \
+				cub_set.c \
+				parse.c \
+				parse_arg.c \
+				parse_arg_color.c \
+				parse_arg_load_cub.c \
+				parse_arg_map.c \
+				parse_arg_texture.c \
+				parse_arg_utils.c \
+				parse_config.c \
+				parse_config_map.c \
+				parse_config_sprite.c \
+				parse_config_texture.c \
+				position_generator.c
+# render
+SRCS		+= cast_ray.c \
+				draw_minimap.c \
+				draw_sprite.c \
+				draw_sprite2.c \
+				draw_sprites.c \
+				draw_vertline.c \
+				draw_wall.c \
+				draw_wall2.c \
+				fill_minimap_buf.c \
+				has_hit_longitudinal_door.c \
+				has_hit_transverse_door.c \
+				move_sprites.c \
+				raycastvar_set_iterator.c \
+				raycastvar_set_texture.c \
+				render.c \
+				sprite_size.c \
+				spritevar_set_frame_index.c \
+				spritevar_set_tex_iter.c \
+				spritevar_sort.c \
+				update_door_state.c
+# utils
+SRCS		+= handle_window.c \
+				mlx_wrapper.c \
+				vector.c
+
 OBJS		:= $(addprefix obj/, $(SRCS:.c=.o))
 DEPS		:= $(OBJS:.o=.d)
 
@@ -117,6 +124,6 @@ err: all
 	./cub3d image/error_walltex3.cub
 	./cub3d image/error_walltex4.cub
 
-# -include $(DEPS)
+-include $(DEPS)
 
 .PHONY: all clean fclean re libft empty

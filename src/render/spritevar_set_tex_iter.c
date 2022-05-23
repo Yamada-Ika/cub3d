@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 17:07:45 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 18:22:57 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 00:01:41 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ static int	sprite_tex_height(t_cub *cub, t_spritevar *lvar)
 
 void	init_sprite_texture_iterator(t_cub *cub, t_spritevar *lvar)
 {
-	t_sprite	*sprites;
-
-	sprites = cub->sprite->sprites;
 	lvar->step_sprite_tex_x = sprite_tex_width(cub, lvar)
 		/ (double)lvar->sprite_width;
 	lvar->step_sprite_tex_y = sprite_tex_height(cub, lvar)

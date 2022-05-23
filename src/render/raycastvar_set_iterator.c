@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 16:29:07 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 16:29:35 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 00:00:01 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	set_map_point(t_raycastvar *lvar, t_cub *cub)
 	lvar->map_y = (int)(player->pos_y);
 }
 
-static void	set_delta_dist(t_raycastvar *lvar, t_cub *cub)
+static void	set_delta_dist(t_raycastvar *lvar)
 {
 	double	power_x;
 	double	power_y;
@@ -72,11 +72,8 @@ static void	set_raycast_iterator_in_y(t_raycastvar *lvar, t_cub *cub)
 
 void	set_raycast_iterator(t_raycastvar *lvar, t_cub *cub)
 {
-	t_player	*player;
-
-	player = cub->player;
 	set_map_point(lvar, cub);
-	set_delta_dist(lvar, cub);
+	set_delta_dist(lvar);
 	set_raycast_iterator_in_x(lvar, cub);
 	set_raycast_iterator_in_y(lvar, cub);
 }

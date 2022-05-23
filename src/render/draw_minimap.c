@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:34:48 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/23 19:08:17 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 23:57:47 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,14 @@ static unsigned int	get_minimap_color(t_cub *cub, int x, int y)
 
 static unsigned int	get_player_color(t_cub *cub, int x, int y)
 {
-	void	*tmp1;
-	int		tmp2;
-	int		tmp3;
-
-	tmp1 = (void *)cub;
-	tmp2 = (int)x;
-	tmp3 = (int)y;
+	cub++;
+	x = y;
+	y = x;
 	return (0xff0000);
 }
 
 static void	draw_circle(t_cub *cub, int r,
-	unsigned int (* f(t_cub *, int, int)))
+	unsigned int (f(t_cub *, int, int)))
 {
 	int	x;
 	int	y;

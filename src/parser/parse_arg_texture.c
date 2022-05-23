@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:46 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 10:38:32 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 20:56:16 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static t_error	set_texturea_path(t_config *config, char *s, int *flag)
 {
-	char	*line;
 	t_error	err;
 
 	err = NO_ERR;
