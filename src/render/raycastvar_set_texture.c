@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 16:01:23 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 17:49:19 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 20:38:32 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,16 @@ static double	calc_texture_x_on_map(t_cub *cub, t_raycastvar *lvar)
 		return (lvar->wall_x - (int)lvar->wall_x);
 	if (lvar->side == EAST)
 		return (1.0 - (lvar->wall_x - (int)lvar->wall_x));
-	if (lvar->side == NORTH)
-		return (lvar->wall_x - (int)lvar->wall_x);
 	if (lvar->side == SOUTH)
+		return (lvar->wall_x - (int)lvar->wall_x);
+	if (lvar->side == NORTH)
 		return (1.0 - (lvar->wall_x - (int)lvar->wall_x));
 }
 
 static void	set_ray_collide_pos_on_tex(t_raycastvar *lvar, t_cub *cub)
 {
-	t_map	*map;
 	double	tex_x_on_map;
 
-	map = cub->map;
 	lvar->tex = get_texture(cub, lvar);
 	tex_x_on_map = calc_texture_x_on_map(cub, lvar);
 	lvar->tex_x = lvar->tex->width * tex_x_on_map;
@@ -61,12 +59,6 @@ static void	set_ray_collide_pos_on_tex(t_raycastvar *lvar, t_cub *cub)
 
 void	set_wall_texture(t_raycastvar *lvar, t_cub *cub)
 {
-	t_player	*player;
-	t_map		*map;
-	double		tex_x_on_map;
-
-	player = cub->player;
-	map = cub->map;
 	set_ray_collide_pos(lvar, cub);
 	set_ray_collide_pos_on_tex(lvar, cub);
 }
