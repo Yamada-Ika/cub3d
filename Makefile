@@ -165,6 +165,6 @@ norm:
 	norminette include
 	norminette src
 
-# -include $(DEPS)
+-include $(DEPS)
 
 .PHONY: all clean fclean re libft empty
