@@ -6,13 +6,13 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 01:03:44 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 07:40:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 00:46:55 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-bool	has_file_ext(char *path, char *ext)
+bool	has_file_ext(const char *path, char *ext)
 {
 	char	*dot_at;
 
@@ -22,7 +22,7 @@ bool	has_file_ext(char *path, char *ext)
 	return (ft_strcmp(dot_at, ext) == 0);
 }
 
-bool	can_open(char *path)
+bool	can_open(const char *path)
 {
 	int	fd;
 
@@ -33,7 +33,7 @@ bool	can_open(char *path)
 	return (true);
 }
 
-bool	is_direcory(char *path)
+bool	is_direcory(const char *path)
 {
 	int		fd;
 	char	buf[10];

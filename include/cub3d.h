@@ -6,33 +6,29 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/24 17:40:58 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 01:31:05 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include <math.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/time.h>
+# include <math.h>
+# include <stdio.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <sys/time.h>
 
-#include "libft.h"
-#include "mlx.h"
-#include "mlx_window.h"
-#include "vector.h"
+# include "libft.h"
+# include "mlx.h"
+# include "mlx_window.h"
+# include "vector.h"
 
-#define mapWidth 24
-#define mapHeight 24
-#define MOVE_STEP 0.5
-#define SP_MOVE_STEP 0.01
-#define ROT_STEP 0.05
-
-#define DBG() fprintf(stderr, "%s %d\n", __func__, __LINE__)
+# define MOVE_STEP 0.5
+# define SP_MOVE_STEP 0.01
+# define ROT_STEP 0.05
 
 typedef struct s_player
 {
@@ -54,16 +50,16 @@ typedef struct s_texture
 typedef struct s_sprite
 {
 	t_vector	*textures;
-	double	x;
-	double	y;
-	double	dist_from_player;
-	int		len;
+	double		x;
+	double		y;
+	double		dist_from_player;
+	int			len;
 }	t_sprite;
 
 typedef struct s_sprite_info
 {
 	t_sprite	*sprites;
-	int	num;
+	int			num;
 	double		*buf_perp;
 }	t_sprite_info;
 
@@ -84,16 +80,16 @@ typedef enum e_door_state_kind
 
 typedef enum e_door_side_kind
 {
-	TRANSVERSE, // 横
-	LONGITUDINAL, // 縦
+	TRANSVERSE,
+	LONGITUDINAL,
 }	t_door_side_kind;
 
 typedef struct s_cell
 {
-	t_cell_kind kind; // none, wall, door
-	t_door_state_kind door_state; // 0 : 閉じているので障害物判定, 1 : 空いているので通れる
+	t_cell_kind			kind;
+	t_door_state_kind	door_state;
 	t_door_side_kind	side;
-	double timer; // 0 ~ 1, 0は閉じている, 1は空いている, 0.5は半分空いている
+	double				timer;
 }	t_cell;
 
 typedef struct s_point
@@ -104,23 +100,23 @@ typedef struct s_point
 
 typedef struct s_map
 {
-	t_cell		**map;
-	int 		width;
-	int 		heigth;
+	t_cell			**map;
+	int				width;
+	int				heigth;
 	unsigned int	floor;
 	unsigned int	ceil;
-	t_texture	*north;
-	t_texture	*south;
-	t_texture	*west;
-	t_texture	*east;
-	t_vector	*door_points;
+	t_texture		*north;
+	t_texture		*south;
+	t_texture		*west;
+	t_texture		*east;
+	t_vector		*door_points;
 }	t_map;
 
 typedef struct s_minimap_info
 {
 	unsigned int	**buf;
-	int	width;
-	int	height;
+	int				width;
+	int				height;
 }	t_minimap_info;
 
 typedef struct s_camera
@@ -143,6 +139,9 @@ typedef struct s_cub
 typedef enum e_error
 {
 	NO_ERR,
+	PARSE_CUB_EXTENSION_ERR,
+	PARSE_CUB_CANT_OPEN_ERR,
+	PARSE_CUB_IS_DIRECTORY_ERR,
 	INVALID_ARG_NUM_ERR,
 	CUB_FILE_READ_ERR,
 	UNKNOWN_SYMBOL,
@@ -176,6 +175,7 @@ typedef enum e_error
 	VALIDATE_SPRITE_TEX_CANT_OPEN_ERR,
 	VALIDATE_SPRITE_TEX_IS_DIRECTORY_ERR,
 	VALIDATE_INVALID_SPRITE_ID_ERR,
+	CUB_ELEMENT_NOT_ENOUGH_ERR,
 	INVALID_CUB_FILE,
 	CUB_FILE_ERR,
 	MEM_ERR,
@@ -185,15 +185,11 @@ typedef enum e_error
 	NON_PLAYER,
 }	t_error;
 
-int	render(t_cub *cub);
+int			render(t_cub *cub);
 
 // mlx wrapper
-void	put_pixel(t_cub *cub, int x, int y, unsigned int color);
-void	put_image(t_cub *cub);
-
-// dump
-void	dump_cub(t_cub *cub);
-
-long long	gettimestamp(void);
+// void		put_pixel(t_cub *cub, int x, int y, unsigned int color);
+// void		put_image(t_cub *cub);
+// long long	gettimestamp(void);
 
 #endif

@@ -25,21 +25,23 @@ SRCS		+= config_new_map.c \
 				config_set_player.c \
 				config_set_texture.c \
 				cub_set.c \
-				validate_map.c \
-				validate_tex_path.c \
 				parse.c \
-				parse_map.c \
 				parse_arg.c \
 				parse_arg_color.c \
-				parse_arg_load_cub.c \
 				parse_arg_map.c \
-				parse_arg_texture.c \
 				parse_arg_utils.c \
 				parse_config.c \
 				parse_config_map.c \
 				parse_config_sprite.c \
 				parse_config_texture.c \
-				position_generator.c
+				parse_cub.c \
+				parse_map.c \
+				parse_sprite_paths.c \
+				parse_types.c \
+				position_generator.c \
+				validate_map.c \
+				validate_sprite.c \
+				validate_tex_path.c
 # render
 SRCS		+= cast_ray.c \
 				draw_minimap.c \
@@ -117,9 +119,12 @@ fclean: clean
 
 re:	fclean all
 
-run: all
-	./cub3d settings/cub/sample.cub
-	# ./cub3d settings/cub/tutorial.cub
+ok: all
+	./cub3d settings/cub/ok_normal.cub
+	./cub3d settings/cub/ok_order1.cub
+	./cub3d settings/cub/ok_order2.cub
+	./cub3d settings/cub/ok_order3.cub
+	./cub3d settings/cub/ok_normal_bonus.cub
 
 err: all
 	@chmod 000 settings/cub/error_noright.cub
@@ -153,6 +158,12 @@ err: all
 	-./cub3d settings/cub/error_sprite3.cub
 	-./cub3d settings/cub/error_sprite4.cub
 	@chmod 644 settings/cub/error_noright.cub
+
+norm:
+	norminette -v
+	norminette libft
+	norminette include
+	norminette src
 
 # -include $(DEPS)
 

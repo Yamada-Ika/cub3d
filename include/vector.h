@@ -6,16 +6,17 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/23 20:52:36 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 01:29:39 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_H
 # define VECTOR_H
 
-#include "libft.h"
+# include "libft.h"
 
-typedef struct s_vector {
+typedef struct s_vector
+{
 	void		*data;
 	long long	cap;
 	long long	len;

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:50 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 16:57:57 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 21:14:55 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ void	skip_newline(t_config *config)
 bool	is_texture_symbol(const char *s)
 {
 	return (
-		ft_strncmp(s, "NO", 2) == 0
-		|| ft_strncmp(s, "SO", 2) == 0
-		|| ft_strncmp(s, "WE", 2) == 0
-		|| ft_strncmp(s, "EA", 2) == 0
+		ft_strncmp(s, "NO ", 3) == 0
+		|| ft_strncmp(s, "SO ", 3) == 0
+		|| ft_strncmp(s, "WE ", 3) == 0
+		|| ft_strncmp(s, "EA ", 3) == 0
 	);
 }
 

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 01:49:32 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 17:19:20 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 01:13:11 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,15 @@ static bool	**make_visits(int height, int width)
 	return (res);
 }
 
-static bool	is_map_closed(t_config *config)
+static bool	is_map_closed(t_config *conf)
 {
 	bool	**visits;
 
-	visits = make_visits(config->seek + config->height, config->width);
+	visits = make_visits(conf->seek + conf->height, conf->width);
 	if (visits == NULL)
 		return (false);
 	return (
-		floodfill(config, visits, config->seek + (int)config->pos_x, config->pos_y) == 0
+		floodfill(conf, visits, conf->seek + (int)conf->pos_x, conf->pos_y) == 0
 	);
 }
 

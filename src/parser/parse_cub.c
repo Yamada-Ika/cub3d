@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_arg_load_cub.c                               :+:      :+:    :+:   */
+/*   parse_cub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 01:57:41 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 20:56:00 by iyamada          ###   ########.fr       */
+/*   Created: 2022/05/25 00:50:04 by iyamada           #+#    #+#             */
+/*   Updated: 2022/05/25 00:51:02 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*read_to_string(const int fd)
 	return (whole_line);
 }
 
-t_error	load_cub(t_config *config, const char *path)
+static t_error	load_cub(t_config *config, const char *path)
 {
 	int		fd;
 	char	*whole_line;
@@ -59,4 +59,15 @@ t_error	load_cub(t_config *config, const char *path)
 	if (config->cub == NULL)
 		return (MEM_ERR);
 	return (NO_ERR);
+}
+
+t_error	parse_cub(t_config *config, const char *path)
+{
+	if (!has_file_ext(path, ".cub"))
+		return (PARSE_CUB_EXTENSION_ERR);
+	if (!can_open(path))
+		return (PARSE_CUB_CANT_OPEN_ERR);
+	if (is_direcory(path))
+		return (PARSE_CUB_IS_DIRECTORY_ERR);
+	return (load_cub(config, path));
 }

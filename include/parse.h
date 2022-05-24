@@ -6,18 +6,28 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/24 17:38:28 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 01:29:12 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_H
 # define PARSE_H
 
-#include "cub3d.h"
+# include "cub3d.h"
 
 # define A 48271
 # define B 0
 # define M INT_MAX
+
+typedef enum e_type_flag
+{
+	NORTH_PATH_FLAG = 1,
+	SOUTH_PATH_FLAG,
+	WEST_PATH_FLAG,
+	EAST_PATH_FLAG,
+	FLOOR_COLOR_FLAG,
+	CEIL_COLOR_FLAG,
+}	t_type_flag;
 
 typedef enum e_tex_flag
 {
@@ -63,60 +73,62 @@ typedef struct s_sprite_path
 }	t_sprite_path;
 
 // parse arg
-int		parse_arg(int argc, char **argv, t_config *config);
-t_error	parse_map(t_config *config);
-t_error	parse_tex_paths(t_config *config);
+int			parse_arg(int argc, char **argv, t_config *config);
+t_error		parse_cub(t_config *config, const char *path);
+t_error		parse_types(t_config *config);
+t_error		parse_sprite_paths(t_config *config);
+t_error		parse_map(t_config *config);
+t_error		parse_colors(t_config *config, char *s, int *flag);
+t_error		parse_texture_paths(t_config *config, char *s, int *flag);
 
-t_error	load_cub(t_config *config, const char *path);
-// t_error	set_tex_path(t_config *config);
-t_error	set_color(t_config *config);
-t_error	set_sprite_paths(t_config *config);
-t_error	set_map(t_config *config);
+// validate
+t_error		validate_sprite_paths(t_config *config);
+t_error		validate_sprite_id(t_config *config);
+t_error		validate_texture_path(t_config *config);
+t_error		validate_map(t_config *config);
 
-char	*get_texture_path(t_config *config, int idx);
-int		get_texture_id(t_config *config, int idx);
+// vector getter wrapper
+char		*get_texture_path(t_config *config, int idx);
+int			get_texture_id(t_config *config, int idx);
 
 // utils
-char	*skip_spaces(char *s);
-void	skip_newline(t_config *config);
-bool	is_texture_symbol(const char *s);
-bool	is_color_symbol(const char *s);
-bool	is_sprite_symbol(const char *s);
-bool	is_map_symbol(const char c);
-bool	has_file_ext(char *path, char *ext);
-bool	can_open(char *path);
-bool	is_direcory(char *path);
+char		*skip_spaces(char *s);
+void		skip_newline(t_config *config);
+bool		is_texture_symbol(const char *s);
+bool		is_color_symbol(const char *s);
+bool		is_sprite_symbol(const char *s);
+bool		is_map_symbol(const char c);
+bool		has_file_ext(const char *path, char *ext);
+bool		can_open(const char *path);
+bool		is_direcory(const char *path);
 
-// validate config
-t_error	validate_texture_path(t_config *config);
-t_error	validate_map(t_config *config);
-
-// parse config
-t_error	parse_config(t_config *config, t_cub *cub);
-void	set_texture_var(t_cub *cub, t_config *config);
-void	set_sprite_var(t_cub *cub, t_config *config);
-void	set_map_var(t_cub *cub, t_config *config);
-void	set_minimap_var(t_cub *cub);
-t_texture	*new_texture(t_cub *cub, char *file);
-
-void	sprite_pos_generator(t_cub *cub, double *x, double *y);
+void		sprite_pos_generator(t_cub *cub, double *x, double *y);
 
 // config setter
-void	set_player_info_in_north(t_config *config, int i, int j);
-void	set_player_info_in_south(t_config *config, int i, int j);
-void	set_player_info_in_east(t_config *config, int i, int j);
-void	set_player_info_in_west(t_config *config, int i, int j);
-t_error	set_north(t_config *config, char *s, int *flag);
-t_error	set_south(t_config *config, char *s, int *flag);
-t_error	set_west(t_config *config, char *s, int *flag);
-t_error	set_east(t_config *config, char *s, int *flag);
-t_error	new_map(t_config *config);
+void		set_player_info_in_north(t_config *config, int i, int j);
+void		set_player_info_in_south(t_config *config, int i, int j);
+void		set_player_info_in_east(t_config *config, int i, int j);
+void		set_player_info_in_west(t_config *config, int i, int j);
+t_error		set_north(t_config *config, char *s, int *flag);
+t_error		set_south(t_config *config, char *s, int *flag);
+t_error		set_west(t_config *config, char *s, int *flag);
+t_error		set_east(t_config *config, char *s, int *flag);
+t_error		new_map(t_config *config);
+t_error		set_map(t_config *config);
+
+// parse config
+t_error		parse_config(t_config *config, t_cub *cub);
 
 // cub setter
-void	set_mlx_var(t_cub *cub);
-void	set_player_var(t_cub *cub, t_config *config);
-void	set_color_var(t_cub *cub, t_config *config);
-void	set_camera_var(t_cub *cub);
-void	set_time_var(t_cub *cub);
+void		set_mlx_var(t_cub *cub);
+void		set_player_var(t_cub *cub, t_config *config);
+void		set_color_var(t_cub *cub, t_config *config);
+void		set_camera_var(t_cub *cub);
+void		set_time_var(t_cub *cub);
+void		set_texture_var(t_cub *cub, t_config *config);
+void		set_sprite_var(t_cub *cub, t_config *config);
+void		set_map_var(t_cub *cub, t_config *config);
+void		set_minimap_var(t_cub *cub);
+t_texture	*new_texture(t_cub *cub, char *file);
 
 #endif
