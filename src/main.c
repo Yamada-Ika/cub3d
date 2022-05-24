@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:18 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 23:44:54 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 01:45:33 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,18 @@ t_error	parse(int argc, char **argv, t_cub *cub);
 int		render(t_cub *cub);
 void	install_event_hooks(t_cub *cub);
 void	loop(t_cub *cub);
+
+// #include <stdlib.h>
+// #include <stdio.h>
+// #include <unistd.h>
+// __attribute__((destructor))
+// void	destructor(void)
+// {
+// 	char	buf[20];
+
+// 	sprintf(buf, "leaks %d", getpid());
+// 	system(buf);
+// }
 
 void	run(t_cub *cub)
 {
