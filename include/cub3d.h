@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/25 01:31:05 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 01:40:26 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,10 +186,6 @@ typedef enum e_error
 }	t_error;
 
 int			render(t_cub *cub);
-
-// mlx wrapper
-// void		put_pixel(t_cub *cub, int x, int y, unsigned int color);
-// void		put_image(t_cub *cub);
-// long long	gettimestamp(void);
+long long	gettimestamp(void);
 
 #endif

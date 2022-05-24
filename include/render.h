@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/25 01:35:15 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 01:40:19 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,5 @@ void		fill_minimap_buf(t_cub *cub);
 void		put_pixel(t_cub *cub, int x, int y, unsigned int color);
 void		put_image(t_cub *cub);
 int			get_texture_color(const t_texture *tex, const int x, const int y);
-
-long long	gettimestamp(void);
 
 #endif
