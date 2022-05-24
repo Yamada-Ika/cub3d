@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/23 19:10:34 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 02:50:14 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ void	move_right(t_cub *cub);
 bool	should_move_player(int keycode);
 void	rotate_2d(double *a, double *b, double angle);
 void	move_viewpoint(t_cub *cub, int keycode);
-void	hooks_update_doorstate(t_cub *cub, int keycode);
+bool	hooks_update_doorstate(t_cub *cub);
 
 #endif

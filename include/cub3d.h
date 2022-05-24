@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/25 01:40:26 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 02:26:47 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,24 @@
 # define SP_MOVE_STEP 0.01
 # define ROT_STEP 0.05
 
+typedef enum e_jump_state
+{
+	ON_GROUND,
+	JUMPING,
+	GETTING_OFF,
+}	t_jump_state;
+
 typedef struct s_player
 {
-	double	pos_x;
-	double	pos_y;
-	double	dir_x;
-	double	dir_y;
-	double	plane_x;
-	double	plane_y;
+	double			pos_x;
+	double			pos_y;
+	double			dir_x;
+	double			dir_y;
+	double			plane_x;
+	double			plane_y;
+	t_jump_state	jump_state;
+	double			velocity_z;
+	double			elevation;
 }	t_player;
 
 typedef struct s_texture

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/25 01:40:19 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 02:02:30 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define MINIMAP_SIZE 240
 # define MINIMAP_CENTER_X 120
 # define MINIMAP_CENTER_Y 120
+# define ELEVATION_LIMIT 10
 
 typedef struct s_raycastvar
 {

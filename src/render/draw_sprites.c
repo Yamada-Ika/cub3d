@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:02 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 00:02:31 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 02:24:57 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,14 @@ static void	trans_to_camera_cordinate(t_cub *cub, t_spritevar *lvar)
 
 static void	set_sprite_draw_range(t_cub *cub, t_spritevar *lvar)
 {
+	double	delta_h;
+
+	delta_h = cub->camera->pitch + cub->player->elevation / lvar->trans_y;
 	lvar->sprite_height = abs((int)(WIN_H / lvar->trans_y));
-	lvar->draw_start_y = -lvar->sprite_height / 2
-		+ WIN_H / 2 + cub->camera->pitch;
+	lvar->draw_start_y = -lvar->sprite_height / 2 + WIN_H / 2 + delta_h;
 	if (lvar->draw_start_y < 0)
 		lvar->draw_start_y = 0;
-	lvar->draw_end_y = lvar->sprite_height / 2 + WIN_H / 2 + cub->camera->pitch;
+	lvar->draw_end_y = lvar->sprite_height / 2 + WIN_H / 2 + delta_h;
 	if (lvar->draw_end_y >= WIN_H)
 		lvar->draw_end_y = WIN_H - 1;
 	lvar->sprite_width = abs((int)(WIN_H / lvar->trans_y));

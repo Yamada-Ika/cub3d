@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:04 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 16:06:02 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 02:51:28 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,15 @@ void	set_perpbuf(t_raycastvar *lvar, t_cub *cub)
 
 void	set_draw_range(t_raycastvar *lvar, t_cub *cub)
 {
+	double	delta_h;
+
+	delta_h = cub->camera->pitch
+		+ cub->player->elevation / lvar->perp_wall_dist;
 	lvar->line_height = (int)(WIN_H / lvar->perp_wall_dist);
-	lvar->draw_start = -lvar->line_height / 2 + WIN_H / 2 + cub->camera->pitch;
+	lvar->draw_start = -lvar->line_height / 2 + WIN_H / 2 + delta_h;
 	if (lvar->draw_start < 0)
 		lvar->draw_start = 0;
-	lvar->draw_end = lvar->line_height / 2 + WIN_H / 2 + cub->camera->pitch;
+	lvar->draw_end = lvar->line_height / 2 + WIN_H / 2 + delta_h;
 	if (lvar->draw_end >= WIN_H)
 		lvar->draw_end = WIN_H - 1;
 }

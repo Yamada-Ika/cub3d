@@ -121,10 +121,10 @@ re:	fclean all
 
 ok: all
 	./cub3d settings/cub/ok_normal.cub
-	./cub3d settings/cub/ok_order1.cub
-	./cub3d settings/cub/ok_order2.cub
-	./cub3d settings/cub/ok_order3.cub
-	./cub3d settings/cub/ok_normal_bonus.cub
+	# ./cub3d settings/cub/ok_order1.cub
+	# ./cub3d settings/cub/ok_order2.cub
+	# ./cub3d settings/cub/ok_order3.cub
+	# ./cub3d settings/cub/ok_normal_bonus.cub
 
 err: all
 	@chmod 000 settings/cub/error_noright.cub

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:32:33 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 00:03:51 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/25 02:50:27 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,17 @@ static bool	should_update_doorstate(int keycode)
 	);
 }
 
+void	update_jumpstatus(t_cub *cub)
+{
+	if (cub->player->jump_state == ON_GROUND)
+	{
+		cub->player->jump_state = JUMPING;
+		cub->player->velocity_z = 5.0;
+		cub->player->elevation = 0.0;
+		return ;
+	}
+}
+
 static int	handle_key_hook(int keycode, void *params)
 {
 	t_cub	*cub;
@@ -48,7 +59,9 @@ static int	handle_key_hook(int keycode, void *params)
 	}
 	if (should_update_doorstate(keycode))
 	{
-		hooks_update_doorstate(cub, keycode);
+		if (hooks_update_doorstate(cub))
+			return (0);
+		update_jumpstatus(cub);
 		return (0);
 	}
 	return (0);
