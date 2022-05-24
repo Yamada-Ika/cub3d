@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:18 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 20:51:00 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 17:59:53 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv)
 	if (err != NO_ERR)
 	{
 		fprintf(stderr, "error kind %d\n", err);
-		return (0);
+		return (1);
 	}
 	run(&cub);
 }

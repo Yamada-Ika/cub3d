@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:36 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 00:20:04 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 16:37:59 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,18 @@ t_error	set_color(t_config *config)
 	err = NO_ERR;
 	file = config->cub;
 	flag = 0;
-	i = config->seek - 1;
-	while (file[++i] != NULL)
+	i = config->seek;
+	while (file[i] != NULL)
 	{
 		if (err != NO_ERR)
 			return (err);
 		if (flag == (1 << FLOOR_FLAG | 1 << CEIL_FLAG))
 			break ;
 		if (is_color_symbol(file[i]))
-		{
 			err = set_colors(config, file[i], &flag);
-			continue ;
-		}
-		return (UNKNOWN_SYMBOL);
+		else
+			return (COLOR_UNKNOWN_SYMBOL_ERR);
+		i++;
 	}
 	config->seek = i + 1;
 	return (NO_ERR);

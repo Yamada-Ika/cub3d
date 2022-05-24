@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/24 02:03:36 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 17:38:28 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ typedef struct s_sprite_path
 }	t_sprite_path;
 
 // parse arg
-int	parse_arg(int argc, char **argv, t_config *config);
-
+int		parse_arg(int argc, char **argv, t_config *config);
+t_error	parse_map(t_config *config);
 t_error	parse_tex_paths(t_config *config);
 
 t_error	load_cub(t_config *config, const char *path);
@@ -73,6 +73,9 @@ t_error	set_color(t_config *config);
 t_error	set_sprite_paths(t_config *config);
 t_error	set_map(t_config *config);
 
+char	*get_texture_path(t_config *config, int idx);
+int		get_texture_id(t_config *config, int idx);
+
 // utils
 char	*skip_spaces(char *s);
 void	skip_newline(t_config *config);
@@ -80,10 +83,13 @@ bool	is_texture_symbol(const char *s);
 bool	is_color_symbol(const char *s);
 bool	is_sprite_symbol(const char *s);
 bool	is_map_symbol(const char c);
+bool	has_file_ext(char *path, char *ext);
+bool	can_open(char *path);
+bool	is_direcory(char *path);
 
 // validate config
-t_error	validate(t_config *config);
 t_error	validate_texture_path(t_config *config);
+t_error	validate_map(t_config *config);
 
 // parse config
 t_error	parse_config(t_config *config, t_cub *cub);
@@ -94,8 +100,6 @@ void	set_minimap_var(t_cub *cub);
 t_texture	*new_texture(t_cub *cub, char *file);
 
 void	sprite_pos_generator(t_cub *cub, double *x, double *y);
-
-void	dump_config(t_config *config);
 
 // config setter
 void	set_player_info_in_north(t_config *config, int i, int j);

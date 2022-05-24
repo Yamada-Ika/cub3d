@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/24 02:13:02 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 17:40:58 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 #define MOVE_STEP 0.5
 #define SP_MOVE_STEP 0.01
 #define ROT_STEP 0.05
+
+#define DBG() fprintf(stderr, "%s %d\n", __func__, __LINE__)
 
 typedef struct s_player
 {
@@ -154,6 +156,7 @@ typedef enum e_error
 	INVALID_COLOR_VAL_ERR,
 	INVALID_SPRITE_ID_ERR,
 	UNKNOWN_MAP_SYMBOL,
+	COLOR_UNKNOWN_SYMBOL_ERR,
 	VALIDATE_NORTH_TEX_NOT_XPM_ERR,
 	VALIDATE_SOUTH_TEX_NOT_XPM_ERR,
 	VALIDATE_WEST_TEX_NOT_XPM_ERR,
@@ -168,6 +171,11 @@ typedef enum e_error
 	VALIDATE_EAST_TEX_IS_DIRECTORY_ERR,
 	VALIDATE_MAP_ISNOT_RECTANGLE_ERR,
 	VALIDATE_MAP_HAS_INVALID_CHAR_ERR,
+	VALIDATE_MAP_ISNOT_CLOSED_ERR,
+	VALIDATE_SPRITE_TEX_NOT_XPM_ERR,
+	VALIDATE_SPRITE_TEX_CANT_OPEN_ERR,
+	VALIDATE_SPRITE_TEX_IS_DIRECTORY_ERR,
+	VALIDATE_INVALID_SPRITE_ID_ERR,
 	INVALID_CUB_FILE,
 	CUB_FILE_ERR,
 	MEM_ERR,

@@ -25,9 +25,10 @@ SRCS		+= config_new_map.c \
 				config_set_player.c \
 				config_set_texture.c \
 				cub_set.c \
-				validate.c \
+				validate_map.c \
 				validate_tex_path.c \
 				parse.c \
+				parse_map.c \
 				parse_arg.c \
 				parse_arg_color.c \
 				parse_arg_load_cub.c \
@@ -117,33 +118,41 @@ fclean: clean
 re:	fclean all
 
 run: all
-	./cub3d settings/cub/tutorial.cub
+	./cub3d settings/cub/sample.cub
+	# ./cub3d settings/cub/tutorial.cub
 
 err: all
-	./cub3d settings/cub/error_noright.cub
-	./cub3d settings/cub/error_walltex1.cub
-	./cub3d settings/cub/error_walltex2.cub
-	./cub3d settings/cub/error_walltex3.cub
-	./cub3d settings/cub/error_walltex4.cub
-	./cub3d settings/cub/error_walltex5.cub
-	./cub3d settings/cub/error_walltex6.cub
-	./cub3d settings/cub/error_walltex7.cub
-	./cub3d settings/cub/error_color1.cub
-	./cub3d settings/cub/error_color2.cub
-	./cub3d settings/cub/error_color3.cub
-	./cub3d settings/cub/error_color4.cub
-	./cub3d settings/cub/error_color5.cub
-	./cub3d settings/cub/error_color6.cub
-	./cub3d settings/cub/error_color7.cub
-	./cub3d settings/cub/error_color8.cub
-	./cub3d settings/cub/error_color9.cub
-	./cub3d settings/cub/error_color10.cub
-	./cub3d settings/cub/error_color11.cub
-	./cub3d settings/cub/error_color12.cub
-	./cub3d settings/cub/error_map1.cub
-	./cub3d settings/cub/error_map2.cub
-	./cub3d settings/cub/error_map3.cub
-	./cub3d settings/cub/error_map4.cub
+	@chmod 000 settings/cub/error_noright.cub
+	-./cub3d settings/cub/error_noright.cub
+	-./cub3d settings/cub/error_walltex1.cub
+	-./cub3d settings/cub/error_walltex2.cub
+	-./cub3d settings/cub/error_walltex3.cub
+	-./cub3d settings/cub/error_walltex4.cub
+	-./cub3d settings/cub/error_walltex5.cub
+	-./cub3d settings/cub/error_walltex6.cub
+	-./cub3d settings/cub/error_walltex7.cub
+	-./cub3d settings/cub/error_color1.cub
+	-./cub3d settings/cub/error_color2.cub
+	-./cub3d settings/cub/error_color3.cub
+	-./cub3d settings/cub/error_color4.cub
+	-./cub3d settings/cub/error_color5.cub
+	-./cub3d settings/cub/error_color6.cub
+	-./cub3d settings/cub/error_color7.cub
+	-./cub3d settings/cub/error_color8.cub
+	-./cub3d settings/cub/error_color9.cub
+	-./cub3d settings/cub/error_color10.cub
+	-./cub3d settings/cub/error_color11.cub
+	-./cub3d settings/cub/error_color12.cub
+	-./cub3d settings/cub/error_map1.cub
+	-./cub3d settings/cub/error_map2.cub
+	-./cub3d settings/cub/error_map3.cub
+	-./cub3d settings/cub/error_map4.cub
+	-./cub3d settings/cub/error_map5.cub
+	-./cub3d settings/cub/error_sprite1.cub
+	-./cub3d settings/cub/error_sprite2.cub
+	-./cub3d settings/cub/error_sprite3.cub
+	-./cub3d settings/cub/error_sprite4.cub
+	@chmod 644 settings/cub/error_noright.cub
 
 # -include $(DEPS)
 

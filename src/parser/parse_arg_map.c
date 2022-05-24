@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:43 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 01:44:43 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 17:43:34 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,21 @@ t_error	set_map(t_config *config)
 	int		j;
 	int		idx;
 
-	idx = config->seek - 1;
-	i = -1;
-	while (++i < config->height)
+	idx = config->seek;
+	i = 0;
+	while (i < config->height)
 	{
-		j = -1;
-		while (++j < config->width)
+		j = 0;
+		while (j < config->width)
 		{
 			if (is_map_symbol(config->cub[idx][j]))
-			{
 				set_map_(config, i, j, idx);
-				continue ;
-			}
-			fprintf(stderr, "unknown [%c], idx %d, j %d\n", config->cub[idx][j], idx, j);
-			return (UNKNOWN_MAP_SYMBOL);
+			else
+				return (UNKNOWN_MAP_SYMBOL);
+			j++;
 		}
 		idx++;
+		i++;
 	}
 	return (NO_ERR);
 }

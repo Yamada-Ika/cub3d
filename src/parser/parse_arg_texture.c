@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:46 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 01:41:45 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 16:21:59 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,18 @@ static t_error	set_tex_path(t_config *config)
 	err = NO_ERR;
 	file = config->cub;
 	flag = 0;
-	i = -1;
-	while (file[++i] != NULL)
+	i = 0;
+	while (file[i] != NULL)
 	{
 		if (err != NO_ERR)
 			return (err);
 		if (has_set_all_textures(flag))
 			break ;
 		if (is_texture_symbol(file[i]))
-		{
 			err = set_texturea_path(config, file[i], &flag);
-			continue ;
-		}
-		return (UNKNOWN_SYMBOL);
+		else
+			return (UNKNOWN_SYMBOL);
+		i++;
 	}
 	config->seek = i + 1;
 	return (NO_ERR);

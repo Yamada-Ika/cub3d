@@ -5,27 +5,30 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/24 01:49:32 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 02:12:51 by iyamada          ###   ########.fr       */
+/*   Created: 2022/05/24 07:26:10 by iyamada           #+#    #+#             */
+/*   Updated: 2022/05/24 17:03:53 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-bool	is_rectangle(t_config *config)
+static bool	is_rectangle(t_config *config)
 {
 	int	i;
+	int	offset;
 
-	i = config->seek - 1;
-	while (++i < config->height - 1)
+	i = config->seek;
+	offset = i;
+	while (i < offset + config->height - 1)
 	{
 		if (ft_strlen(config->cub[i]) != ft_strlen(config->cub[i + 1]))
 			return (false);
+		i++;
 	}
 	return (true);
 }
 
-bool	is_player_symbol(cosnt char c)
+static bool	is_player_symbol(const char c)
 {
 	return (
 		c == 'N'
@@ -35,48 +38,39 @@ bool	is_player_symbol(cosnt char c)
 	);
 }
 
-bool	has_invalid_char(t_config *config)
+static bool	has_valid_char(t_config *config)
 {
 	int	i;
 	int	j;
-	int	cnt;
+	int	player_cnt;
+	int	offset;
 
-	cnt = 0;
-	i = config->seek - 1;
-	while (++i < config->height)
+	player_cnt = 0;
+	i = config->seek;
+	offset = i;
+	while (i < offset + config->height)
 	{
-		j = -1;
-		while (++j < config->width)
+		j = 0;
+		while (j < config->width)
 		{
 			if (is_player_symbol(config->cub[i][j]))
-				cnt++;
-			if (cnt > 1)
+				player_cnt++;
+			if (player_cnt > 1)
 				return (false);
 			if (!is_map_symbol(config->cub[i][j]))
 				return (false);
+			j++;
 		}
+		i++;
 	}
-	return (true);
+	return (player_cnt == 1);
 }
 
 t_error	validate_map(t_config *config)
 {
-	if (is_rectangle(config))
+	if (!is_rectangle(config))
 		return (VALIDATE_MAP_ISNOT_RECTANGLE_ERR);
-	if (has_invalid_char(config))
+	if (!has_valid_char(config))
 		return (VALIDATE_MAP_HAS_INVALID_CHAR_ERR);
 	return (NO_ERR);
-}
-
-t_error	parse_map(t_config *config)
-{
-	t_error	err;
-
-	err = new_map(config);
-	if (err != NO_ERR)
-		return (err);
-	err = validate_map(config);
-	if (err != NO_ERR)
-		return (err);
-	return (set_map(config));
 }

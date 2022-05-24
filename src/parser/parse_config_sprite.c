@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:13:47 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 10:17:17 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/24 17:38:11 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,14 @@ static void	new_sprite(t_cub *cub, t_config *config)
 	cub->sprite->buf_perp = ft_calloc(WIN_W, sizeof(double));
 }
 
-static char	*get_texture_path(t_config *config, int idx)
+char	*get_texture_path(t_config *config, int idx)
 {
 	return (((t_sprite_path *)vec_at(config->sp_texs, idx))->path);
+}
+
+int	get_texture_id(t_config *config, int idx)
+{
+	return (((t_sprite_path *)vec_at(config->sp_texs, idx))->group);
 }
 
 static void	set_sprite_position(t_cub *cub, int idx)
