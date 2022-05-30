@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_xmalloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/10 23:47:57 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/30 19:08:42 by kkaneko          ###   ########.fr       */
+/*   Created: 2022/05/30 18:55:44 by kkaneko           #+#    #+#             */
+/*   Updated: 2022/05/30 18:56:30 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
-char	*ft_strdup(const char *s1)
+void *ft_xmalloc(size_t size)
 {
-	char	*s2;
-	size_t	s1_len;
+    void    *res;
 
-	s1_len = ft_strlen(s1);
-	s2 = (char *)ft_xmalloc(sizeof(char) * (s1_len + 1));
-	if (s2 == NULL)
-		return (NULL);
-	ft_strlcpy(s2, s1, s1_len + 1);
-	return (s2);
+    res = malloc(size);
+    if (res == NULL)
+        exit(1);
+    return (res);
 }

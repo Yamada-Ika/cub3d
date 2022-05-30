@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 18:03:25 by iyamada           #+#    #+#             */
-/*   Updated: 2022/04/02 18:11:01 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/30 19:07:03 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*ft_strcdup(const char *s1, int c)
 		s1_len = ft_strclen(s1, '\0');
 	else
 		s1_len = ft_strclen(s1, c) + 1;
-	s2 = (char *)malloc(sizeof(char) * (s1_len + 1));
+	s2 = (char *)ft_xmalloc(sizeof(char) * (s1_len + 1));
 	if (s2 == NULL)
 		return (NULL);
 	ft_strlcpy(s2, s1, s1_len + 1);
@@ -56,7 +56,7 @@ static char	*ft_hstrjoin_s(char **s1, char **s2)
 		return (NULL);
 	s1_len = ft_strclen(*s1, '\0');
 	s2_len = ft_strclen(*s2, '\0');
-	joined_str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	joined_str = (char *)ft_xmalloc(sizeof(char) * (s1_len + s2_len + 1));
 	if (joined_str == NULL)
 	{
 		ft_free_s((void **)s1);
@@ -74,7 +74,7 @@ static ssize_t	ft_read(int fd, char **buf)
 {
 	ssize_t	read_bytes;
 
-	*buf = (char *)malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
+	*buf = (char *)ft_xmalloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
 	if (*buf == NULL)
 		return (-1);
 	read_bytes = read(fd, *buf, BUFFER_SIZE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 23:48:21 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/25 10:56:52 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/30 19:08:39 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 
 	if (s == NULL || (*f) == NULL)
 		return (NULL);
-	new_str = malloc(sizeof(char) * (ft_strlen(s) + 1));
+	new_str = ft_xmalloc(sizeof(char) * (ft_strlen(s) + 1));
 	if (new_str == NULL)
 		return (NULL);
 	i = 0;

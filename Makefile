@@ -66,7 +66,8 @@ SRCS		+= cast_ray.c \
 # utils
 SRCS		+= handle_window.c \
 				mlx_wrapper.c \
-				vector.c
+				vector.c \
+				ft_xmalloc.c
 
 OBJ_DIR		:= obj
 OBJS		:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))

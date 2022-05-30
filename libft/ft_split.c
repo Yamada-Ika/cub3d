@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 23:47:47 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/25 10:55:54 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/30 19:08:45 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	**ft_split_helper(char const *s, char c, size_t split_num)
 	s = ft_skip_split_char(s, c);
 	if (*s == '\0')
 	{
-		split_strs = (char **)malloc(sizeof(char *) * (split_num + 1));
+		split_strs = (char **)ft_xmalloc(sizeof(char *) * (split_num + 1));
 		if (split_strs == NULL)
 			return (NULL);
 		split_strs[split_num] = NULL;
@@ -60,7 +60,7 @@ char	**ft_split(char const *s, char c)
 
 	if (s == NULL || (*s == '\0' && c == '\0'))
 	{
-		split_strs = (char **)malloc(sizeof(char));
+		split_strs = (char **)ft_xmalloc(sizeof(char));
 		split_strs[0] = NULL;
 		return (split_strs);
 	}
