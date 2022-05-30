@@ -68,7 +68,8 @@ SRCS		+= handle_window.c \
 				mlx_wrapper.c \
 				vector.c
 
-OBJS		:= $(addprefix obj/, $(SRCS:.c=.o))
+OBJ_DIR		:= obj
+OBJS		:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEPS		:= $(OBJS:.o=.d)
 
 # minilib
@@ -87,15 +88,18 @@ LIBFT_DIR	:= libft
 LIBFT_A		:= libft.a
 LIBFT_A		:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_A))
 
-all: $(NAME)
-
 ifeq ($(shell uname), Linux)
-$(NAME): $(LIBFT_A) $(MLX_A) $(OBJS)
+$(NAME): $(LIBFT_A) $(MLX_A) $(OBJ_DIR) $(OBJS)
 	$(CC) -Wl,-start-group $(CFLAGS) $(COPTS) $(OBJS) -o $(NAME) -Wl,-end-group
 else ifeq ($(shell uname), Darwin)
-$(NAME): $(LIBFT_A) $(MLX_A) $(OBJS)
+$(NAME): $(LIBFT_A) $(MLX_A) $(OBJ_DIR) $(OBJS)
 	$(CC) $(CFLAGS) $(COPTS) $(OBJS) -o $(NAME)
 endif
+
+all: $(NAME)
+
+$(OBJ_DIR):
+	mkdir -p $@
 
 $(LIBFT_A): empty
 	make -C $(LIBFT_DIR)
@@ -105,16 +109,18 @@ empty:
 $(MLX_A): empty
 	make -C $(MLX_DIR)
 
-obj/%.o: %.c
+$(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I include -I minilibx-linux -I libft -I /opt/X11/include
 
 clean:
-	rm -rf $(OBJS)
+	rm -rf $(OBJ_DIR)
+	rm -f norm_info
 	make -C $(LIBFT_DIR) clean
 	make -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -rf $(NAME)
+	rm -rf $(MLX_A)
 	make -C $(LIBFT_DIR) fclean
 
 re:	fclean all
@@ -161,9 +167,9 @@ err: all
 
 norm:
 	norminette -v
-	norminette libft
-	norminette include
-	norminette src
+	norminette libft >> norm_info
+	norminette include >> norm_info
+	norminette src >> norm_info
 
 -include $(DEPS)
 
