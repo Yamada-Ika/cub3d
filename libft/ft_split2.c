@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:26:11 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/09 17:07:06 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/03 00:25:50 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	**ft_split2(char const *s, char c)
 
 	size = count_size_except_null(s, c);
 	i = 0;
-	strs = malloc((size + 1) * sizeof(char *));
+	strs = ft_xmalloc((size + 1) * sizeof(char *));
 	strs[size] = NULL;
 	while (i < size)
 	{

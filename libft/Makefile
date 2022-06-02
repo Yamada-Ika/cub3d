@@ -35,7 +35,8 @@ ft_putchar.c          ft_uitoa_base.c\
 ft_putchar_fd.c       ft_ultoa.c\
 ft_putendl_fd.c       ft_ultoa_base.c\
 ft_putnbr.c           get_next_line.c\
-ft_putnbr_base.c      get_next_line_utils.c
+ft_putnbr_base.c      get_next_line_utils.c \
+ft_xmalloc.c
 OBJS := $(SRCS:.c=.o)
 
 all: $(NAME)

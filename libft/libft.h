@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 01:05:00 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/16 01:54:46 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/03 00:23:51 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,6 @@ long long	ft_strtoll(const char *str, char **endptr, int base);
 long long	ft_atoll(const char *str);
 char		**ft_split2(char const *s, char c);
 void		*ft_realloc(void *ptr, size_t size);
+void		*ft_xmalloc(size_t size);
 
 #endif
