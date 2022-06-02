@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 23:46:04 by iyamada           #+#    #+#             */
-/*   Updated: 2021/10/25 10:53:04 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/03 00:25:39 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_calloc(size_t count, size_t size)
 		count = 1;
 		size = 1;
 	}
-	mem = malloc(size * count);
+	mem = ft_xmalloc(size * count);
 	if (mem == NULL)
 		return (NULL);
 	ft_bzero(mem, size * count);

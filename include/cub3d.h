@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/25 02:26:47 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/03 00:34:06 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include "mlx_window.h"
 # include "vector.h"
 
+# define USAGE "usage: ./cub3d <a map in format *.cub>\n"
 # define MOVE_STEP 0.5
 # define SP_MOVE_STEP 0.01
 # define ROT_STEP 0.05

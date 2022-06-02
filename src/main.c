@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:18 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/30 18:05:43 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/06/03 00:32:50 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ int	main(int argc, char **argv)
 	t_cub		cub;
 	t_error		err;
 
+	if (argc != 2)
+	{
+		ft_putstr_fd(USAGE, STDERR_FILENO);
+		return (1);
+	}
 	err = parse(argc, argv, &cub);
 	if (err != NO_ERR)
 	{

@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_xmalloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/10 23:48:21 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/03 00:25:54 by kkaneko          ###   ########.fr       */
+/*   Created: 2022/06/03 00:20:40 by kkaneko           #+#    #+#             */
+/*   Updated: 2022/06/03 00:22:10 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+void	*ft_xmalloc(size_t size)
 {
-	unsigned int		i;
-	char				*new_str;
+	void	*res;
 
-	if (s == NULL || (*f) == NULL)
-		return (NULL);
-	new_str = ft_xmalloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (new_str == NULL)
-		return (NULL);
-	i = 0;
-	while (s[i] != '\0')
+	res = malloc(size);
+	if (res == NULL)
 	{
-		new_str[i] = (*f)(i, s[i]);
-		i++;
+		printf("Malloc failed.\n");
+		exit(1);
 	}
-	new_str[i] = '\0';
-	return (new_str);
+	return (res);
 }
