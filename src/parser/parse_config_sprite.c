@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_config_sprite.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:13:47 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 17:38:11 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/08 17:53:42 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	set_sprite_var(t_cub *cub, t_config *config)
 			{
 				tex = new_texture(cub, get_texture_path(config, idx));
 				vec_push_back(cub->sprite->sprites[i].textures, tex);
+				free_texture(cub->window, tex);
 				idx++;
 				continue ;
 			}

@@ -43,7 +43,8 @@ SRCS		+= config_new_map.c \
 				validate_sprite.c \
 				validate_tex_path.c \
 				free_bools.c \
-				free_config.c
+				free_config.c \
+				free_texture.c
 # render
 SRCS		+= cast_ray.c \
 				draw_minimap.c \
@@ -131,8 +132,8 @@ ok: all
 	# ./cub3d settings/cub/ok_normal.cub
 	# ./cub3d settings/cub/ok_order1.cub
 	# ./cub3d settings/cub/ok_order2.cub
-	./cub3d settings/cub/ok_order3.cub
-	# ./cub3d settings/cub/ok_normal_bonus.cub
+	# ./cub3d settings/cub/ok_order3.cub
+	./cub3d settings/cub/ok_normal_bonus.cub
 
 err: all
 	@chmod 000 settings/cub/error_noright.cub

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/08 15:18:56 by user42           ###   ########.fr       */
+/*   Updated: 2022/06/08 17:54:13 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ char		*skip_spaces(char *s);
 void		skip_newline(t_config *config);
 void		free_bools(bool **p);
 void		free_config(t_config *config, bool fg_err);
+void		free_texture(t_window *win, t_texture *tex);
 bool		is_texture_symbol(const char *s);
 bool		is_color_symbol(const char *s);
 bool		is_sprite_symbol(const char *s);

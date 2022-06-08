@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:26:50 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/08 15:18:30 by user42           ###   ########.fr       */
+/*   Updated: 2022/06/08 17:36:47 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@ void	free_config(t_config *config, bool fg_err)
 		return ;
 	free_cub(config->cub);
 	free_paths(config);
+	free_sp_texs(config->sp_texs);
 	if (fg_err)
-	{
-		free_sp_texs(config->sp_texs);
 		free_map(config->map);
-	}
 }
 
 static void	free_cub(char **cub)
