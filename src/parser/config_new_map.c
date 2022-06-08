@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config_new_map.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 10:22:37 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 17:03:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/08 15:13:03 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_error	new_map(t_config *config)
 	skip_newline(config);
 	config->height = count_map_heigth(config);
 	config->width = count_map_width(config);
-	config->map = ft_calloc(config->height, sizeof(t_cell *));
+	config->map = ft_calloc(config->height + 1, sizeof(t_cell *));
 	i = 0;
 	while (i < config->height)
 	{

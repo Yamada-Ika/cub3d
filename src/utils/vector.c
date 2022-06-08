@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 10:40:01 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 10:40:10 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/08 15:10:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,12 @@ void	*vec_at(t_vector *v, size_t index)
 	return (v->data + index * v->type_size);
 }
 
-void	vec_delete(t_vector *v, void *del(void *))
+void	vec_delete(t_vector *v, void (*del)(void *))
 {
+	if (v == NULL)
+		return ;
+	if (del == NULL)
+		del = free;
 	(*del)(v->data);
 	free(v);
 }
