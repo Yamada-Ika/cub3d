@@ -6,7 +6,7 @@
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:26:50 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/08 21:03:33 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/06/08 21:07:21 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	free_paths(t_config *config);
 void	free_config(t_config *config)
 {
 	if (config == NULL)
-		return ;	
+		return ;
 	free_cub(config->cub);
 	free_paths(config);
 }
