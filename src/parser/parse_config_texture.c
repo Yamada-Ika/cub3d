@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_config_texture.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:11:43 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 02:17:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/08 18:33:57 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,17 @@ t_texture	*new_texture(t_cub *cub, char *file)
 		return (NULL);
 	set_xpm_image_address(tex);
 	return (tex);
+}
+
+void	init_texture(t_texture *tex, t_cub *cub, char *file)
+{
+	tex->img = ft_calloc(1, sizeof(t_img));
+	if (tex->img == NULL)
+		return ;
+	read_xpm_image(tex, cub, file);
+	if (tex->img->img == NULL)
+		return ;
+	set_xpm_image_address(tex);
 }
 
 void	set_texture_var(t_cub *cub, t_config *config)

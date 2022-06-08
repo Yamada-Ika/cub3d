@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/08 15:18:56 by user42           ###   ########.fr       */
+/*   Updated: 2022/06/08 18:26:45 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ char		*skip_spaces(char *s);
 void		skip_newline(t_config *config);
 void		free_bools(bool **p);
 void		free_config(t_config *config, bool fg_err);
+void		free_texture(t_window *win, t_texture *tex);
 bool		is_texture_symbol(const char *s);
 bool		is_color_symbol(const char *s);
 bool		is_sprite_symbol(const char *s);
@@ -131,6 +132,7 @@ void		set_texture_var(t_cub *cub, t_config *config);
 void		set_sprite_var(t_cub *cub, t_config *config);
 void		set_map_var(t_cub *cub, t_config *config);
 void		set_minimap_var(t_cub *cub);
+void		init_texture(t_texture *tex, t_cub *cub, char *file);
 t_texture	*new_texture(t_cub *cub, char *file);
 
 #endif
