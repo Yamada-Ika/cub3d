@@ -41,7 +41,9 @@ SRCS		+= config_new_map.c \
 				position_generator.c \
 				validate_map.c \
 				validate_sprite.c \
-				validate_tex_path.c
+				validate_tex_path.c \
+				free_bools.c \
+				free_config.c
 # render
 SRCS		+= cast_ray.c \
 				draw_minimap.c \

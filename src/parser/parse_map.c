@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 01:49:32 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/25 01:13:11 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/08 20:56:36 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static bool	**make_visits(int height, int width)
 	bool	**res;
 	int		i;
 
-	res = ft_calloc(height, sizeof(bool *));
+	res = ft_calloc(height + 1, sizeof(bool *));
 	if (res == NULL)
 		return (NULL);
 	i = -1;
@@ -67,13 +67,18 @@ static bool	**make_visits(int height, int width)
 static bool	is_map_closed(t_config *conf)
 {
 	bool	**visits;
+	bool	ret_value;
 
 	visits = make_visits(conf->seek + conf->height, conf->width);
 	if (visits == NULL)
-		return (false);
-	return (
-		floodfill(conf, visits, conf->seek + (int)conf->pos_x, conf->pos_y) == 0
-	);
+		ret_value = false;
+	else
+		ret_value = (
+				floodfill(conf, visits,
+					conf->seek + (int)conf->pos_x, conf->pos_y)
+				== 0);
+	free_bools(visits);
+	return (ret_value);
 }
 
 t_error	parse_map(t_config *config)

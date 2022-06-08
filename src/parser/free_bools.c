@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   free_bools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 01:57:27 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/08 20:52:52 by kkaneko          ###   ########.fr       */
+/*   Created: 2022/06/08 17:11:30 by kkaneko           #+#    #+#             */
+/*   Updated: 2022/06/08 20:56:47 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include <stdlib.h>
+#include <stdbool.h>
 
-t_error	parse(int argc, char **argv, t_cub *cub)
+void	free_bools(bool **p)
 {
-	t_config	config;
-	t_error		err;
+	size_t	i;
 
-	ft_bzero(&config, sizeof(t_config));
-	err = parse_arg(argc, argv, &config);
-	if (err != NO_ERR)
-		return (err);
-	parse_config(&config, cub);
-	free_config(&config);
-	return (NO_ERR);
+	if (p == NULL)
+		return ;
+	i = 0;
+	while (p[i] != NULL)
+		free(p[i++]);
+	free(p);
 }
