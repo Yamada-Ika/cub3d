@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/08 17:54:13 by user42           ###   ########.fr       */
+/*   Updated: 2022/06/08 18:26:45 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void		set_texture_var(t_cub *cub, t_config *config);
 void		set_sprite_var(t_cub *cub, t_config *config);
 void		set_map_var(t_cub *cub, t_config *config);
 void		set_minimap_var(t_cub *cub);
+void		init_texture(t_texture *tex, t_cub *cub, char *file);
 t_texture	*new_texture(t_cub *cub, char *file);
 
 #endif
