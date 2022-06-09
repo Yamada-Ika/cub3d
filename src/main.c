@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:18 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 14:48:19 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 23:00:32 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv)
 	err = parse(argc, argv, &cub);
 	if (err != NO_ERR)
 	{
-		fprintf(stderr, "error kind %d\n", err);
+		ft_putstr_fd("Error\n", STDERR_FILENO);
 		return (1);
 	}
 	run(&cub);

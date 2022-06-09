@@ -53,6 +53,7 @@ ifdef WITH_BONUS
 SRCS		+= config_set_map_bonus.c \
 				cub_set_bonus.c \
 				cub_set_sprite_bonus.c \
+				cub_set_sprite2_bonus.c \
 				free_config_bonus.c \
 				parse_arg_bonus.c \
 				parse_arg_utils_bonus.c \
@@ -211,9 +212,10 @@ err:
 
 norm:
 	norminette -v
-	norminette libft >> norm_info
-	norminette include >> norm_info
-	norminette src >> norm_info
+	norminette libft
+	norminette include
+	norminette src
+	@echo "Norm OK!"
 
 -include $(DEPS)
 
