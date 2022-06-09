@@ -12,7 +12,7 @@ fi
 # Bonus part does not need to check
 echo "[Info] Wait ! Checking functions are needed in only mandatory part !"
 echo "       Make sure compile mandatory sources !"
-echo "       If you want to continue to run this script ? [Y/n]"
+echo "       If you want to continue ? [Y/n]"
 while read buf; do
 	if [[ "${buf}" == "n" || "${buf}" == "no" || "${buf}" == "N" || "${buf}" == "No" ]]; then
 		exit 0
