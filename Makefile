@@ -217,6 +217,9 @@ norm:
 	norminette src
 	@echo "Norm OK!"
 
+func:
+	bash find_forbidden_func.sh
+
 -include $(DEPS)
 
 .PHONY: all clean fclean re libft empty
