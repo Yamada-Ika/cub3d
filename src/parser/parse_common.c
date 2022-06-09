@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parse_common.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:27 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/08 15:19:40 by user42           ###   ########.fr       */
+/*   Updated: 2022/06/09 22:13:15 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_error	parse(int argc, char **argv, t_cub *cub)
 		free_config(&config, true);
 		return (err);
 	}
-	parse_config(&config, cub);
+	err = parse_config(&config, cub);
 	free_config(&config, false);
 	return (err);
 }

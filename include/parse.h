@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/09 21:09:16 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 22:38:39 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,14 @@ void		set_player_var(t_cub *cub, t_config *config);
 void		set_color_var(t_cub *cub, t_config *config);
 void		set_camera_var(t_cub *cub);
 void		set_time_var(t_cub *cub);
-void		set_texture_var(t_cub *cub, t_config *config);
-void		set_sprite_var(t_cub *cub, t_config *config);
+// void		set_texture_var(t_cub *cub, t_config *config);
+// void		set_sprite_var(t_cub *cub, t_config *config);
+t_error 	set_sprite_var(t_cub *cub, t_config *config);
 void		set_map_var(t_cub *cub, t_config *config);
 void		set_minimap_var(t_cub *cub);
-void		init_texture(t_texture *tex, t_cub *cub, char *file);
+t_error		set_texture_var(t_cub *cub, t_config *config);
+// void		init_texture(t_texture *tex, t_cub *cub, char *file);
+t_error		init_texture(t_texture *tex, t_cub *cub, char *file);
 t_texture	*new_texture(t_cub *cub, char *file);
 
 #endif

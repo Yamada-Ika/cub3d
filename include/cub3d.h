@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/08 17:13:10 by kkaneko          ###   ########.fr       */
+/*   Updated: 2022/06/09 22:17:16 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ typedef enum e_error
 	INVALID_RGB,
 	NON_CLOSED_MAP,
 	NON_PLAYER,
+	XPM_FILE_FORMAT_ERR,
 }	t_error;
 
 int			render(t_cub *cub);

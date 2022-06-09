@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_config_sprite.c                              :+:      :+:    :+:   */
+/*   cub_set_sprite_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:13:47 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/08 18:34:12 by user42           ###   ########.fr       */
+/*   Updated: 2022/06/09 22:34:46 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ static void	set_sprite_position(t_cub *cub, int idx)
 	sprite_pos_generator(cub, &sprites[idx].x, &sprites[idx].y);
 }
 
-void	set_sprite_var(t_cub *cub, t_config *config)
+t_error	set_sprite_var(t_cub *cub, t_config *config)
 {
 	int			idx;
 	int			i;
 	t_texture	tex;
+	t_error		err;
 
 	new_sprite(cub, config);
 	idx = 0;
@@ -54,7 +55,9 @@ void	set_sprite_var(t_cub *cub, t_config *config)
 		{
 			if (((t_sprite_path *)vec_at(config->sp_texs, idx))->group == i)
 			{
-				init_texture(&tex, cub, get_texture_path(config, idx));
+				err = init_texture(&tex, cub, get_texture_path(config, idx));
+				if (err != NO_ERR)
+					return (err);
 				vec_push_back(cub->sprite->sprites[i].textures, &tex);
 				idx++;
 				continue ;
@@ -63,4 +66,5 @@ void	set_sprite_var(t_cub *cub, t_config *config)
 		}
 		set_sprite_position(cub, i);
 	}
+	return (NO_ERR);
 }

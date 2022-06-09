@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_config_texture.c                             :+:      :+:    :+:   */
+/*   cub_set_wall_tex_common.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:11:43 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/08 18:33:57 by user42           ###   ########.fr       */
+/*   Updated: 2022/06/09 22:33:20 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,33 +34,37 @@ t_texture	*new_texture(t_cub *cub, char *file)
 	t_texture	*tex;
 
 	tex = ft_calloc(1, sizeof(t_texture));
-	if (tex == NULL)
-		return (NULL);
 	tex->img = ft_calloc(1, sizeof(t_img));
-	if (tex->img == NULL)
-		return (NULL);
 	read_xpm_image(tex, cub, file);
 	if (tex->img->img == NULL)
-		return (NULL);
+		return (tex);
 	set_xpm_image_address(tex);
 	return (tex);
 }
 
-void	init_texture(t_texture *tex, t_cub *cub, char *file)
+t_error	init_texture(t_texture *tex, t_cub *cub, char *file)
 {
 	tex->img = ft_calloc(1, sizeof(t_img));
-	if (tex->img == NULL)
-		return ;
 	read_xpm_image(tex, cub, file);
 	if (tex->img->img == NULL)
-		return ;
+		return (XPM_FILE_FORMAT_ERR);
 	set_xpm_image_address(tex);
+	return (NO_ERR);
 }
 
-void	set_texture_var(t_cub *cub, t_config *config)
+t_error	set_texture_var(t_cub *cub, t_config *config)
 {
 	cub->map->north = new_texture(cub, config->no_tex_path);
+	if (cub->map->north->img->img == NULL)
+		return (XPM_FILE_FORMAT_ERR);
 	cub->map->south = new_texture(cub, config->so_tex_path);
+	if (cub->map->south->img->img == NULL)
+		return (XPM_FILE_FORMAT_ERR);
 	cub->map->east = new_texture(cub, config->ea_tex_path);
+	if (cub->map->east->img->img == NULL)
+		return (XPM_FILE_FORMAT_ERR);
 	cub->map->west = new_texture(cub, config->we_tex_path);
+	if (cub->map->west->img->img == NULL)
+		return (XPM_FILE_FORMAT_ERR);
+	return (NO_ERR);
 }

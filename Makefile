@@ -185,6 +185,7 @@ err:
 	-./cub3d settings/cub/error_walltex6.cub
 	-./cub3d settings/cub/error_walltex7.cub
 	-./cub3d settings/cub/error_walltex8.cub
+	-./cub3d settings/cub/error_walltex9.cub
 	-./cub3d settings/cub/error_color1.cub
 	-./cub3d settings/cub/error_color2.cub
 	-./cub3d settings/cub/error_color3.cub
