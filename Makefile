@@ -222,6 +222,26 @@ norm:
 func:
 	bash find_forbidden_func.sh
 
+help:
+	@echo "  Discription: rule"
+	@echo "    bonus:"
+	@echo "      build with bonus sources"
+	@echo "    run-mandatory:"
+	@echo "      build with mandatory sources and run with correct cub file"
+	@echo "    m:"
+	@echo "      Abbreviation of [run-mandatory]"
+	@echo "    run-bonus:"
+	@echo "      build with bonus sources and run with correct cub file"
+	@echo "    b:"
+	@echo "      Abbreviation of [run-bonus]"
+	@echo "    err:"
+	@echo "      run with wrong cub files"
+	@echo "    norm:"
+	@echo "      run norminette except for minilibx"
+	@echo "    func:"
+	@echo "      run checking fobidden functions script"
+h: help
+
 -include $(DEPS)
 
 .PHONY: all clean fclean re libft empty
