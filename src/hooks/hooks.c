@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:32:33 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/10 01:47:06 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/10 02:26:03 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,6 @@ void	install_event_hooks(t_cub *cub)
 	mlx = cub->window->mlx;
 	win = cub->window->mlx_win;
 	mlx_hook(win, KeyPress, KeyPressMask, handle_key_hook, cub);
-	mlx_hook(win, EV_CROSS_BUTTON,
-			(1L << EV_CROSS_BUTTON),
-			stop,
-			NULL);
+	mlx_hook(win, EV_CROSS_BUTTON, (1L << EV_CROSS_BUTTON), stop, NULL);
 	mlx_loop_hook(mlx, render, cub);
 }

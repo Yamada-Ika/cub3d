@@ -81,8 +81,10 @@ SRCS		+= cast_ray_bonus.c \
 				update_door_state_bonus.c
 # Hooks Bonus Source
 SRCS		+= hooks_bonus.c \
+				hooks2_bonus.c \
 				hooks_door_bonus.c \
-				hooks_viewpoint_bonus.c
+				hooks_viewpoint_bonus.c \
+				hooks_mouse_bonus.c
 
 # Mandatory
 else
