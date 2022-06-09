@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: kkaneko <kkaneko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:32:33 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 16:47:08 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 01:38:54 by kkaneko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,27 @@ static bool	should_move_viewpoint(int keycode)
 	return (
 		keycode == R_ARROW
 		|| keycode == L_ARROW
+		|| keycode == U_ARROW
+		|| keycode == D_ARROW
 	);
+}
+
+static bool	should_update_doorstate(int keycode)
+{
+	return (
+		keycode == SPACE
+	);
+}
+
+void	update_jumpstatus(t_cub *cub)
+{
+	if (cub->player->jump_state == ON_GROUND)
+	{
+		cub->player->jump_state = JUMPING;
+		cub->player->velocity_z = 5.0;
+		cub->player->elevation = 0.0;
+		return ;
+	}
 }
 
 static int	handle_key_hook(int keycode, void *params)
@@ -35,6 +55,13 @@ static int	handle_key_hook(int keycode, void *params)
 	if (should_move_viewpoint(keycode))
 	{
 		move_viewpoint(cub, keycode);
+		return (0);
+	}
+	if (should_update_doorstate(keycode))
+	{
+		if (hooks_update_doorstate(cub))
+			return (0);
+		update_jumpstatus(cub);
 		return (0);
 	}
 	return (0);

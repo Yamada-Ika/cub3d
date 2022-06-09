@@ -1,5 +1,5 @@
 CC			:= gcc
-CFLAGS		:= -MMD -MP -g -fsanitize=address -Wall -Wextra -Werror
+CFLAGS		:= -MMD -MP -g -fsanitize=address #-Wall -Wextra -Werror
 COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
@@ -14,17 +14,80 @@ VPATH		:= src:\
 				src/utils
 
 SRCS		:= main.c
-# hooks
-SRCS		+= hooks.c \
-				hooks_door.c \
-				hooks_move.c \
-				hooks_player.c \
-				hooks_viewpoint.c
-# parse
+# utils
+SRCS		+= handle_window.c \
+				mlx_wrapper.c \
+				vector.c
+
+# For Bonus
+ifdef WITH_BONUS
+
+# Parse
 SRCS		+= config_new_map.c \
 				config_set_player.c \
 				config_set_texture.c \
 				cub_set.c \
+				free_bools.c \
+				free_config.c \
+				free_texture.c \
+				parse.c \
+				parse_arg_bonus.c \
+				parse_arg_color.c \
+				parse_arg_map_bonus.c \
+				parse_arg_utils.c \
+				parse_config.c \
+				parse_config_map.c \
+				parse_config_sprite.c \
+				parse_config_texture.c \
+				parse_cub.c \
+				parse_map.c \
+				parse_map_utils.c \
+				parse_sprite_paths_bonus.c \
+				parse_types.c \
+				position_generator.c \
+				validate_map.c \
+				validate_sprite.c \
+				validate_tex_path.c
+# Render
+SRCS		+= cast_ray_bonus.c \
+				draw_vertline.c \
+				draw_wall.c \
+				draw_wall2.c \
+				raycastvar_set_iterator.c \
+				raycastvar_set_texture.c \
+				render_utils.c \
+				draw_minimap_bonus.c \
+				draw_sprite2_bonus.c \
+				draw_sprite_bonus.c \
+				draw_sprites_bonus.c \
+				fill_minimap_buf_bonus.c \
+				has_hit_longitudinal_door_bonus.c \
+				has_hit_transverse_door_bonus.c \
+				move_sprites_bonus.c \
+				render_bonus.c \
+				sprite_size_bonus.c \
+				spritevar_set_frame_index_bonus.c \
+				spritevar_set_tex_iter_bonus.c \
+				spritevar_sort_bonus.c \
+				update_door_state_bonus.c
+# Hooks
+SRCS		+= hooks_bonus.c \
+				hooks_door_bonus.c \
+				hooks_move.c \
+				hooks_player.c \
+				hooks_viewpoint_bonus.c
+
+# Mandatory
+else
+
+# Parse
+SRCS		+= config_new_map.c \
+				config_set_player.c \
+				config_set_texture.c \
+				cub_set.c \
+				free_bools.c \
+				free_config.c \
+				free_texture.c \
 				parse.c \
 				parse_arg.c \
 				parse_arg_color.c \
@@ -36,40 +99,28 @@ SRCS		+= config_new_map.c \
 				parse_config_texture.c \
 				parse_cub.c \
 				parse_map.c \
-				parse_sprite_paths.c \
+				parse_map_utils.c \
 				parse_types.c \
 				position_generator.c \
 				validate_map.c \
 				validate_sprite.c \
-				validate_tex_path.c \
-				free_bools.c \
-				free_config.c \
-				free_texture.c
-# render
+				validate_tex_path.c
+# Render
 SRCS		+= cast_ray.c \
-				draw_minimap.c \
-				draw_sprite.c \
-				draw_sprite2.c \
-				draw_sprites.c \
 				draw_vertline.c \
 				draw_wall.c \
 				draw_wall2.c \
-				fill_minimap_buf.c \
-				has_hit_longitudinal_door.c \
-				has_hit_transverse_door.c \
-				move_sprites.c \
 				raycastvar_set_iterator.c \
 				raycastvar_set_texture.c \
 				render.c \
-				sprite_size.c \
-				spritevar_set_frame_index.c \
-				spritevar_set_tex_iter.c \
-				spritevar_sort.c \
-				update_door_state.c
-# utils
-SRCS		+= handle_window.c \
-				mlx_wrapper.c \
-				vector.c
+				render_utils.c
+# hooks
+SRCS		+= hooks.c \
+				hooks_move.c \
+				hooks_player.c \
+				hooks_viewpoint.c
+
+endif
 
 OBJ_DIR		:= obj
 OBJS		:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
@@ -128,14 +179,23 @@ fclean: clean
 
 re:	fclean all
 
-ok: all
-	# ./cub3d settings/cub/ok_normal.cub
-	# ./cub3d settings/cub/ok_order1.cub
-	# ./cub3d settings/cub/ok_order2.cub
-	# ./cub3d settings/cub/ok_order3.cub
-	./cub3d settings/cub/ok_normal_bonus.cub
+bonus:
+	make WITH_BONUS=1
 
-err: all
+run-mandatory: all
+	./cub3d settings/cub/ok_mandatory1.cub
+m: run-mandatory
+
+run-bonus:
+	make bonus
+	./cub3d settings/cub/ok_bonus1.cub
+	# ./cub3d settings/cub/ok_bonus_order1.cub
+	# ./cub3d settings/cub/ok_bonus_order2.cub
+	# ./cub3d settings/cub/ok_bonus_order3.cub
+	./cub3d settings/cub/ok_bonus2.cub
+b : run-bonus
+
+err:
 	@chmod 000 settings/cub/error_noright.cub
 	-./cub3d settings/cub/error_noright.cub
 	-./cub3d settings/cub/error_walltex1.cub

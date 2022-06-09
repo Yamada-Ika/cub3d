@@ -1,39 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sprite_size.c                                      :+:      :+:    :+:   */
+/*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 20:41:25 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 20:41:38 by iyamada          ###   ########.fr       */
+/*   Created: 2022/06/09 14:51:09 by iyamada           #+#    #+#             */
+/*   Updated: 2022/06/09 14:51:31 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-int	get_sprite_width(t_cub *cub, t_spritevar *lvar)
+int	get_texture_color(const t_texture *tex, const int x, const int y)
 {
-	t_sprite	*sprites;
-
-	sprites = cub->sprite->sprites;
 	return (
-		((t_texture *)vec_at(
-				sprites[lvar->idx].textures,
-				lvar->frame_index)
-		)->width
+		*(int *)(tex->img->addr
+		+ (y * tex->img->line_length + x * (tex->img->bits_per_pixel / 8)))
 	);
 }
 
-int	get_sprite_height(t_cub *cub, t_spritevar *lvar)
+long long	gettimestamp(void)
 {
-	t_sprite	*sprites;
+	struct timeval	tv;
 
-	sprites = cub->sprite->sprites;
-	return (
-		((t_texture *)vec_at(
-				sprites[lvar->idx].textures,
-				lvar->frame_index)
-		)->height
-	);
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec + tv.tv_usec / 1000);
 }
+

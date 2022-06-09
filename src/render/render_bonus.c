@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   render_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 15:05:48 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 15:05:41 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,16 @@ static void	update_player_jumpstatus(t_cub *cub)
 	}
 }
 
-static void	mywait(void)
-{
-	int	i;
-
-	i = 0;
-	while (i < 100000)
-	{
-		i++;
-	}
-}
-
 int	render(t_cub *cub)
 {
 	draw_walls(cub);
+	draw_sprites(cub);
+	draw_minimap(cub);
 	put_image(cub);
+	move_sprites(cub);
+	update_doorstate(cub);
+	update_player_jumpstatus(cub);
 	update_timestamp(cub);
-	mywait();
+	usleep(16 * 1000);
 	return (0);
 }

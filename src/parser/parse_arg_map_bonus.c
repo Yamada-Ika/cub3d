@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_arg_map.c                                    :+:      :+:    :+:   */
+/*   parse_arg_map_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:43 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 16:15:16 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 16:15:21 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ bool	is_map_symbol(const char c)
 		|| c == 'W'
 		|| c == '0'
 		|| c == '1'
+		|| c == '|'
+		|| c == '-'
 		|| c == ' '
 	);
 }
@@ -28,6 +30,14 @@ bool	is_map_symbol(const char c)
 void	set_map_kind(t_config *config, int i, int j, int kind)
 {
 	config->map[i][j].kind = kind;
+}
+
+void	set_door_info(t_config *config, int i, int j, int side)
+{
+	config->map[i][j].kind = DOOR;
+	config->map[i][j].door_state = CLOSE;
+	config->map[i][j].side = side;
+	config->map[i][j].timer = 0.0;
 }
 
 void	set_map_(t_config *config, int i, int j, int idx)
@@ -44,6 +54,10 @@ void	set_map_(t_config *config, int i, int j, int idx)
 		return (set_map_kind(config, i, j, NONE));
 	if (config->cub[idx][j] == '1')
 		return (set_map_kind(config, i, j, WALL));
+	if (config->cub[idx][j] == '|')
+		return (set_door_info(config, i, j, LONGITUDINAL));
+	if (config->cub[idx][j] == '-')
+		return (set_door_info(config, i, j, TRANSVERSE));
 }
 
 t_error	set_map(t_config *config)

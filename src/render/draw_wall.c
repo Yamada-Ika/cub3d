@@ -6,21 +6,11 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:04 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/25 02:51:28 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 15:08:52 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
-
-// void	dump_lvar(t_raycastvar *lvar)
-// {
-// 	if (lvar->x == WIN_W / 2) {
-// 		fprintf(stderr, "-- dump lvar in render --\n");
-// 		fprintf(stderr, "euclid_dist    %lf\n", lvar->euclid_dist);
-// 		fprintf(stderr, "perp_wall_dist %lf\n", lvar->perp_wall_dist);
-// 		fprintf(stderr, "wall_x         %lf\n", lvar->wall_x);
-// 	}
-// }
 
 void	set_perpbuf(t_raycastvar *lvar, t_cub *cub)
 {

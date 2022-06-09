@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/05/25 02:02:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 14:54:30 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define RENDER_H
 
 # include "cub3d.h"
+# include <limits.h>
 
 # define MINIMAP_SIZE 240
 # define MINIMAP_CENTER_X 120

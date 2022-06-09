@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:37:49 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 16:48:18 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/05/23 02:38:31 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ void	move_viewpoint(t_cub *cub, int keycode)
 	{
 		rotate_2d(&player->dir_x, &player->dir_y, -ROT_STEP);
 		rotate_2d(&player->plane_x, &player->plane_y, -ROT_STEP);
+		return ;
+	}
+	if (keycode == U_ARROW)
+	{
+		cub->camera->pitch += 10.0;
+		return ;
+	}
+	if (keycode == D_ARROW)
+	{
+		cub->camera->pitch += -10.0;
 		return ;
 	}
 }
