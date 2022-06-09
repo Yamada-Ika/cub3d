@@ -1,5 +1,5 @@
 CC			:= gcc
-CFLAGS		:= -MMD -MP -g -fsanitize=address -Wall -Wextra -Werror
+CFLAGS		:= -MMD -MP  -Wall -Wextra -Werror #-g -fsanitize=address
 COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
