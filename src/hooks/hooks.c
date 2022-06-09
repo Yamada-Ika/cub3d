@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:32:33 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 16:47:08 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/10 00:14:33 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ static int	handle_key_hook(int keycode, void *params)
 	return (0);
 }
 
+static int	stop(void *params)
+{
+	(void)params;
+	exit(0);
+	return (0);
+}
+
 void	install_event_hooks(t_cub *cub)
 {
 	void	*mlx;
@@ -48,5 +55,9 @@ void	install_event_hooks(t_cub *cub)
 	mlx = cub->window->mlx;
 	win = cub->window->mlx_win;
 	mlx_hook(win, KeyPress, KeyPressMask, handle_key_hook, cub);
+	mlx_hook(win, EV_CROSS_BUTTON,
+			(1L << EV_CROSS_BUTTON),
+			stop,
+			NULL);
 	mlx_loop_hook(mlx, render, cub);
 }
