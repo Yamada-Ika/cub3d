@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/09 14:54:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 21:40:48 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ typedef enum e_side
 	WEST,
 	EAST,
 }	t_side;
+
+double		formed_angle(t_player *player, t_raycastvar *lvar);
+
+void	update_rayiterator(t_raycastvar *lvar);
+bool	has_hit_wall(t_raycastvar *lvar, t_cub *cub);
 
 void		set_ray_dirction(t_raycastvar *lvar, t_cub *cub);
 void		set_raycast_iterator(t_raycastvar *lvar, t_cub *cub);

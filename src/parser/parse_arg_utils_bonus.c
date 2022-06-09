@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_config.c                                     :+:      :+:    :+:   */
+/*   parse_arg_utils_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 01:57:55 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 19:34:20 by iyamada          ###   ########.fr       */
+/*   Created: 2022/06/09 21:15:15 by iyamada           #+#    #+#             */
+/*   Updated: 2022/06/09 21:15:44 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-t_error	parse_config(t_config *config, t_cub *cub)
+bool	is_sprite_symbol(const char *s)
 {
-	set_mlx_var(cub);
-	set_player_var(cub, config);
-	set_map_var(cub, config);
-	set_color_var(cub, config);
-	set_texture_var(cub, config);
-	set_camera_var(cub);
-	return (NO_ERR);
+	return (ft_strncmp(s, "SP ", 3) == 0);
 }

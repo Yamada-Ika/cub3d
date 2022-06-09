@@ -1,11 +1,9 @@
 CC			:= gcc
-CFLAGS		:= -MMD -MP -g -fsanitize=address #-Wall -Wextra -Werror
+CFLAGS		:= -MMD -MP -g -fsanitize=address -Wall -Wextra -Werror
 COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
 				-l m
-
-# cub3d
 NAME		:= cub3d
 VPATH		:= src:\
 				src/hooks:\
@@ -13,111 +11,92 @@ VPATH		:= src:\
 				src/render:\
 				src/utils
 
+# Common Source
 SRCS		:= main.c
-# utils
-SRCS		+= handle_window.c \
-				mlx_wrapper.c \
-				vector.c
+# Parse Common Source
+SRCS		+= config_new_map_common.c \
+				config_set_map_common.c \
+				config_set_player_common.c \
+				config_set_texture_common.c \
+				cub_set_common.c \
+				cub_set_wall_tex_common.c \
+				free_bools_common.c \
+				free_texture_common.c \
+				parse_arg_color_common.c \
+				parse_arg_cub_common.c \
+				parse_arg_map_common.c \
+				parse_arg_types_common.c \
+				parse_arg_utils_common.c \
+				parse_common.c \
+				validate_map_common.c \
+				validate_tex_path_common.c
+# Render Common Source
+SRCS		+= cast_ray_common.c \
+				draw_vertline_common.c \
+				draw_walls_common.c \
+				raycastvar_set_iterator_common.c \
+				raycastvar_set_texture_common.c \
+				render_utils_common.c
+# Hooks Common Source
+SRCS		+= hooks_move_common.c \
+				hooks_player_common.c \
+				hooks_viewpoint_common.c
+# Utils Common Source
+SRCS		+= handle_window_common.c \
+				mlx_wrapper_common.c \
+				vector_common.c
 
 # For Bonus
 ifdef WITH_BONUS
 
-# Parse
-SRCS		+= config_new_map.c \
-				config_set_player.c \
-				config_set_texture.c \
-				cub_set.c \
-				free_bools.c \
-				free_config.c \
-				free_texture.c \
-				parse.c \
+# Parse Bonus Source
+SRCS		+= config_set_map_bonus.c \
+				cub_set_bonus.c \
+				cub_set_sprite_bonus.c \
+				free_config_bonus.c \
 				parse_arg_bonus.c \
-				parse_arg_color.c \
-				parse_arg_map_bonus.c \
-				parse_arg_utils.c \
-				parse_config.c \
-				parse_config_map.c \
-				parse_config_sprite.c \
-				parse_config_texture.c \
-				parse_cub.c \
-				parse_map.c \
-				parse_map_utils.c \
-				parse_sprite_paths_bonus.c \
-				parse_types.c \
-				position_generator.c \
-				validate_map.c \
-				validate_sprite.c \
-				validate_tex_path.c
-# Render
+				parse_arg_utils_bonus.c \
+				parse_arg_sprite_bonus.c \
+				parse_config_bonus.c \
+				position_generator_bonus.c \
+				validate_sprite_bonus.c
+# Render Bonus Source
 SRCS		+= cast_ray_bonus.c \
-				draw_vertline.c \
-				draw_wall.c \
-				draw_wall2.c \
-				raycastvar_set_iterator.c \
-				raycastvar_set_texture.c \
-				render_utils.c \
 				draw_minimap_bonus.c \
 				draw_sprite2_bonus.c \
 				draw_sprite_bonus.c \
 				draw_sprites_bonus.c \
+				draw_walls_bonus.c \
 				fill_minimap_buf_bonus.c \
 				has_hit_longitudinal_door_bonus.c \
 				has_hit_transverse_door_bonus.c \
 				move_sprites_bonus.c \
 				render_bonus.c \
+				render_utils_bonus.c \
 				sprite_size_bonus.c \
 				spritevar_set_frame_index_bonus.c \
 				spritevar_set_tex_iter_bonus.c \
 				spritevar_sort_bonus.c \
 				update_door_state_bonus.c
-# Hooks
+# Hooks Bonus Source
 SRCS		+= hooks_bonus.c \
 				hooks_door_bonus.c \
-				hooks_move.c \
-				hooks_player.c \
 				hooks_viewpoint_bonus.c
 
 # Mandatory
 else
 
-# Parse
-SRCS		+= config_new_map.c \
-				config_set_player.c \
-				config_set_texture.c \
-				cub_set.c \
-				free_bools.c \
+# Parse Mandatory Source
+SRCS		+= config_set_map.c \
 				free_config.c \
-				free_texture.c \
-				parse.c \
 				parse_arg.c \
-				parse_arg_color.c \
-				parse_arg_map.c \
-				parse_arg_utils.c \
-				parse_config.c \
-				parse_config_map.c \
-				parse_config_sprite.c \
-				parse_config_texture.c \
-				parse_cub.c \
-				parse_map.c \
-				parse_map_utils.c \
-				parse_types.c \
-				position_generator.c \
-				validate_map.c \
-				validate_sprite.c \
-				validate_tex_path.c
-# Render
+				parse_config.c
+# Render Mandatory Source
 SRCS		+= cast_ray.c \
-				draw_vertline.c \
-				draw_wall.c \
-				draw_wall2.c \
-				raycastvar_set_iterator.c \
-				raycastvar_set_texture.c \
+				draw_walls.c \
 				render.c \
-				render_utils.c
-# hooks
+# Hooks Mandatory Source
 SRCS		+= hooks.c \
-				hooks_move.c \
-				hooks_player.c \
 				hooks_viewpoint.c
 
 endif
@@ -126,7 +105,7 @@ OBJ_DIR		:= obj
 OBJS		:= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEPS		:= $(OBJS:.o=.d)
 
-# minilib
+# For Cross Platform Compilation
 MLX_DIR		:= minilibx-linux
 ifeq ($(shell uname), Linux)
 	MLX_A	:= libmlx_Linux.a
@@ -205,6 +184,7 @@ err:
 	-./cub3d settings/cub/error_walltex5.cub
 	-./cub3d settings/cub/error_walltex6.cub
 	-./cub3d settings/cub/error_walltex7.cub
+	-./cub3d settings/cub/error_walltex8.cub
 	-./cub3d settings/cub/error_color1.cub
 	-./cub3d settings/cub/error_color2.cub
 	-./cub3d settings/cub/error_color3.cub

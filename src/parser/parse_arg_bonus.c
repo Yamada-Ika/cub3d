@@ -6,13 +6,13 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:52 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 15:23:27 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 21:14:31 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-bool	should_read_spritepath(t_config *config)
+static bool	should_read_spritepath(t_config *config)
 {
 	char	**file;
 	size_t	i;

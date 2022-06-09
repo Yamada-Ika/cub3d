@@ -1,42 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hooks_viewpoint_bonus.c                            :+:      :+:    :+:   */
+/*   hooks_viewpoint_common.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 02:37:49 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 21:52:50 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 21:52:37 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hooks.h"
 
-void	move_viewpoint(t_cub *cub, int keycode)
+void	rotate_2d(double *a, double *b, double angle)
 {
-	t_player	*player;
+	double	tmp_a;
+	double	tmp_b;
 
-	player = cub->player;
-	if (keycode == R_ARROW)
-	{
-		rotate_2d(&player->dir_x, &player->dir_y, ROT_STEP);
-		rotate_2d(&player->plane_x, &player->plane_y, ROT_STEP);
-		return ;
-	}
-	if (keycode == L_ARROW)
-	{
-		rotate_2d(&player->dir_x, &player->dir_y, -ROT_STEP);
-		rotate_2d(&player->plane_x, &player->plane_y, -ROT_STEP);
-		return ;
-	}
-	if (keycode == U_ARROW)
-	{
-		cub->camera->pitch += 10.0;
-		return ;
-	}
-	if (keycode == D_ARROW)
-	{
-		cub->camera->pitch += -10.0;
-		return ;
-	}
+	tmp_a = (*a) * cos(angle) + (*b) * sin(angle);
+	tmp_b = -(*a) * sin(angle) + (*b) * cos(angle);
+	*a = tmp_a;
+	*b = tmp_b;
 }

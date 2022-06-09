@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 10:25:45 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/23 10:25:52 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 19:33:56 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,34 @@ void	set_color_var(t_cub *cub, t_config *config)
 	cub->map->ceil = config->ceil_color;
 }
 
+void	set_map_var(t_cub *cub, t_config *config)
+{
+	int		x;
+	int		y;
+	t_point	p;
+
+	cub->map = ft_calloc(1, sizeof(t_map));
+	cub->map->map = config->map;
+	cub->map->width = config->width;
+	cub->map->heigth = config->height;
+	cub->map->door_points = vec_new(sizeof(t_point));
+	x = -1;
+	while (++x < cub->map->heigth)
+	{
+		y = -1;
+		while (++y < cub->map->width)
+		{
+			if (cub->map->map[x][y].kind == DOOR)
+			{
+				p.x = x;
+				p.y = y;
+				vec_push_back(cub->map->door_points, &p);
+			}
+		}
+	}
+}
+
 void	set_camera_var(t_cub *cub)
 {
 	cub->camera = ft_calloc(1, sizeof(t_camera));
-}
-
-void	set_time_var(t_cub *cub)
-{
-	cub->timestamp = gettimestamp();
 }

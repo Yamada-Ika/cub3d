@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_arg_utils.c                                  :+:      :+:    :+:   */
+/*   parse_arg_utils_common.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:57:50 by iyamada           #+#    #+#             */
-/*   Updated: 2022/05/24 21:14:55 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/09 19:54:17 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,5 @@ bool	is_color_symbol(const char *s)
 	return (
 		ft_strncmp(s, "F ", 2) == 0
 		|| ft_strncmp(s, "C ", 2) == 0
-	);
-}
-
-bool	is_sprite_symbol(const char *s)
-{
-	return (
-		ft_strncmp(s, "SP ", 3) == 0
 	);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/08 18:26:45 by user42           ###   ########.fr       */
+/*   Updated: 2022/06/09 21:09:16 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ t_error		set_west(t_config *config, char *s, int *flag);
 t_error		set_east(t_config *config, char *s, int *flag);
 t_error		new_map(t_config *config);
 t_error		set_map(t_config *config);
+void		set_map_(t_config *config, int i, int j, int idx);
+void		set_map_kind(t_config *config, int i, int j, int kind);
 
 // parse config
 t_error		parse_config(t_config *config, t_cub *cub);

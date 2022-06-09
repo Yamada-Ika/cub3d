@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_config.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:26:50 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/09 21:58:24 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/08 17:36:47 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	free_cub(char **cub);
 static void	free_paths(t_config *config);
+static void	free_sp_texs(t_vector *sp_texs);
 static void	free_map(t_cell **map);
 
 void	free_config(t_config *config, bool fg_err)
@@ -22,6 +23,7 @@ void	free_config(t_config *config, bool fg_err)
 		return ;
 	free_cub(config->cub);
 	free_paths(config);
+	free_sp_texs(config->sp_texs);
 	if (fg_err)
 		free_map(config->map);
 }
@@ -44,6 +46,11 @@ static void	free_paths(t_config *config)
 	free(config->so_tex_path);
 	free(config->we_tex_path);
 	free(config->ea_tex_path);
+}
+
+static void	free_sp_texs(t_vector *sp_texs)
+{
+	vec_delete(sp_texs, free);
 }
 
 static void	free_map(t_cell **map)

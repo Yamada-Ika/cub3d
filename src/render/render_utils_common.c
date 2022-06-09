@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_config.c                                     :+:      :+:    :+:   */
+/*   render_utils_common.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 01:57:55 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 19:34:20 by iyamada          ###   ########.fr       */
+/*   Created: 2022/06/09 21:46:25 by iyamada           #+#    #+#             */
+/*   Updated: 2022/06/09 21:46:39 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "render.h"
 
-t_error	parse_config(t_config *config, t_cub *cub)
+int	get_texture_color(const t_texture *tex, const int x, const int y)
 {
-	set_mlx_var(cub);
-	set_player_var(cub, config);
-	set_map_var(cub, config);
-	set_color_var(cub, config);
-	set_texture_var(cub, config);
-	set_camera_var(cub);
-	return (NO_ERR);
+	return (
+		*(int *)(tex->img->addr
+		+ (y * tex->img->line_length + x * (tex->img->bits_per_pixel / 8)))
+	);
 }
