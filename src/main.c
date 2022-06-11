@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:58:18 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 23:00:32 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/11 01:55:23 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char **argv)
 	if (err != NO_ERR)
 	{
 		ft_putstr_fd("Error\n", STDERR_FILENO);
-		return (1);
+		exit(1);
 	}
 	run(&cub);
 	return (0);
