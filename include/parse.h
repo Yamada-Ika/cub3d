@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 02:08:51 by kkaneko           #+#    #+#             */
-/*   Updated: 2022/06/09 22:40:40 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/12 19:27:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # define A 48271
 # define B 0
 # define M INT_MAX
-
+# define MAP_HEIGHT 500
+# define MAP_WIDTH 500
 typedef enum e_type_flag
 {
 	NORTH_PATH_FLAG = 1,

@@ -1,5 +1,5 @@
 CC			:= gcc
-CFLAGS		:= -MMD -MP  -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS		:= -MMD -MP  -Wall -Wextra -Werror
 COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
@@ -171,15 +171,17 @@ m: run-mandatory
 run-bonus:
 	make bonus
 	./cub3d settings/cub/ok_bonus1.cub
-	# ./cub3d settings/cub/ok_bonus_order1.cub
-	# ./cub3d settings/cub/ok_bonus_order2.cub
-	# ./cub3d settings/cub/ok_bonus_order3.cub
+	./cub3d settings/cub/ok_bonus_order1.cub
+	./cub3d settings/cub/ok_bonus_order2.cub
+	./cub3d settings/cub/ok_bonus_order3.cub
 	./cub3d settings/cub/ok_bonus2.cub
 b : run-bonus
 
 err:
 	@chmod 000 settings/cub/error_noright.cub
+	@chmod 222 settings/cub/error_norright.cub
 	-./cub3d settings/cub/error_noright.cub
+	-./cub3d settings/cub/error_norright.cub
 	-./cub3d settings/cub/error_walltex1.cub
 	-./cub3d settings/cub/error_walltex2.cub
 	-./cub3d settings/cub/error_walltex3.cub
@@ -206,11 +208,13 @@ err:
 	-./cub3d settings/cub/error_map3.cub
 	-./cub3d settings/cub/error_map4.cub
 	-./cub3d settings/cub/error_map5.cub
+	-./cub3d settings/cub/error_map6.cub
 	-./cub3d settings/cub/error_sprite1.cub
 	-./cub3d settings/cub/error_sprite2.cub
 	-./cub3d settings/cub/error_sprite3.cub
 	-./cub3d settings/cub/error_sprite4.cub
 	@chmod 644 settings/cub/error_noright.cub
+	@chmod 644 settings/cub/error_norright.cub
 
 norm:
 	norminette -v

@@ -6,24 +6,31 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 07:26:10 by iyamada           #+#    #+#             */
-/*   Updated: 2022/06/09 22:06:42 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/06/12 19:27:36 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-static bool	is_rectangle(t_config *config)
+static bool	valid_shape_and_size(t_config *config)
 {
-	int	i;
-	int	offset;
+	int		i;
+	int		offset;
+	size_t	w;
+	size_t	h;
 
 	i = config->seek;
 	offset = i;
+	h = 0;
 	while (i < offset + config->height - 1)
 	{
-		if (ft_strlen(config->cub[i]) != ft_strlen(config->cub[i + 1]))
+		w = ft_strlen(config->cub[i]);
+		if (w != ft_strlen(config->cub[i + 1]))
+			return (false);
+		if (h > MAP_HEIGHT || w > MAP_WIDTH)
 			return (false);
 		i++;
+		h++;
 	}
 	return (true);
 }
@@ -68,7 +75,7 @@ static bool	has_valid_char(t_config *config)
 
 t_error	validate_map(t_config *config)
 {
-	if (!is_rectangle(config))
+	if (!valid_shape_and_size(config))
 		return (VALIDATE_MAP_ISNOT_RECTANGLE_ERR);
 	if (!has_valid_char(config))
 		return (VALIDATE_MAP_HAS_INVALID_CHAR_ERR);
