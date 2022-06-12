@@ -4,7 +4,7 @@ COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
 				-l m
-NAME		:= cub3d
+NAME		:= cub3D
 VPATH		:= src:\
 				src/hooks:\
 				src/parser:\
