@@ -1,0 +1,8 @@
+.DS_Store
+*.pl
+*.o
+*.out
+*.json
+.vscode
+cub3d
+*.d
