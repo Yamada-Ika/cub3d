@@ -4,7 +4,7 @@ COPTS		:= -I include -I libft -L libft -l ft \
 				-I minilibx-linux -L minilibx-linux \
 				-I /opt/X11/include -L /usr/X11/include/../lib -l Xext -l X11 \
 				-l m
-NAME		:= cub3d
+NAME		:= cub3D
 VPATH		:= src:\
 				src/hooks:\
 				src/parser:\
@@ -214,6 +214,12 @@ err:
 	-./cub3d settings/cub/error_sprite3.cub
 	-./cub3d settings/cub/error_sprite4.cub
 	-./cub3d settings/cub/error_big.cub
+	@mkdir -p settings/cub/error_dir.cub
+	-./cub3d settings/cub/error_dir.cub
+	-./cub3d settings/cub/error_invalid_ext.CUB
+	-./cub3d settings/cub/error_invalid_ext2.cuB
+	-./cub3d settings/cub/error_type.cub
+	-./cub3d settings/cub/error_type2.cub
 	@chmod 644 settings/cub/error_noright.cub
 	@chmod 644 settings/cub/error_norright.cub
 
