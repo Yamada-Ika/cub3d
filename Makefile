@@ -214,6 +214,12 @@ err:
 	-./cub3d settings/cub/error_sprite3.cub
 	-./cub3d settings/cub/error_sprite4.cub
 	-./cub3d settings/cub/error_big.cub
+	@mkdir -p settings/cub/error_dir.cub
+	-./cub3d settings/cub/error_dir.cub
+	-./cub3d settings/cub/error_invalid_ext.CUB
+	-./cub3d settings/cub/error_invalid_ext2.cuB
+	-./cub3d settings/cub/error_type.cub
+	-./cub3d settings/cub/error_type2.cub
 	@chmod 644 settings/cub/error_noright.cub
 	@chmod 644 settings/cub/error_norright.cub
 
