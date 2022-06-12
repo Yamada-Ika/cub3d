@@ -177,6 +177,16 @@ run-bonus:
 	./cub3d settings/cub/ok_bonus2.cub
 b : run-bonus
 
+ok-player-dir:
+	@echo "You may see 東"
+	./cub3d settings/cub/ok_player_dir_west.cub
+	@echo "You may see 西"
+	./cub3d settings/cub/ok_player_dir_east.cub
+	@echo "You may see 南"
+	./cub3d settings/cub/ok_player_dir_north.cub
+	@echo "You may see 北"
+	./cub3d settings/cub/ok_player_dir_south.cub
+
 err:
 	@chmod 000 settings/cub/error_noright.cub
 	@chmod 222 settings/cub/error_norright.cub
@@ -238,6 +248,8 @@ help:
 	@echo "  Discription: rule"
 	@echo "    bonus:"
 	@echo "      build with bonus sources"
+	@echo "    ok-player-dir:"
+	@echo "      test initial player direction"
 	@echo "    run-mandatory:"
 	@echo "      build with mandatory sources and run with correct cub file"
 	@echo "    m:"
