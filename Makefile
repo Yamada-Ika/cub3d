@@ -219,6 +219,10 @@ err:
 	-./cub3d settings/cub/error_map4.cub
 	-./cub3d settings/cub/error_map5.cub
 	-./cub3d settings/cub/error_map6.cub
+	-./cub3d settings/cub/error_map7.cub
+	-./cub3d settings/cub/error_map8.cub
+	-./cub3d settings/cub/error_map9.cub
+	-./cub3d settings/cub/error_map10.cub
 	-./cub3d settings/cub/error_sprite1.cub
 	-./cub3d settings/cub/error_sprite2.cub
 	-./cub3d settings/cub/error_sprite3.cub
