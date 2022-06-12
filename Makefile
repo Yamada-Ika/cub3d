@@ -165,75 +165,75 @@ bonus:
 	make WITH_BONUS=1
 
 run-mandatory: all
-	./cub3d settings/cub/ok_mandatory1.cub
+	./$(NAME) settings/cub/ok_mandatory1.cub
 m: run-mandatory
 
 run-bonus:
 	make bonus
-	./cub3d settings/cub/ok_bonus1.cub
-	./cub3d settings/cub/ok_bonus_order1.cub
-	./cub3d settings/cub/ok_bonus_order2.cub
-	./cub3d settings/cub/ok_bonus_order3.cub
-	./cub3d settings/cub/ok_bonus2.cub
+	./$(NAME) settings/cub/ok_bonus1.cub
+	./$(NAME) settings/cub/ok_bonus_order1.cub
+	./$(NAME) settings/cub/ok_bonus_order2.cub
+	./$(NAME) settings/cub/ok_bonus_order3.cub
+	./$(NAME) settings/cub/ok_bonus2.cub
 b : run-bonus
 
 ok-player-dir:
 	@echo "You may see 東"
-	./cub3d settings/cub/ok_player_dir_west.cub
+	./$(NAME) settings/cub/ok_player_dir_west.cub
 	@echo "You may see 西"
-	./cub3d settings/cub/ok_player_dir_east.cub
+	./$(NAME) settings/cub/ok_player_dir_east.cub
 	@echo "You may see 南"
-	./cub3d settings/cub/ok_player_dir_north.cub
+	./$(NAME) settings/cub/ok_player_dir_north.cub
 	@echo "You may see 北"
-	./cub3d settings/cub/ok_player_dir_south.cub
+	./$(NAME) settings/cub/ok_player_dir_south.cub
 
 err:
 	@chmod 000 settings/cub/error_noright.cub
 	@chmod 222 settings/cub/error_norright.cub
-	-./cub3d settings/cub/error_noright.cub
-	-./cub3d settings/cub/error_norright.cub
-	-./cub3d settings/cub/error_walltex1.cub
-	-./cub3d settings/cub/error_walltex2.cub
-	-./cub3d settings/cub/error_walltex3.cub
-	-./cub3d settings/cub/error_walltex4.cub
-	-./cub3d settings/cub/error_walltex5.cub
-	-./cub3d settings/cub/error_walltex6.cub
-	-./cub3d settings/cub/error_walltex7.cub
-	-./cub3d settings/cub/error_walltex8.cub
-	-./cub3d settings/cub/error_walltex9.cub
-	-./cub3d settings/cub/error_color1.cub
-	-./cub3d settings/cub/error_color2.cub
-	-./cub3d settings/cub/error_color3.cub
-	-./cub3d settings/cub/error_color4.cub
-	-./cub3d settings/cub/error_color5.cub
-	-./cub3d settings/cub/error_color6.cub
-	-./cub3d settings/cub/error_color7.cub
-	-./cub3d settings/cub/error_color8.cub
-	-./cub3d settings/cub/error_color9.cub
-	-./cub3d settings/cub/error_color10.cub
-	-./cub3d settings/cub/error_color11.cub
-	-./cub3d settings/cub/error_color12.cub
-	-./cub3d settings/cub/error_map1.cub
-	-./cub3d settings/cub/error_map2.cub
-	-./cub3d settings/cub/error_map3.cub
-	-./cub3d settings/cub/error_map4.cub
-	-./cub3d settings/cub/error_map5.cub
-	-./cub3d settings/cub/error_map6.cub
-	-./cub3d settings/cub/error_map7.cub
-	-./cub3d settings/cub/error_map8.cub
-	-./cub3d settings/cub/error_map9.cub
-	-./cub3d settings/cub/error_map10.cub
-	-./cub3d settings/cub/error_sprite1.cub
-	-./cub3d settings/cub/error_sprite2.cub
-	-./cub3d settings/cub/error_sprite3.cub
-	-./cub3d settings/cub/error_sprite4.cub
-	-./cub3d settings/cub/error_big.cub
+	-./$(NAME) settings/cub/error_noright.cub
+	-./$(NAME) settings/cub/error_norright.cub
+	-./$(NAME) settings/cub/error_walltex1.cub
+	-./$(NAME) settings/cub/error_walltex2.cub
+	-./$(NAME) settings/cub/error_walltex3.cub
+	-./$(NAME) settings/cub/error_walltex4.cub
+	-./$(NAME) settings/cub/error_walltex5.cub
+	-./$(NAME) settings/cub/error_walltex6.cub
+	-./$(NAME) settings/cub/error_walltex7.cub
+	-./$(NAME) settings/cub/error_walltex8.cub
+	-./$(NAME) settings/cub/error_walltex9.cub
+	-./$(NAME) settings/cub/error_color1.cub
+	-./$(NAME) settings/cub/error_color2.cub
+	-./$(NAME) settings/cub/error_color3.cub
+	-./$(NAME) settings/cub/error_color4.cub
+	-./$(NAME) settings/cub/error_color5.cub
+	-./$(NAME) settings/cub/error_color6.cub
+	-./$(NAME) settings/cub/error_color7.cub
+	-./$(NAME) settings/cub/error_color8.cub
+	-./$(NAME) settings/cub/error_color9.cub
+	-./$(NAME) settings/cub/error_color10.cub
+	-./$(NAME) settings/cub/error_color11.cub
+	-./$(NAME) settings/cub/error_color12.cub
+	-./$(NAME) settings/cub/error_map1.cub
+	-./$(NAME) settings/cub/error_map2.cub
+	-./$(NAME) settings/cub/error_map3.cub
+	-./$(NAME) settings/cub/error_map4.cub
+	-./$(NAME) settings/cub/error_map5.cub
+	-./$(NAME) settings/cub/error_map6.cub
+	-./$(NAME) settings/cub/error_map7.cub
+	-./$(NAME) settings/cub/error_map8.cub
+	-./$(NAME) settings/cub/error_map9.cub
+	-./$(NAME) settings/cub/error_map10.cub
+	-./$(NAME) settings/cub/error_sprite1.cub
+	-./$(NAME) settings/cub/error_sprite2.cub
+	-./$(NAME) settings/cub/error_sprite3.cub
+	-./$(NAME) settings/cub/error_sprite4.cub
+	-./$(NAME) settings/cub/error_big.cub
 	@mkdir -p settings/cub/error_dir.cub
-	-./cub3d settings/cub/error_dir.cub
-	-./cub3d settings/cub/error_invalid_ext.CUB
-	-./cub3d settings/cub/error_invalid_ext2.cuB
-	-./cub3d settings/cub/error_type.cub
-	-./cub3d settings/cub/error_type2.cub
+	-./$(NAME) settings/cub/error_dir.cub
+	-./$(NAME) settings/cub/error_invalid_ext.CUB
+	-./$(NAME) settings/cub/error_invalid_ext2.cuB
+	-./$(NAME) settings/cub/error_type.cub
+	-./$(NAME) settings/cub/error_type2.cub
 	@chmod 644 settings/cub/error_noright.cub
 	@chmod 644 settings/cub/error_norright.cub
 
