@@ -213,6 +213,7 @@ err:
 	-./cub3d settings/cub/error_sprite2.cub
 	-./cub3d settings/cub/error_sprite3.cub
 	-./cub3d settings/cub/error_sprite4.cub
+	-./cub3d settings/cub/error_big.cub
 	@chmod 644 settings/cub/error_noright.cub
 	@chmod 644 settings/cub/error_norright.cub
 
@@ -227,6 +228,7 @@ func:
 	bash find_forbidden_func.sh
 
 help:
+	@echo "Usage: make [rule]"
 	@echo "  Discription: rule"
 	@echo "    bonus:"
 	@echo "      build with bonus sources"
